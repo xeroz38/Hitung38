@@ -62,14 +62,14 @@ public class ItemProvider extends ContentProvider {
     }
 
     private static final UriMatcher S_URI_MATCHER = buildUriMatcher();
-    private static final int MATCH_STORAGE = 101;
-    private static final int MATCH_STORAGE_SUBMIT = 102;
+    private static final int MATCH_ITEM = 101;
+    private static final int MATCH_ITEMGROUP = 102;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        matcher.addURI(CONTENT_AUTHORITY, TABLE_ITEM, MATCH_STORAGE);
-        matcher.addURI(CONTENT_AUTHORITY, TABLE_ITEMGROUP, MATCH_STORAGE_SUBMIT);
+        matcher.addURI(CONTENT_AUTHORITY, TABLE_ITEM, MATCH_ITEM);
+        matcher.addURI(CONTENT_AUTHORITY, TABLE_ITEMGROUP, MATCH_ITEMGROUP);
 
         return matcher;
     }
@@ -87,20 +87,22 @@ public class ItemProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArgs, String sort) {
         // Query result
-        if (sort == null) {
-            sort = Item.ITEM_ID + " ASC";
-        }
-
         int match = S_URI_MATCHER.match(uri);
         switch (match) {
-            case MATCH_STORAGE: {
+            case MATCH_ITEM: {
                 SQLiteDatabase db = openHelper.getReadableDatabase();
 
+                if (sort == null) {
+                    sort = Item.ITEM_ID + " ASC";
+                }
                 return db.query(TABLE_ITEM, columns, selection, selectionArgs, null, null, sort);
             }
-            case MATCH_STORAGE_SUBMIT: {
+            case MATCH_ITEMGROUP: {
                 SQLiteDatabase db = openHelper.getReadableDatabase();
 
+                if (sort == null) {
+                    sort = ItemGroup.ITEMGROUP_ID + " ASC";
+                }
                 return db.query(TABLE_ITEMGROUP, columns, selection, selectionArgs, null, null, sort);
             }
         }
@@ -119,7 +121,7 @@ public class ItemProvider extends ContentProvider {
         // Insert value
         int match = S_URI_MATCHER.match(uri);
         switch (match) {
-            case MATCH_STORAGE: {
+            case MATCH_ITEM: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 db.beginTransaction();
@@ -131,7 +133,7 @@ public class ItemProvider extends ContentProvider {
 
                 return ITEM_CONTENT_URI.buildUpon().appendPath(storageId).build();
             }
-            case MATCH_STORAGE_SUBMIT: {
+            case MATCH_ITEMGROUP: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 db.beginTransaction();
@@ -139,7 +141,7 @@ public class ItemProvider extends ContentProvider {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                String storageId = values.getAsString(Item.ITEM_ID);
+                String storageId = values.getAsString(ItemGroup.ITEMGROUP_ID);
 
                 return ITEMGROUP_CONTENT_URI.buildUpon().appendPath(storageId).build();
             }
@@ -154,7 +156,7 @@ public class ItemProvider extends ContentProvider {
         // Delete value
         int match = S_URI_MATCHER.match(uri);
         switch (match) {
-            case MATCH_STORAGE: {
+            case MATCH_ITEM: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 db.beginTransaction();
@@ -164,7 +166,7 @@ public class ItemProvider extends ContentProvider {
 
                 return 0;
             }
-            case MATCH_STORAGE_SUBMIT: {
+            case MATCH_ITEMGROUP: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 db.beginTransaction();
@@ -184,12 +186,12 @@ public class ItemProvider extends ContentProvider {
         // TODO Auto-generated method stub
         int match = S_URI_MATCHER.match(uri);
         switch (match) {
-            case MATCH_STORAGE: {
+            case MATCH_ITEM: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 return db.update(TABLE_ITEM, values, selection, selectionArgs);
             }
-            case MATCH_STORAGE_SUBMIT: {
+            case MATCH_ITEMGROUP: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 return db.update(TABLE_ITEMGROUP, values, selection, selectionArgs);

@@ -34,7 +34,7 @@
             android:name=".MasterItemDetailActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MasterItemGroupActivity"
+            android:name=".MasterItemgroupActivity"
             android:screenOrientation="landscape" />
 
         <provider

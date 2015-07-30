@@ -12,7 +12,10 @@
     <string name="price">Harga</string>
     <string name="delete">Hapus</string>
     <string name="save">Simpan</string>
-    <string name="add_item">Tambah Makanan/Minuman</string>
+    <string name="cancel">Batal</string>
+    <string name="select">Pilih</string>
+    <string name="edit_itemgroup">Tambah/Edit Jenis Makanan/Minuman</string>
+    <string name="add_item">+ Tambah Makanan/Minuman</string>
     <string name="add_itemgroup">Tambah Jenis Makanan/Minuman</string>
     <string name="totalprice">Rp 0</string>
     <string name="done">Selesai</string>

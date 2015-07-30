@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D3D3D3"
     android:orientation="vertical"
     tools:context=".MainActivityFragment">
 
@@ -14,20 +15,25 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:background="@drawable/main_bg_rounded"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/image_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/item_label" />
+                android:layout_gravity="center"
+                android:text="@string/item_label"
+                android:textSize="18dp" />
 
             <ImageView
                 android:id="@+id/item_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_gravity="center"
                 android:src="@drawable/food" />
 
             <Button
@@ -40,8 +46,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:background="@drawable/main_bg_rounded"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -51,12 +60,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/name" />
+                    android:text="@string/name"
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/name_edit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:ems="20" />
             </LinearLayout>
 
             <LinearLayout
@@ -67,12 +78,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/category" />
+                    android:text="@string/category"
+                    android:textSize="18dp" />
 
-                <EditText
-                    android:id="@+id/category_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <Spinner
+                    android:id="@+id/category_spin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
@@ -83,12 +95,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/price" />
+                    android:text="@string/price"
+                    android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/price_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,7 +116,7 @@
                     android:id="@+id/delete_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/price" />
+                    android:text="@string/delete" />
 
                 <Button
                     android:id="@+id/save_btn"

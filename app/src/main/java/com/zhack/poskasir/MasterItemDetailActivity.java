@@ -3,20 +3,28 @@ package com.zhack.poskasir;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.zhack.poskasir.model.Item;
+import com.zhack.poskasir.model.ItemGroup;
+import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zunaidi.chandra on 30/07/2015.
@@ -25,10 +33,12 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
 
     private static final int SELECT_PICTURE = 100;
 
-    private String mImageName;
+    private String nameBdl, imageBdl, categoryBdl, priceBdl, imageName;
+    private List<String> mItemGroupData;
     private ImageView mItemImg;
-    private EditText mNameEdit, mCategoryEdit, mPriceEdit;
-    private Button mSaveBtn;
+    private EditText mNameEdit, mPriceEdit;
+    private Spinner mCategorySpin;
+    private Button mDeleteImageBtn, mSaveBtn;
     private Bitmap mPhotoBitmap;
 
     @Override
@@ -38,11 +48,52 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
 
         mItemImg = (ImageView) findViewById(R.id.item_image);
         mNameEdit = (EditText) findViewById(R.id.name_edit);
-        mCategoryEdit = (EditText) findViewById(R.id.category_edit);
+        mCategorySpin = (Spinner) findViewById(R.id.category_spin);
         mPriceEdit = (EditText) findViewById(R.id.price_edit);
+        mDeleteImageBtn = (Button) findViewById(R.id.delete_image_btn);
         mSaveBtn = (Button) findViewById(R.id.save_btn);
+
+        if (getIntent() != null) {
+            nameBdl = getIntent().getExtras().getString(Constant.ITEM_NAME);
+            imageBdl = getIntent().getExtras().getString(Constant.ITEM_IMAGE);
+            categoryBdl = getIntent().getExtras().getString(Constant.ITEM_CATEGORY);
+            priceBdl = getIntent().getExtras().getString(Constant.ITEM_PRICE);
+        }
+
+        mItemGroupData = getItemGroupListData();
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mItemGroupData);
+        mCategorySpin.setAdapter(dataAdapter);
+        mNameEdit.setText(nameBdl);
+        mCategorySpin.setSelection(dataAdapter.getPosition(categoryBdl));
+        mPriceEdit.setText(priceBdl);
+        if (imageBdl != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/poskasir/img/" + imageBdl);
+            mItemImg.setImageBitmap(bitmap);
+        }
+
         mItemImg.setOnClickListener(this);
+        mDeleteImageBtn.setOnClickListener(this);
         mSaveBtn.setOnClickListener(this);
+    }
+
+    private ArrayList<String> getItemGroupListData() {
+        ArrayList<String> list = null;
+        Cursor cursor = null;
+        try {
+            cursor = getContentResolver().query(ItemProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
+
+                list = new ArrayList<String>(cursor.getCount());
+                while (cursor.moveToNext()) {
+                    list.add(cursor.getString(itemTitle));
+                }
+                return list;
+            } else {
+                return list = new ArrayList<String>();
+            }
+        } finally {
+        }
     }
 
     @Override
@@ -103,17 +154,23 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
 
                 break;
             }
+            case R.id.delete_image_btn: {
+                mItemImg.setImageResource(R.drawable.logo);
+                break;
+            }
             case R.id.save_btn: {
-                mImageName = "IMG_" + System.currentTimeMillis();
-                createDirectoryAndSaveFile(mPhotoBitmap, mImageName);
+                imageName = "IMG_" + System.currentTimeMillis();
+                createDirectoryAndSaveFile(mPhotoBitmap, imageName);
                 insertItemListData(mNameEdit.getText().toString(),
-                        mImageName,
-                        mCategoryEdit.getText().toString(),
+                        imageName,
+                        String.valueOf(mCategorySpin.getSelectedItem()),
                         mPriceEdit.getText().toString());
+                finish();
 
                 break;
             }
-            default: break;
+            default:
+                break;
         }
     }
 }

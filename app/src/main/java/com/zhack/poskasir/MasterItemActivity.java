@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhack.poskasir.model.Item;
+import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.List;
 public class MasterItemActivity extends Activity {
 
     private List<Item> mItemData;
+    private Button mAddItemBtn;
     private GridView mItemGrid;
 
     @Override
@@ -35,6 +38,7 @@ public class MasterItemActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_item);
 
+        mAddItemBtn = (Button) findViewById(R.id.add_item_btn);
         mItemGrid = (GridView) findViewById(R.id.item_grid);
         mItemData = getItemListData();
         mItemGrid.setAdapter(new ItemAdapter());
@@ -42,6 +46,21 @@ public class MasterItemActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MasterItemActivity.this, MasterItemDetailActivity.class);
+                intent.putExtra(Constant.ITEM_NAME, mItemData.get(position).title);
+                intent.putExtra(Constant.ITEM_IMAGE, mItemData.get(position).image);
+                intent.putExtra(Constant.ITEM_CATEGORY, mItemData.get(position).category);
+                intent.putExtra(Constant.ITEM_PRICE, mItemData.get(position).price);
+                startActivity(intent);
+            }
+        });
+        mAddItemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MasterItemActivity.this, MasterItemDetailActivity.class);
+                intent.putExtra(Constant.ITEM_NAME, "");
+                intent.putExtra(Constant.ITEM_IMAGE, "");
+                intent.putExtra(Constant.ITEM_CATEGORY, "");
+                intent.putExtra(Constant.ITEM_PRICE, "");
                 startActivity(intent);
             }
         });
