@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">POSKasir</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="title">POSKasir</string>
+    <string name="master">Master</string>
+    <string name="item">Makanan/Minuman</string>
+    <string name="item_group">Jenis Makanan/Minuman</string>
+    <string name="item_label">Gambar</string>
+    <string name="delete_picture">Hapus Gambar</string>
+    <string name="name">Nama</string>
+    <string name="category">Kategori</string>
+    <string name="price">Harga</string>
+    <string name="delete">Hapus</string>
+    <string name="save">Simpan</string>
+    <string name="add_itemgroup">Tambah Jenis Makanan/Minuman</string>
 </resources>
