@@ -28,7 +28,7 @@ public class MasterItemGroupActivity extends Activity {
         setContentView(R.layout.activity_master_itemgroup);
 
         mItemGroupList = (ListView) findViewById(R.id.itemgroup_list);
-        View footerView = getLayoutInflater().inflate(R.layout.itemgroup_list_view, null);
+        View footerView = getLayoutInflater().inflate(R.layout.view_itemgroup_list, null);
         TextView addItemGroup = (TextView) footerView.findViewById(R.id.title_text);
         addItemGroup.setText(R.string.add_itemgroup);
         mItemGroupList.addFooterView(footerView);
@@ -52,7 +52,7 @@ public class MasterItemGroupActivity extends Activity {
             View rowView = convertView;
             if (rowView == null) {
                 LayoutInflater inflater = getLayoutInflater();
-                rowView = inflater.inflate(R.layout.itemgroup_list_view, null);
+                rowView = inflater.inflate(R.layout.view_itemgroup_list, null);
                 // configure view holder
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.text = (TextView) rowView.findViewById(R.id.title_text);

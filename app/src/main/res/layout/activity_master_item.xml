@@ -5,12 +5,16 @@
     android:orientation="vertical"
     tools:context=".MainActivityFragment">
 
-    <include layout="@layout/header_view" />
+    <include layout="@layout/view_header" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_item" />
 
     <GridView
         android:id="@+id/item_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:numColumns="8" />
-
 </LinearLayout>

@@ -2,15 +2,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D3D3D3"
     tools:context=".MainActivityFragment">
 
-    <include layout="@layout/header_view" />
+    <include layout="@layout/view_header" />
 
-    <Button
-        android:id="@+id/master_btn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:text="@string/master" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/master_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/main_bg_rounded"
+            android:text="@string/master" />
+
+        <Button
+            android:id="@+id/pos_btn"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/main_bg_rounded"
+            android:text="@string/pos" />
+    </LinearLayout>
 
 </RelativeLayout>
