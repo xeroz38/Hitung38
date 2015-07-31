@@ -53,6 +53,7 @@ public class PointOfSalesDetailActivity extends Activity {
         }
 
         mPOSData = new ArrayList<POSData>();
+        mItemData = new ArrayList<Item>();
         mItemGrid.setAdapter(new ItemAdapter());
         mItemGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

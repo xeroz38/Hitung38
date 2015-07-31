@@ -19,4 +19,6 @@
     <string name="add_itemgroup">Tambah Jenis Makanan/Minuman</string>
     <string name="totalprice">Rp 0</string>
     <string name="done">Selesai</string>
+    <string name="no_paper">Kertas Habis</string>
+    <string name="buff_fulled">Buffer Penuh</string>
 </resources>

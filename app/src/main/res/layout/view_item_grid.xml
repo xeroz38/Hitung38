@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/item_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_width="140dp"
+        android:layout_height="105dp" />
 
     <TextView
         android:id="@+id/title_text"

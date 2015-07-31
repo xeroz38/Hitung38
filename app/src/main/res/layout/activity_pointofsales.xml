@@ -25,7 +25,7 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:horizontalSpacing="5dp"
-                android:numColumns="4"
+                android:numColumns="5"
                 android:verticalSpacing="5dp" />
 
             <LinearLayout

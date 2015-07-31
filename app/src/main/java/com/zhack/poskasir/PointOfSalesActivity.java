@@ -23,6 +23,7 @@ import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.PrintJob;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +92,10 @@ public class PointOfSalesActivity extends Activity {
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PointOfSalesActivity.this, PointOfSalesDetailActivity.class);
-                intent.putParcelableArrayListExtra(Constant.ITEM_LIST, mPOSData);
-                startActivity(intent);
+//                Intent intent = new Intent(PointOfSalesActivity.this, PointOfSalesDetailActivity.class);
+//                intent.putParcelableArrayListExtra(Constant.ITEM_LIST, mPOSData);
+//                startActivity(intent);
+                new PrintJob(getApplicationContext(), mPOSData);
             }
         });
     }
