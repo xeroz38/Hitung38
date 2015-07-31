@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"/>
+
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -25,16 +26,19 @@
             android:name=".MasterActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".PointOfSalesActivity"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".MasterItemActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".MasterItemDetailActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MasterItemgroupActivity"
+            android:name=".MasterGroupActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".PointOfSalesActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".PointOfSalesDetailActivity"
             android:screenOrientation="landscape" />
 
         <provider

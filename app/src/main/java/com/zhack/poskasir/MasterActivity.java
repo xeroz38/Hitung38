@@ -33,7 +33,7 @@ public class MasterActivity extends Activity implements View.OnClickListener {
                 break;
             }
             case R.id.item_group_btn: {
-                Intent intent = new Intent(this, MasterItemgroupActivity.class);
+                Intent intent = new Intent(this, MasterGroupActivity.class);
                 startActivity(intent);
                 break;
             }

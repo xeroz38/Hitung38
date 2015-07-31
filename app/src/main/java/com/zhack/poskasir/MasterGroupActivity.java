@@ -2,6 +2,7 @@ package com.zhack.poskasir;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.util.ItemProvider;
 
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Created by zunaidi.chandra on 30/07/2015.
  */
-public class MasterItemgroupActivity extends Activity {
+public class MasterGroupActivity extends Activity {
 
     private List<ItemGroup> mItemGroupData;
     private ListView mItemGroupList;
@@ -40,7 +41,7 @@ public class MasterItemgroupActivity extends Activity {
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog("");
+                showDialog(null);
             }
         });
         mItemGroupData = getItemGroupListData();
@@ -76,12 +77,12 @@ public class MasterItemgroupActivity extends Activity {
         } finally { }
     }
 
-    private void showDialog(String content) {
+    private void showDialog(final String content) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.view_itemgroup_dialog);
         dialog.setTitle(R.string.edit_itemgroup);
 
-        TextView text = (TextView) dialog.findViewById(R.id.content_edit);
+        final TextView text = (TextView) dialog.findViewById(R.id.content_edit);
         text.setText(content);
 
         Button cancelBtn = (Button) dialog.findViewById(R.id.cancel_btn);
@@ -95,7 +96,19 @@ public class MasterItemgroupActivity extends Activity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                if (text.getText().toString().trim().length() > 0) {
+                    ContentValues values = new ContentValues();
+                    values.put(ItemGroup.ITEMGROUP_TITLE, text.getText().toString());
+                    if (content != null) {
+                        getContentResolver().update(ItemProvider.ITEMGROUP_CONTENT_URI, values, ItemGroup.ITEMGROUP_TITLE + "=?", new String[]{content});
+                    } else {
+                        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+                    }
+
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Harus isi", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.show();

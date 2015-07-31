@@ -69,15 +69,6 @@
                 android:text="@string/totalprice"
                 android:textSize="22dp" />
 
-            <ListView
-                android:id="@+id/pos_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_bg_rounded"
-                android:minHeight="300dp" />
-
             <Button
                 android:id="@+id/done_btn"
                 android:layout_width="match_parent"

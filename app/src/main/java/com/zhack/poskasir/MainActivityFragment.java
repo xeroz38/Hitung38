@@ -48,7 +48,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                     ContentValues values = new ContentValues();
                     values.put(Item.ITEM_TITLE, "Food " + i);
                     values.put(Item.ITEM_IMAGE, "IMG_1438250462193");
-                    values.put(Item.ITEM_CATEGORY, "Chinese");
+                    values.put(Item.ITEM_CATEGORY, "Indonesia " + 8);
                     values.put(Item.ITEM_PRICE, "90000");
 
                     getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, values);

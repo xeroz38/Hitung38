@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
@@ -38,7 +39,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
     private ImageView mItemImg;
     private EditText mNameEdit, mPriceEdit;
     private Spinner mCategorySpin;
-    private Button mDeleteImageBtn, mSaveBtn;
+    private Button mDeleteImageBtn, mDeleteBtn, mSaveBtn;
     private Bitmap mPhotoBitmap;
 
     @Override
@@ -51,6 +52,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         mCategorySpin = (Spinner) findViewById(R.id.category_spin);
         mPriceEdit = (EditText) findViewById(R.id.price_edit);
         mDeleteImageBtn = (Button) findViewById(R.id.delete_image_btn);
+        mDeleteBtn = (Button) findViewById(R.id.delete_btn);
         mSaveBtn = (Button) findViewById(R.id.save_btn);
 
         if (getIntent() != null) {
@@ -64,7 +66,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mItemGroupData);
         mCategorySpin.setAdapter(dataAdapter);
         mNameEdit.setText(nameBdl);
-        mCategorySpin.setSelection(dataAdapter.getPosition(categoryBdl));
+        mCategorySpin.setSelection(dataAdapter.getPosition(categoryBdl), false);
         mPriceEdit.setText(priceBdl);
         if (imageBdl != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/poskasir/img/" + imageBdl);
@@ -73,6 +75,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
 
         mItemImg.setOnClickListener(this);
         mDeleteImageBtn.setOnClickListener(this);
+        mDeleteBtn.setOnClickListener(this);
         mSaveBtn.setOnClickListener(this);
     }
 
@@ -113,7 +116,19 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         values.put(Item.ITEM_CATEGORY, category);
         values.put(Item.ITEM_PRICE, price);
 
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, values);
+        if (checkBarangExistInDB(title)) {
+            getContentResolver().update(ItemProvider.ITEM_CONTENT_URI, values, Item.ITEM_TITLE + "=?", new String[]{title});
+        } else {
+            getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, values);
+        }
+    }
+
+    private boolean checkBarangExistInDB(String title) {
+        Cursor cursor = getContentResolver().query(ItemProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, Item.ITEM_TITLE + "=?", new String[]{title}, null);
+        if(cursor.getCount() > 0){
+            return true;
+        }
+        return false;
     }
 
     private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
@@ -146,7 +161,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
                 pickIntent.setAction(Intent.ACTION_GET_CONTENT);
 
                 Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
+                String pickTitle = "Pilih atau Foto"; // Or get from strings.xml
 
                 Intent chooserIntent = Intent.createChooser(pickIntent, pickTitle);
                 chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takePhotoIntent});
@@ -158,14 +173,25 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
                 mItemImg.setImageResource(R.drawable.logo);
                 break;
             }
-            case R.id.save_btn: {
-                imageName = "IMG_" + System.currentTimeMillis();
-                createDirectoryAndSaveFile(mPhotoBitmap, imageName);
-                insertItemListData(mNameEdit.getText().toString(),
-                        imageName,
-                        String.valueOf(mCategorySpin.getSelectedItem()),
-                        mPriceEdit.getText().toString());
+            case R.id.delete_btn: {
+                if (nameBdl != null) {
+                    getContentResolver().delete(ItemProvider.ITEM_CONTENT_URI, Item.ITEM_TITLE + "=?",new String[]{nameBdl});
+                }
                 finish();
+                break;
+            }
+            case R.id.save_btn: {
+                if (mNameEdit.getText().toString().trim().length() > 0 && mPriceEdit.getText().toString().trim().length() > 0) {
+                    imageName = "IMG_" + System.currentTimeMillis();
+                    createDirectoryAndSaveFile(mPhotoBitmap, imageName);
+                    insertItemListData(mNameEdit.getText().toString(),
+                            imageName,
+                            String.valueOf(mCategorySpin.getSelectedItem()),
+                            mPriceEdit.getText().toString());
+                    finish();
+                } else {
+                    Toast.makeText(this, "Nama dan Harga harus diisi", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
             }
