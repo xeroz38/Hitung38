@@ -9,4 +9,5 @@ public class Constant {
     public static final String ITEM_CATEGORY = "item_category";
     public static final String ITEM_PRICE = "item_price";
     public static final String ITEM_LIST = "item_list";
+    public static final String ITEM_EDIT = "item_new_edit";
 }

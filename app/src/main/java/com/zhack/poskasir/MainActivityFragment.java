@@ -17,9 +17,9 @@ import com.zhack.poskasir.util.ItemProvider;
 /**
  * A placeholder fragment containing a main view.
  */
-public class MainActivityFragment extends Fragment implements View.OnClickListener{
+public class MainActivityFragment extends Fragment implements View.OnClickListener {
 
-    private Button mMasterBtn, mPosBtn, mAddBtn;
+    private Button mMasterBtn, mPosBtn, mReportBtn, mAddBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,9 +27,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
 
         mMasterBtn = (Button) view.findViewById(R.id.master_btn);
         mPosBtn = (Button) view.findViewById(R.id.pos_btn);
+        mReportBtn = (Button) view.findViewById(R.id.report_btn);
         mAddBtn = (Button) view.findViewById(R.id.add_btn);
         mMasterBtn.setOnClickListener(this);
         mPosBtn.setOnClickListener(this);
+        mReportBtn.setOnClickListener(this);
         mAddBtn.setOnClickListener(this);
 
         return view;
@@ -66,7 +68,13 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 startActivity(intent);
                 break;
             }
-            default: break;
+            case R.id.report_btn: {
+                Intent intent = new Intent(getActivity(), ReportActivity.class);
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
         }
     }
 }

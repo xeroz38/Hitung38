@@ -40,6 +40,12 @@
         <activity
             android:name=".PointOfSalesDetailActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".ReportActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ReportSalesActivity"
+            android:screenOrientation="landscape" />
 
         <provider
             android:name=".util.ItemProvider"

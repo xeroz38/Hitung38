@@ -28,6 +28,7 @@ public class MasterGroupActivity extends Activity {
 
     private List<ItemGroup> mItemGroupData;
     private ListView mItemGroupList;
+    private ItemGroupAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +46,9 @@ public class MasterGroupActivity extends Activity {
             }
         });
         mItemGroupData = getItemGroupListData();
+        mAdapter = new ItemGroupAdapter();
         mItemGroupList.addFooterView(footerView);
-        mItemGroupList.setAdapter(new ItemGroupAdapter());
+        mItemGroupList.setAdapter(mAdapter);
         mItemGroupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -105,6 +107,8 @@ public class MasterGroupActivity extends Activity {
                         getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
                     }
 
+                    mItemGroupData = getItemGroupListData();
+                    mAdapter.notifyDataSetChanged();
                     dialog.dismiss();
                 } else {
                     Toast.makeText(getApplicationContext(), "Harus isi", Toast.LENGTH_SHORT).show();

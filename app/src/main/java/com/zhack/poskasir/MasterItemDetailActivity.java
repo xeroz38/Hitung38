@@ -34,6 +34,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
 
     private static final int SELECT_PICTURE = 100;
 
+    private boolean isEdit;
     private String nameBdl, imageBdl, categoryBdl, priceBdl, imageName;
     private List<String> mItemGroupData;
     private ImageView mItemImg;
@@ -56,6 +57,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         mSaveBtn = (Button) findViewById(R.id.save_btn);
 
         if (getIntent() != null) {
+            isEdit = getIntent().getExtras().getBoolean(Constant.ITEM_EDIT);
             nameBdl = getIntent().getExtras().getString(Constant.ITEM_NAME);
             imageBdl = getIntent().getExtras().getString(Constant.ITEM_IMAGE);
             categoryBdl = getIntent().getExtras().getString(Constant.ITEM_CATEGORY);
@@ -109,16 +111,17 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private void insertItemListData(String title, String image, String category, String price) {
+    private void insertItemListData() {
         ContentValues values = new ContentValues();
-        values.put(Item.ITEM_TITLE, title);
-        values.put(Item.ITEM_IMAGE, image);
-        values.put(Item.ITEM_CATEGORY, category);
-        values.put(Item.ITEM_PRICE, price);
+        values.put(Item.ITEM_TITLE, mNameEdit.getText().toString());
+        values.put(Item.ITEM_CATEGORY, String.valueOf(mCategorySpin.getSelectedItem()));
+        values.put(Item.ITEM_PRICE, mPriceEdit.getText().toString());
 
-        if (checkBarangExistInDB(title)) {
-            getContentResolver().update(ItemProvider.ITEM_CONTENT_URI, values, Item.ITEM_TITLE + "=?", new String[]{title});
+        if (isEdit) {
+            values.put(Item.ITEM_IMAGE, imageBdl);
+            getContentResolver().update(ItemProvider.ITEM_CONTENT_URI, values, Item.ITEM_TITLE + "=?", new String[]{nameBdl});
         } else {
+            values.put(Item.ITEM_IMAGE, imageName);
             getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, values);
         }
     }
@@ -131,14 +134,13 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         return false;
     }
 
-    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
-
+    private void createDirectoryAndSaveFile(Bitmap imageToSave) {
         File direct = new File(Environment.getExternalStorageDirectory() + "/poskasir/img");
         if (!direct.exists()) {
             File wallpaperDirectory = new File("/sdcard/poskasir/img/");
             wallpaperDirectory.mkdirs();
         }
-        File file = new File(new File("/sdcard/poskasir/img/"), fileName);
+        File file = new File(new File("/sdcard/poskasir/img/"), imageName);
         if (file.exists()) {
             file.delete();
         }
@@ -170,7 +172,8 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
                 break;
             }
             case R.id.delete_image_btn: {
-                mItemImg.setImageResource(R.drawable.logo);
+                mPhotoBitmap = null;
+                mItemImg.setImageBitmap(null);
                 break;
             }
             case R.id.delete_btn: {
@@ -183,11 +186,8 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
             case R.id.save_btn: {
                 if (mNameEdit.getText().toString().trim().length() > 0 && mPriceEdit.getText().toString().trim().length() > 0) {
                     imageName = "IMG_" + System.currentTimeMillis();
-                    createDirectoryAndSaveFile(mPhotoBitmap, imageName);
-                    insertItemListData(mNameEdit.getText().toString(),
-                            imageName,
-                            String.valueOf(mCategorySpin.getSelectedItem()),
-                            mPriceEdit.getText().toString());
+                    createDirectoryAndSaveFile(mPhotoBitmap);
+                    insertItemListData();
                     finish();
                 } else {
                     Toast.makeText(this, "Nama dan Harga harus diisi", Toast.LENGTH_SHORT).show();

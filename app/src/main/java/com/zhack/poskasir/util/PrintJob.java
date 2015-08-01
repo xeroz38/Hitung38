@@ -71,35 +71,45 @@ public class PrintJob {
     private  void sendCharacterDemo(ArrayList<POSData> posData) {
         Log.e(TAG, "Start Print");
         try {
-            mSerialPrinter.enlargeFontSize(3,3);
-            mSerialPrinter.printString("Makanan ");
-            mSerialPrinter.setHighlight(true);
-            mSerialPrinter.printString("RESTAURANT");
-            mSerialPrinter.setHighlight(false);
-            mSerialPrinter.enlargeFontSize(1, 1);
-            mSerialPrinter.printString(posData.get(0).title);
+            mSerialPrinter.printString("PEMPROV DKI JAKARTA");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString(posData.get(0).image);
+            mSerialPrinter.printString("RM Duo Sakato");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("" + posData.get(0).price);
+            mSerialPrinter.printString("Harapan Indah, Jakarta 10210");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("" + posData.get(0).quantity);
+            mSerialPrinter.printString("Telp. 021-888 1234");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("" + posData.get(0).price);
-            mSerialPrinter.setLineSpace(30);
-            mSerialPrinter.enlargeFontSize(2, 2);
-            mSerialPrinter.printString("Total: Rp 90.000,-");
+            mSerialPrinter.printString("================================");
+            mSerialPrinter.printString("FAKTUR      : " + "F102032521567");
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("TANGGAL     : " + "05-Feb-2015 03:15");
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("KASIR       : " + "0001 / FTF GLOBAL");
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("================================");
 
-            mSerialPrinter.walkPaper(200);
+            int totalPrice = 0;
+            for (int i=0; i<posData.size(); i++) {
+                totalPrice += posData.get(i).quantity * posData.get(i).price;
+
+                mSerialPrinter.printString("" + (i+1) + ". " + posData.get(i).title);
+                mSerialPrinter.sendLineFeed();
+                mSerialPrinter.printString("   " + posData.get(i).quantity + " X " + posData.get(i).price +
+                        "     =      " + posData.get(i).quantity * posData.get(i).price);
+                mSerialPrinter.sendLineFeed();
+            }
+            mSerialPrinter.printString("================================");
+            mSerialPrinter.printString("Sub Total   :           " + totalPrice);
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("Pajak       :    10%    " + totalPrice/10);
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("            ====================");
+            mSerialPrinter.printString("Grand Total :           " + (totalPrice-totalPrice/10));
+
+            mSerialPrinter.walkPaper(120);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        Resources r = getResources();
-//        InputStream is = r.openRawResource(R.drawable.test);
-//        BitmapDrawable  bmpDraw = new BitmapDrawable(is);
-//        Bitmap bmp = bmpDraw.getBitmap();
-//        mSerialPrinter.PrintBmp(100,bmp);
-
         Log.e(TAG, "Print End");
     }
 

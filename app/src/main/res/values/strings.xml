@@ -3,6 +3,9 @@
     <string name="title">POSKasir</string>
     <string name="master">Master</string>
     <string name="pos">POS</string>
+    <string name="report">Laporan</string>
+    <string name="sales">Penjualan</string>
+    <string name="sales_item">Jenis</string>
     <string name="item">Makanan/Minuman</string>
     <string name="item_group">Jenis Makanan/Minuman</string>
     <string name="item_label">Gambar</string>
@@ -13,7 +16,9 @@
     <string name="delete">Hapus</string>
     <string name="save">Simpan</string>
     <string name="cancel">Batal</string>
+    <string name="back">Kembali</string>
     <string name="select">Pilih</string>
+    <string name="print">Cetak Nota</string>
     <string name="edit_itemgroup">Tambah/Edit Jenis Makanan/Minuman</string>
     <string name="add_item">+ Tambah Makanan/Minuman</string>
     <string name="add_itemgroup">Tambah Jenis Makanan/Minuman</string>

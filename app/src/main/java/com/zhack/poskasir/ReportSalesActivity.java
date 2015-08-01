@@ -1,7 +1,6 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,75 +11,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zhack.poskasir.model.Item;
-import com.zhack.poskasir.util.Constant;
+import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.util.ItemProvider;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by zunaidi.chandra on 30/07/2015.
  */
-public class MasterItemActivity extends Activity {
+public class ReportSalesActivity extends Activity {
 
-    private List<Item> mItemData;
-    private ItemAdapter mAdapter;
-    private Button mAddItemBtn;
-    private GridView mItemGrid;
+    private ArrayList<POSData> mPOSData;
+    private ReportAdapter mAdapter;
+    private ListView mReportList, mReportDetailList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_master_item);
+        setContentView(R.layout.activity_reportsales);
 
-        mAddItemBtn = (Button) findViewById(R.id.add_item_btn);
-        mItemGrid = (GridView) findViewById(R.id.item_grid);
-        mItemData = getItemListData();
-        mAdapter = new ItemAdapter();
-        mItemGrid.setAdapter(mAdapter);
-        mItemGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mReportList = (ListView) findViewById(R.id.pos_list);
+        mPOSData = new ArrayList<POSData>();
+        mAdapter = new ReportAdapter();
+        mReportList.setAdapter(mAdapter);
+        mReportList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MasterItemActivity.this, MasterItemDetailActivity.class);
-                intent.putExtra(Constant.ITEM_EDIT, true);
-                intent.putExtra(Constant.ITEM_NAME, mItemData.get(position).title);
-                intent.putExtra(Constant.ITEM_IMAGE, mItemData.get(position).image);
-                intent.putExtra(Constant.ITEM_CATEGORY, mItemData.get(position).category);
-                intent.putExtra(Constant.ITEM_PRICE, mItemData.get(position).price);
-                startActivity(intent);
             }
         });
-        mAddItemBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MasterItemActivity.this, MasterItemDetailActivity.class);
-                intent.putExtra(Constant.ITEM_EDIT, false);
-                intent.putExtra(Constant.ITEM_NAME, "");
-                intent.putExtra(Constant.ITEM_IMAGE, "");
-                intent.putExtra(Constant.ITEM_CATEGORY, "");
-                intent.putExtra(Constant.ITEM_PRICE, "");
-                startActivity(intent);
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mItemData = getItemListData();
-        mAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<Item> getItemListData() {
         ArrayList<Item> list = null;
         Cursor cursor = null;
-        try	{
+        try {
             cursor = getContentResolver().query(ItemProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int itemTitle = cursor.getColumnIndexOrThrow(Item.ITEM_TITLE);
@@ -102,14 +71,17 @@ public class MasterItemActivity extends Activity {
             } else {
                 return list = new ArrayList<Item>();
             }
-        } finally { }
+        } finally {
+        }
     }
 
-    private class ItemAdapter extends BaseAdapter {
+    private class ReportAdapter extends BaseAdapter {
 
         public class ViewHolder {
-            public TextView text;
             public ImageView image;
+            public TextView title;
+            public TextView quantity;
+            public TextView price;
         }
 
         @Override
@@ -117,26 +89,30 @@ public class MasterItemActivity extends Activity {
             View rowView = convertView;
             if (rowView == null) {
                 LayoutInflater inflater = getLayoutInflater();
-                rowView = inflater.inflate(R.layout.view_item_grid, null);
+                rowView = inflater.inflate(R.layout.view_pos_list, null);
                 // configure view holder
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.text = (TextView) rowView.findViewById(R.id.title_text);
                 viewHolder.image = (ImageView) rowView.findViewById(R.id.item_img);
+                viewHolder.title = (TextView) rowView.findViewById(R.id.title_text);
+                viewHolder.quantity = (TextView) rowView.findViewById(R.id.quantity_text);
+                viewHolder.price = (TextView) rowView.findViewById(R.id.price_text);
                 rowView.setTag(viewHolder);
             }
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
-            holder.text.setText(mItemData.get(position).title);
+            holder.title.setText(mPOSData.get(position).title);
             Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                    + "/poskasir/img/" + mItemData.get(position).image);
+                    + "/poskasir/img/" + mPOSData.get(position).image);
             holder.image.setImageBitmap(bitmap);
+            holder.quantity.setText(String.valueOf(mPOSData.get(position).quantity));
+            holder.price.setText(String.valueOf(mPOSData.get(position).price));
 
             return rowView;
         }
 
         @Override
         public int getCount() {
-            return mItemData.size();
+            return mPOSData.size();
         }
 
         @Override

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -27,18 +29,21 @@ import com.zhack.poskasir.util.PrintJob;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by zunaidi.chandra on 30/07/2015.
  */
 public class PointOfSalesActivity extends Activity {
 
+    private boolean isItemGroup = false;
     private List<Item> mItemData;
     private ArrayList<POSData> mPOSData;
     private List<ItemGroup> mItemGroupData;
+    private ItemAdapter mItemAdapter;
     private POSAdapter mPOSAdapter;
-    private TextView mTotalPriceText;
-    private Button mDoneBtn;
+    private TextView mCurrentTitleText, mTotalPriceText;
+    private Button mItemBtn, mItemGroupBtn, mDoneBtn;
     private GridView mItemGrid;
     private ListView mPOSList;
 
@@ -49,32 +54,44 @@ public class PointOfSalesActivity extends Activity {
 
         mItemGrid = (GridView) findViewById(R.id.item_grid);
         mPOSList = (ListView) findViewById(R.id.pos_list);
+        mCurrentTitleText = (TextView) findViewById(R.id.title_current_text);
         mTotalPriceText = (TextView) findViewById(R.id.totalprice_text);
+        mItemBtn = (Button) findViewById(R.id.item_btn);
+        mItemGroupBtn = (Button) findViewById(R.id.itemgroup_btn);
         mDoneBtn = (Button) findViewById(R.id.done_btn);
         mItemData = getItemListData();
+        mItemGroupData = getItemGroupListData();
         mPOSData = new ArrayList<POSData>();
         mPOSAdapter = new POSAdapter();
-        mItemGrid.setAdapter(new ItemAdapter());
+        mItemAdapter = new ItemAdapter();
+        mItemGrid.setAdapter(mItemAdapter);
         mPOSList.setAdapter(mPOSAdapter);
         mItemGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (checkDataExist(mItemData.get(position))) {
-                    for (int i = 0; i < mPOSData.size(); i++) {
-                        if (mPOSData.get(i).title.equals(mItemData.get(position).title)) {
-                            mPOSData.get(i).quantity++;
-                        }
-                    }
+                if (isItemGroup) {
+                    isItemGroup = false;
+                    mCurrentTitleText.setText(mItemGroupData.get(position).title);
+                    mItemData = sortItemByGroupData(mItemGroupData.get(position).title);
+                    mItemAdapter.notifyDataSetChanged();
                 } else {
-                    POSData pos = new POSData();
-                    pos.image = mItemData.get(position).image;
-                    pos.title = mItemData.get(position).title;
-                    pos.quantity++;
-                    pos.price = Integer.parseInt(mItemData.get(position).price);
-                    mPOSData.add(pos);
+                    if (checkDataExist(mItemData.get(position))) {
+                        for (int i = 0; i < mPOSData.size(); i++) {
+                            if (mPOSData.get(i).title.equals(mItemData.get(position).title)) {
+                                mPOSData.get(i).quantity++;
+                            }
+                        }
+                    } else {
+                        POSData pos = new POSData();
+                        pos.image = mItemData.get(position).image;
+                        pos.title = mItemData.get(position).title;
+                        pos.quantity++;
+                        pos.price = Integer.parseInt(mItemData.get(position).price);
+                        mPOSData.add(pos);
+                    }
+                    calculateTotalPrice();
+                    mPOSAdapter.notifyDataSetChanged();
                 }
-                calculateTotalPrice();
-                mPOSAdapter.notifyDataSetChanged();
             }
         });
         mPOSList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,6 +104,27 @@ public class PointOfSalesActivity extends Activity {
                 }
                 calculateTotalPrice();
                 mPOSAdapter.notifyDataSetChanged();
+            }
+        });
+        mItemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isItemGroup = false;
+                mCurrentTitleText.setText(R.string.item);
+                mItemGroupBtn.setTypeface(null, Typeface.NORMAL);
+                mItemBtn.setTypeface(null, Typeface.BOLD);
+                mItemData = getItemListData();
+                mItemAdapter.notifyDataSetChanged();
+            }
+        });
+        mItemGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isItemGroup = true;
+                mCurrentTitleText.setText(R.string.item_group);
+                mItemBtn.setTypeface(null, Typeface.NORMAL);
+                mItemGroupBtn.setTypeface(null, Typeface.BOLD);
+                mItemAdapter.notifyDataSetChanged();
             }
         });
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +155,16 @@ public class PointOfSalesActivity extends Activity {
         return false;
     }
 
+    private ArrayList<Item> sortItemByGroupData(String group) {
+        ArrayList<Item> sortedItem = new ArrayList<Item>();
+        for (Item item : mItemData) {
+            if (item.category.equals(group)) {
+                sortedItem.add(item);
+            }
+        }
+        return sortedItem;
+    }
+
     private ArrayList<Item> getItemListData() {
         ArrayList<Item> list = null;
         Cursor cursor = null;
@@ -145,6 +193,28 @@ public class PointOfSalesActivity extends Activity {
         } finally { }
     }
 
+    private ArrayList<ItemGroup> getItemGroupListData() {
+        ArrayList<ItemGroup> list = null;
+        Cursor cursor = null;
+        try	{
+            cursor = getContentResolver().query(ItemProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
+
+                list = new ArrayList<ItemGroup>(cursor.getCount());
+                while (cursor.moveToNext()) {
+                    ItemGroup itemGroup = new ItemGroup();
+                    itemGroup.title = cursor.getString(itemTitle);
+
+                    list.add(itemGroup);
+                }
+                return list;
+            } else {
+                return list = new ArrayList<ItemGroup>();
+            }
+        } finally { }
+    }
+
     private class ItemAdapter extends BaseAdapter {
 
         public class ViewHolder {
@@ -166,16 +236,27 @@ public class PointOfSalesActivity extends Activity {
             }
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
-            holder.text.setText(mItemData.get(position).title);
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                    + "/poskasir/img/" + mItemData.get(position).image);
-            holder.image.setImageBitmap(bitmap);
+            if (isItemGroup) {
+                holder.text.setText(mItemGroupData.get(position).title);
+                Random rnd = new Random();
+                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                holder.image.setBackgroundColor(color);
+                holder.image.setImageBitmap(null);
+            } else {
+                holder.text.setText(mItemData.get(position).title);
+                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
+                        + "/poskasir/img/" + mItemData.get(position).image);
+                holder.image.setImageBitmap(bitmap);
+            }
 
             return rowView;
         }
 
         @Override
         public int getCount() {
+            if (isItemGroup) {
+                return mItemGroupData.size();
+            }
             return mItemData.size();
         }
 
