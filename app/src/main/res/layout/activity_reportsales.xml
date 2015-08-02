@@ -16,14 +16,6 @@
             android:layout_weight=".5"
             android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/report_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_bg_rounded" />
-
             <TextView
                 android:id="@+id/totalprice_text"
                 android:layout_width="match_parent"
@@ -34,6 +26,14 @@
                 android:padding="5dp"
                 android:text="@string/totalprice"
                 android:textSize="25dp" />
+
+            <ListView
+                android:id="@+id/report_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_bg_rounded" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,14 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_weight=".5"
             android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/report_detail_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_bg_rounded" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,6 +71,14 @@
                     android:text="@string/totalprice"
                     android:textSize="25dp" />
             </LinearLayout>
+
+            <ListView
+                android:id="@+id/report_detail_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_bg_rounded" />
         </LinearLayout>
     </LinearLayout>
 

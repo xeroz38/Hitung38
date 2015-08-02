@@ -1,6 +1,7 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +26,12 @@ import android.widget.TextView;
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.POSData;
+import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 import com.zhack.poskasir.util.PrintJob;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,10 +136,9 @@ public class PointOfSalesActivity extends Activity {
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(PointOfSalesActivity.this, PointOfSalesDetailActivity.class);
-//                intent.putParcelableArrayListExtra(Constant.ITEM_LIST, mPOSData);
-//                startActivity(intent);
-                new PrintJob(getApplicationContext(), mPOSData);
+                Intent intent = new Intent(PointOfSalesActivity.this, PointOfSalesDetailActivity.class);
+                intent.putParcelableArrayListExtra(Constant.ITEM_LIST, mPOSData);
+                startActivity(intent);
             }
         });
     }
