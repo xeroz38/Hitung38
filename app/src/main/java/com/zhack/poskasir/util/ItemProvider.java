@@ -47,6 +47,7 @@ public class ItemProvider extends ContentProvider {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_REPORTSALES + " ("
                     + ReportSales.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + ReportSales.PRICE + " INTEGER,"
+                    + ReportSales.PAY + " INTEGER,"
                     + ReportSales.DATE + " TEXT,"
                     + ReportSales.POS_DATA + " TEXT,"
                     + "UNIQUE (" + ReportSales.ID + ") ON CONFLICT REPLACE)");
@@ -71,6 +72,7 @@ public class ItemProvider extends ContentProvider {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_REPORTSALES + " ("
                     + ReportSales.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + ReportSales.PRICE + " INTEGER,"
+                    + ReportSales.PAY + " INTEGER,"
                     + ReportSales.DATE + " TEXT,"
                     + ReportSales.POS_DATA + " TEXT,"
                     + "UNIQUE (" + ReportSales.ID + ") ON CONFLICT REPLACE)");

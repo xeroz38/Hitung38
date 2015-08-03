@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +37,8 @@ public class PointOfSalesDetailActivity extends Activity {
 
     private int totalPrice;
     private ArrayList<POSData> mPOSData;
-    private TextView mSubPriceText, mTaxPriceText, mTotalPriceText, mGrandPriceText;
-    private EditText mChangeEdit;
+    private TextView mSubPriceText, mTaxPriceText, mTotalPriceText, mGrandPriceText, mChangePriceText;
+    private EditText mPayEdit;
     private Button mDoneBtn;
     private ListView mItemGrid;
 
@@ -50,7 +52,8 @@ public class PointOfSalesDetailActivity extends Activity {
         mTaxPriceText = (TextView) findViewById(R.id.taxprice_text);
         mTotalPriceText = (TextView) findViewById(R.id.totalprice_text);
         mGrandPriceText = (TextView) findViewById(R.id.grandprice_text);
-        mChangeEdit = (EditText) findViewById(R.id.changeprice_edit);
+        mChangePriceText = (TextView) findViewById(R.id.changeprice_text);
+        mPayEdit = (EditText) findViewById(R.id.payprice_edit);
         mDoneBtn = (Button) findViewById(R.id.done_btn);
 
         if (getIntent() != null) {
@@ -61,7 +64,7 @@ public class PointOfSalesDetailActivity extends Activity {
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mChangeEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mChangeEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
+                if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     insertReportSalesData();
                     new PrintJob(getApplicationContext(), mPOSData);
                 } else {
@@ -71,6 +74,21 @@ public class PointOfSalesDetailActivity extends Activity {
         });
 
         calculateTotalPrice();
+        mPayEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mChangePriceText.setText("Kembalian :Rp " +
+                        (Integer.parseInt(mPayEdit.getText().toString()) - (totalPrice + (totalPrice / 10))));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void calculateTotalPrice() {
@@ -79,9 +97,9 @@ public class PointOfSalesDetailActivity extends Activity {
             totalPrice += pos.quantity * pos.price;
         }
         mSubPriceText.setText("SubTotal : Rp " + totalPrice);
-        mTaxPriceText.setText("Pajak    : Rp " + totalPrice / 10);
-        mTotalPriceText.setText("Total    :Rp " + (totalPrice + (totalPrice / 10)));
-        mGrandPriceText.setText("Grand Total    :Rp " + (totalPrice + (totalPrice / 10)));
+        mTaxPriceText.setText("Pajak : Rp " + totalPrice / 10);
+        mTotalPriceText.setText("Total :Rp " + (totalPrice + (totalPrice / 10)));
+        mGrandPriceText.setText("Grand Total :Rp " + (totalPrice + (totalPrice / 10)));
     }
 
 
@@ -98,6 +116,7 @@ public class PointOfSalesDetailActivity extends Activity {
 
         ContentValues values = new ContentValues();
         values.put(ReportSales.PRICE, totalPrice);
+        values.put(ReportSales.PAY, Integer.parseInt(mPayEdit.getText().toString()));
         values.put(ReportSales.DATE, String.valueOf(System.currentTimeMillis()));
         values.put(ReportSales.POS_DATA, jsonArr.toString());
 

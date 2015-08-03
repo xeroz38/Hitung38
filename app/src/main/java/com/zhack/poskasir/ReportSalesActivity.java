@@ -98,6 +98,7 @@ public class ReportSalesActivity extends Activity {
             if (cursor != null && cursor.getCount() > 0) {
                 int reportId = cursor.getColumnIndexOrThrow(ReportSales.ID);
                 int reportPrice = cursor.getColumnIndexOrThrow(ReportSales.PRICE);
+                int reportPay = cursor.getColumnIndexOrThrow(ReportSales.PAY);
                 int reportDate = cursor.getColumnIndexOrThrow(ReportSales.DATE);
                 int reportPOSData = cursor.getColumnIndexOrThrow(ReportSales.POS_DATA);
 
@@ -106,6 +107,7 @@ public class ReportSalesActivity extends Activity {
                     ReportSales report = new ReportSales();
                     report.id = cursor.getString(reportId);
                     report.price = cursor.getInt(reportPrice);
+                    report.pay = cursor.getInt(reportPay);
                     report.date = cursor.getString(reportDate);
 
                     String json = cursor.getString(reportPOSData);

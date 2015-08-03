@@ -46,21 +46,90 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
                 break;
             }
             case R.id.add_btn: {
-                for (int i = 0; i < 30; i++) {
-                    ContentValues values = new ContentValues();
-                    values.put(Item.ITEM_TITLE, "Food " + i);
-                    values.put(Item.ITEM_IMAGE, "IMG_1438250462193");
-                    values.put(Item.ITEM_CATEGORY, "Indonesia " + 8);
-                    values.put(Item.ITEM_PRICE, "90000");
+                ContentValues valuesI = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Ayam Goreng");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Indonesian");
+                valuesI.put(Item.ITEM_PRICE, "10000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
 
-                    getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, values);
-                }
-                for (int i = 0; i < 10; i++) {
-                    ContentValues values = new ContentValues();
-                    values.put(ItemGroup.ITEMGROUP_TITLE, "Indonesia " + i);
+                ContentValues valuesI1 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Fu Yung Hai");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Chinese");
+                valuesI.put(Item.ITEM_PRICE, "20000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
 
-                    getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
-                }
+                ContentValues valuesI2 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Bim Bim Bap");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Korean");
+                valuesI.put(Item.ITEM_PRICE, "30000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+
+                ContentValues valuesI3 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Sushi");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Japanese");
+                valuesI.put(Item.ITEM_PRICE, "10000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+
+                ContentValues valuesI4 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Roti Prata");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Indian");
+                valuesI.put(Item.ITEM_PRICE, "20000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+
+                ContentValues valuesI5 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Bistik Sapi");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Western");
+                valuesI.put(Item.ITEM_PRICE, "30000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+
+                ContentValues valuesI6 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Es Kopyor");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Minuman");
+                valuesI.put(Item.ITEM_PRICE, "10000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+
+                ContentValues valuesI7 = new ContentValues();
+                valuesI.put(Item.ITEM_TITLE, "Jus Melon");
+                valuesI.put(Item.ITEM_IMAGE, "IMG_1");
+                valuesI.put(Item.ITEM_CATEGORY, "Minuman");
+                valuesI.put(Item.ITEM_PRICE, "10000");
+                getActivity().getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+
+                ContentValues values = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Indonesian");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
+                ContentValues values1 = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Chinese");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
+                ContentValues values2 = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Japanese");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
+                ContentValues values3 = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Korean");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
+                ContentValues values4 = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Indian");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
+                ContentValues values5 = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Western");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
+                ContentValues values6 = new ContentValues();
+                values.put(ItemGroup.ITEMGROUP_TITLE, "Minuman");
+                getActivity().getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+
                 break;
             }
             case R.id.pos_btn: {

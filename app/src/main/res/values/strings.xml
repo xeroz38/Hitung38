@@ -25,6 +25,7 @@
     <string name="totalprice">Rp 0</string>
     <string name="next">Lanjut</string>
     <string name="change">Kembalian</string>
+    <string name="pay">Bayar</string>
     <string name="done">Selesai</string>
     <string name="no_paper">Kertas Habis</string>
     <string name="buff_fulled">Buffer Penuh</string>

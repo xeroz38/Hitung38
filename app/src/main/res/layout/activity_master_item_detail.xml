@@ -40,8 +40,7 @@
                     android:layout_width="140dp"
                     android:layout_height="105dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/food" />
+                    android:layout_marginBottom="10dp" />
             </LinearLayout>
 
             <Button

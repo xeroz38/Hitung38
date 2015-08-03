@@ -30,7 +30,7 @@ public class PrintJob {
     private SerialPrinter mSerialPrinter = SerialPrinter.GetSerialPrinter();
     private WakeLock mLock;
 
-    public PrintJob(Context context, ArrayList<POSData> posData) {
+    public PrintJob(Context context, ArrayList<POSData> posData, int payAmount) {
         HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
         try {
             mSerialPrinter.OpenPrinter(new SerialParam(115200, "/dev/ttyS1", 0), new SerialDataHandler());
@@ -41,14 +41,16 @@ public class PrintJob {
         mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
 
         // Print Array List
-        new WriteThread(posData).start();
+        new WriteThread(posData, payAmount).start();
     }
 
     private class WriteThread extends Thread {
         ArrayList<POSData> posData;
+        int payAmount;
 
-        public WriteThread(ArrayList<POSData> posData) {
+        public WriteThread(ArrayList<POSData> posData, int payAmount) {
             this.posData = posData;
+            this.payAmount = payAmount;
         }
 
         public void run() {
@@ -57,7 +59,7 @@ public class PrintJob {
             try {
                 HdxUtil.SetPrinterPower(1);
                 sleep(200);
-                sendCharacterDemo(posData);
+                printStringChar(posData, payAmount);
                 sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -68,7 +70,7 @@ public class PrintJob {
         }
     }
 
-    private  void sendCharacterDemo(ArrayList<POSData> posData) {
+    private  void printStringChar(ArrayList<POSData> posData, int payAmount) {
         Log.e(TAG, "Start Print");
         try {
             mSerialPrinter.printString("PEMPROV DKI JAKARTA");
@@ -101,10 +103,14 @@ public class PrintJob {
             mSerialPrinter.printString("================================");
             mSerialPrinter.printString("Sub Total   :           " + totalPrice);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Pajak       :    10%    " + totalPrice/10);
+            mSerialPrinter.printString("Pajak       :    10%    " + totalPrice / 10);
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("            ====================");
-            mSerialPrinter.printString("Grand Total :           " + (totalPrice-totalPrice/10));
+            mSerialPrinter.printString("Grand Total :           " + (totalPrice - totalPrice / 10));
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("Bayar       :           " + payAmount);
+            mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("Kembalian   :           " + (payAmount - (totalPrice - totalPrice / 10)));
 
             mSerialPrinter.walkPaper(120);
         } catch (Exception e) {
