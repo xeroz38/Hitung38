@@ -21,6 +21,7 @@ import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.ItemProvider;
 import com.zhack.poskasir.util.PrintJob;
+import com.zhack.poskasir.util.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +65,7 @@ public class ReportSalesActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mReportData.size() > 0) {
-                    new PrintJob(getApplicationContext(), mReportData.get(postReport).posData);
+                    new PrintJob(getApplicationContext(), mReportData.get(postReport).posData, mReportData.get(postReport).pay);
                 }
             }
         });
@@ -79,7 +80,7 @@ public class ReportSalesActivity extends Activity {
         for (ReportSales rep : mReportData) {
             totalPrice += rep.price;
         }
-        mTotalPriceText.setText("Rp " + totalPrice);
+        mTotalPriceText.setText(Utils.convertRp(totalPrice));
     }
 
     private void calculateReportPrice(int position) {
@@ -87,7 +88,7 @@ public class ReportSalesActivity extends Activity {
         for (POSData pos : mReportData.get(position).posData) {
             reportPrice += pos.price;
         }
-        mReportPriceText.setText("Rp " + reportPrice);
+        mReportPriceText.setText(Utils.convertRp(reportPrice));
     }
 
     private ArrayList<ReportSales> getReportSalesListData() {
@@ -160,7 +161,7 @@ public class ReportSalesActivity extends Activity {
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
             holder.id.setText(mReportData.get(position).id);
-            holder.price.setText("Rp " + mReportData.get(position).price);
+            holder.price.setText(Utils.convertRp(mReportData.get(position).price));
             holder.date.setText(convertDate(mReportData.get(position).date,"dd/MM/yyyy hh:mm:ss"));
 
             return rowView;
@@ -217,7 +218,7 @@ public class ReportSalesActivity extends Activity {
             holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
             holder.image.setImageBitmap(bitmap);
             holder.quantity.setText(String.valueOf(mReportData.get(postReport).posData.get(position).quantity));
-            holder.price.setText(String.valueOf(mReportData.get(postReport).posData.get(position).price));
+            holder.price.setText(Utils.convertRp(mReportData.get(postReport).posData.get(position).price));
 
             return rowView;
         }

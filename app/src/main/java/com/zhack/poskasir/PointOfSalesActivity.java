@@ -1,7 +1,6 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,8 +9,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +23,9 @@ import android.widget.TextView;
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.POSData;
-import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
-import com.zhack.poskasir.util.PrintJob;
-
-import org.json.JSONArray;
+import com.zhack.poskasir.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +142,7 @@ public class PointOfSalesActivity extends Activity {
         for (POSData pos : mPOSData) {
             totalPrice += pos.quantity * pos.price;
         }
-        mTotalPriceText.setText("Rp " + totalPrice);
+        mTotalPriceText.setText(Utils.convertRp(totalPrice));
     }
 
     private boolean checkDataExist(Item item) {
@@ -306,7 +300,7 @@ public class PointOfSalesActivity extends Activity {
                     + "/poskasir/img/" + mPOSData.get(position).image);
             holder.image.setImageBitmap(bitmap);
             holder.quantity.setText(String.valueOf(mPOSData.get(position).quantity));
-            holder.price.setText(String.valueOf(mPOSData.get(position).price));
+            holder.price.setText(Utils.convertRp(mPOSData.get(position).price));
 
             return rowView;
         }

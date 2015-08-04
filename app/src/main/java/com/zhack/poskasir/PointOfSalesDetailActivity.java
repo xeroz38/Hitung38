@@ -25,6 +25,7 @@ import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 import com.zhack.poskasir.util.PrintJob;
+import com.zhack.poskasir.util.Utils;
 
 import org.json.JSONArray;
 
@@ -37,7 +38,7 @@ public class PointOfSalesDetailActivity extends Activity {
 
     private int totalPrice;
     private ArrayList<POSData> mPOSData;
-    private TextView mSubPriceText, mTaxPriceText, mTotalPriceText, mGrandPriceText, mChangePriceText;
+    private TextView mSubPriceText, mTaxPriceText, mTotalPriceText, mChangePriceText;
     private EditText mPayEdit;
     private Button mDoneBtn;
     private ListView mItemGrid;
@@ -51,7 +52,6 @@ public class PointOfSalesDetailActivity extends Activity {
         mSubPriceText = (TextView) findViewById(R.id.subprice_text);
         mTaxPriceText = (TextView) findViewById(R.id.taxprice_text);
         mTotalPriceText = (TextView) findViewById(R.id.totalprice_text);
-        mGrandPriceText = (TextView) findViewById(R.id.grandprice_text);
         mChangePriceText = (TextView) findViewById(R.id.changeprice_text);
         mPayEdit = (EditText) findViewById(R.id.payprice_edit);
         mDoneBtn = (Button) findViewById(R.id.done_btn);
@@ -66,7 +66,7 @@ public class PointOfSalesDetailActivity extends Activity {
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     insertReportSalesData();
-                    new PrintJob(getApplicationContext(), mPOSData);
+                    new PrintJob(getApplicationContext(), mPOSData, Integer.parseInt(mPayEdit.getText().toString()));
                 } else {
                     Toast.makeText(getApplicationContext(), "Kembalian tidak cocok", Toast.LENGTH_SHORT).show();
                 }
@@ -81,8 +81,9 @@ public class PointOfSalesDetailActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mChangePriceText.setText("Kembalian :Rp " +
-                        (Integer.parseInt(mPayEdit.getText().toString()) - (totalPrice + (totalPrice / 10))));
+                if (count > 0) {
+                    mChangePriceText.setText(Utils.convertRp((Integer.parseInt(s.toString()) - (totalPrice + (totalPrice / 10)))));
+                }
             }
 
             @Override
@@ -96,10 +97,9 @@ public class PointOfSalesDetailActivity extends Activity {
         for (POSData pos : mPOSData) {
             totalPrice += pos.quantity * pos.price;
         }
-        mSubPriceText.setText("SubTotal : Rp " + totalPrice);
-        mTaxPriceText.setText("Pajak : Rp " + totalPrice / 10);
-        mTotalPriceText.setText("Total :Rp " + (totalPrice + (totalPrice / 10)));
-        mGrandPriceText.setText("Grand Total :Rp " + (totalPrice + (totalPrice / 10)));
+        mSubPriceText.setText(Utils.convertRp(totalPrice));
+        mTaxPriceText.setText(Utils.convertRp(totalPrice / 10));
+        mTotalPriceText.setText(Utils.convertRp(totalPrice + (totalPrice / 10)));
     }
 
 
@@ -154,7 +154,7 @@ public class PointOfSalesDetailActivity extends Activity {
             holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
             holder.image.setImageBitmap(bitmap);
             holder.quantity.setText(String.valueOf(mPOSData.get(position).quantity));
-            holder.price.setText(String.valueOf(mPOSData.get(position).price));
+            holder.price.setText(Utils.convertRp(mPOSData.get(position).price));
 
             return rowView;
         }

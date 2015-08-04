@@ -82,7 +82,7 @@ public class PrintJob {
             mSerialPrinter.printString("Telp. 021-888 1234");
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
-            mSerialPrinter.printString("FAKTUR      : " + "F102032521567");
+            mSerialPrinter.printString("STRUK       : " + "F102032521567");
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("TANGGAL     : " + "05-Feb-2015 03:15");
             mSerialPrinter.sendLineFeed();
@@ -103,10 +103,12 @@ public class PrintJob {
             mSerialPrinter.printString("================================");
             mSerialPrinter.printString("Sub Total   :           " + totalPrice);
             mSerialPrinter.sendLineFeed();
+            mSerialPrinter.printString("Service     :           " + "Rp0");
+            mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("Pajak       :    10%    " + totalPrice / 10);
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("            ====================");
-            mSerialPrinter.printString("Grand Total :           " + (totalPrice - totalPrice / 10));
+            mSerialPrinter.printString("Grand Total :           " + (totalPrice + totalPrice / 10));
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("Bayar       :           " + payAmount);
             mSerialPrinter.sendLineFeed();

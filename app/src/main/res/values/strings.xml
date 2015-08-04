@@ -22,10 +22,13 @@
     <string name="edit_itemgroup">Tambah/Edit Jenis Makanan/Minuman</string>
     <string name="add_item">+ Tambah Makanan/Minuman</string>
     <string name="add_itemgroup">Tambah Jenis Makanan/Minuman</string>
-    <string name="totalprice">Rp 0</string>
+    <string name="totalprice">Rp0</string>
+    <string name="subtotal">SubTotal</string>
+    <string name="total">Total</string>
     <string name="next">Lanjut</string>
     <string name="change">Kembalian</string>
     <string name="pay">Bayar</string>
+    <string name="tax">Pajak</string>
     <string name="done">Selesai</string>
     <string name="no_paper">Kertas Habis</string>
     <string name="buff_fulled">Buffer Penuh</string>
