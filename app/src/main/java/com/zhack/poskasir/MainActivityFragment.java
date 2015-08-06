@@ -20,7 +20,7 @@ import com.zhack.poskasir.util.Constant;
 public class MainActivityFragment extends Fragment implements View.OnClickListener {
 
     private TextView mNoPDText, mRestaurantText;
-    private Button mMasterBtn, mPosBtn, mReportBtn;
+    private Button mMasterBtn, mPosBtn, mSpeedOrderBtn, mReportBtn;
     private SharedPreferences sharedPref;
 
     @Override
@@ -43,9 +43,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mRestaurantText = (TextView) view.findViewById(R.id.restaurant_text);
         mMasterBtn = (Button) view.findViewById(R.id.master_btn);
         mPosBtn = (Button) view.findViewById(R.id.pos_btn);
+        mSpeedOrderBtn = (Button) view.findViewById(R.id.speedorder_btn);
         mReportBtn = (Button) view.findViewById(R.id.report_btn);
         mMasterBtn.setOnClickListener(this);
         mPosBtn.setOnClickListener(this);
+        mSpeedOrderBtn.setOnClickListener(this);
         mReportBtn.setOnClickListener(this);
 
         mNoPDText.setText("No.PD : " + sharedPref.getLong(Constant.NO_PD, 0));
@@ -64,6 +66,11 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
             }
             case R.id.pos_btn: {
                 Intent intent = new Intent(getActivity(), PointOfSalesActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.speedorder_btn: {
+                Intent intent = new Intent(getActivity(), SpeedOrderActivity.class);
                 startActivity(intent);
                 break;
             }

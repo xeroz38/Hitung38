@@ -59,6 +59,14 @@
                 android:text="@string/pos" />
 
             <Button
+                android:id="@+id/speedorder_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/main_bg_rounded"
+                android:text="@string/speed_order" />
+
+            <Button
                 android:id="@+id/report_btn"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
