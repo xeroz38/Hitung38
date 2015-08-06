@@ -1,26 +1,17 @@
 package com.zhack.poskasir;
 
-import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.zhack.poskasir.model.Item;
-import com.zhack.poskasir.model.ItemGroup;
-import com.zhack.poskasir.util.ItemProvider;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import com.zhack.poskasir.util.Constant;
 
 
 /**
@@ -28,18 +19,37 @@ import java.io.OutputStream;
  */
 public class MainActivityFragment extends Fragment implements View.OnClickListener {
 
+    private TextView mNoPDText, mRestaurantText;
     private Button mMasterBtn, mPosBtn, mReportBtn;
+    private SharedPreferences sharedPref;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedPref = getActivity().getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
+        if (!sharedPref.contains(Constant.NO_PD)) {
+            Intent intent = new Intent(getActivity(), RegistrationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            getActivity().finish();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        mNoPDText = (TextView) view.findViewById(R.id.nopd_text);
+        mRestaurantText = (TextView) view.findViewById(R.id.restaurant_text);
         mMasterBtn = (Button) view.findViewById(R.id.master_btn);
         mPosBtn = (Button) view.findViewById(R.id.pos_btn);
         mReportBtn = (Button) view.findViewById(R.id.report_btn);
         mMasterBtn.setOnClickListener(this);
         mPosBtn.setOnClickListener(this);
         mReportBtn.setOnClickListener(this);
+
+        mNoPDText.setText("No.PD : " + sharedPref.getLong(Constant.NO_PD, 0));
+        mRestaurantText.setText("Restoran : " + sharedPref.getString(Constant.RESTAURANT, ""));
 
         return view;
     }

@@ -2,7 +2,7 @@
     <string name="app_name">POSKasir</string>
     <string name="title">POSKasir</string>
     <string name="master">Master</string>
-    <string name="pos">POS</string>
+    <string name="pos">Order</string>
     <string name="report">Laporan</string>
     <string name="sales">Penjualan</string>
     <string name="sales_item">Jenis</string>
@@ -30,6 +30,12 @@
     <string name="pay">Bayar</string>
     <string name="tax">Pajak</string>
     <string name="done">Selesai</string>
+    <string name="imei">IMEI</string>
+    <string name="nopd">No.PD</string>
+    <string name="restaurant">Restoran</string>
+    <string name="register">Daftar</string>
+    <string name="address">Alamat</string>
+    <string name="speed_order">Speed Order</string>
     <string name="no_paper">Kertas Habis</string>
     <string name="buff_fulled">Buffer Penuh</string>
 </resources>

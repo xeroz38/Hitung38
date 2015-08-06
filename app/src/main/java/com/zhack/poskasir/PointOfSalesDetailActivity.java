@@ -2,6 +2,7 @@ package com.zhack.poskasir;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -67,6 +68,10 @@ public class PointOfSalesDetailActivity extends Activity {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     insertReportSalesData();
                     new PrintJob(getApplicationContext(), mPOSData, Integer.parseInt(mPayEdit.getText().toString()));
+                    // Clear all intent to MainActivity
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Kembalian tidak cocok", Toast.LENGTH_SHORT).show();
                 }

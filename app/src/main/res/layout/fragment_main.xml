@@ -7,34 +7,65 @@
 
     <include layout="@layout/view_header" />
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_centerInParent="true"
+        android:alpha=".1"
+        android:src="@drawable/logo" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/master_btn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/main_bg_rounded"
-            android:text="@string/master" />
+        <TextView
+            android:id="@+id/nopd_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="22dp" />
 
-        <Button
-            android:id="@+id/pos_btn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/main_bg_rounded"
-            android:text="@string/pos" />
+        <TextView
+            android:id="@+id/restaurant_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="22dp" />
 
-        <Button
-            android:id="@+id/report_btn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/main_bg_rounded"
-            android:text="@string/report" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/master_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/main_bg_rounded"
+                android:text="@string/master" />
+
+            <Button
+                android:id="@+id/pos_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/main_bg_rounded"
+                android:text="@string/pos" />
+
+            <Button
+                android:id="@+id/report_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/main_bg_rounded"
+                android:text="@string/report" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
