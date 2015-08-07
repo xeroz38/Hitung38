@@ -29,6 +29,7 @@ import java.util.ArrayList;
 public class SpeedOrderDetailActivity extends Activity {
 
     private long totalPrice;
+    private ArrayList<POSData> mPOSData;
     private TextView mSubPriceText, mTaxPriceText, mTotalPriceText, mChangePriceText;
     private EditText mPayEdit;
     private Button mDoneBtn;
@@ -56,7 +57,7 @@ public class SpeedOrderDetailActivity extends Activity {
                     // Insert to sqlite
                     insertReportSalesData();
                     // Print info
-//                    new PrintJob(getApplicationContext(), new ArrayList<POSData>(), Integer.parseInt(mPayEdit.getText().toString()));
+                    new PrintJob(getApplicationContext(), mPOSData, Integer.parseInt(mPayEdit.getText().toString()));
                     // Clear all intent to MainActivity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -88,12 +89,27 @@ public class SpeedOrderDetailActivity extends Activity {
     }
 
     private void insertReportSalesData() {
+        // Speed Order info
+        mPOSData = new ArrayList<POSData>();
+        POSData pos = new POSData();
+        pos.image = "";
+        pos.title = getString(R.string.speed_order);
+        pos.price = (int) totalPrice;
+        pos.quantity = 1;
+        mPOSData.add(pos);
+
+        // Store to JSONArray
+        JSONArray jsonArr = new JSONArray();
+        for (int i=0; i < mPOSData.size(); i++) {
+            jsonArr.put(mPOSData.get(i).getJSONObject());
+        }
+
+        // Content SQLite
         ContentValues values = new ContentValues();
         values.put(ReportSales.PRICE, totalPrice);
         values.put(ReportSales.PAY, Integer.parseInt(mPayEdit.getText().toString()));
         values.put(ReportSales.DATE, String.valueOf(System.currentTimeMillis()));
-        values.put(ReportSales.POS_DATA, Constant.SPEEDORDER);
-
+        values.put(ReportSales.POS_DATA, jsonArr.toString());
         getContentResolver().insert(ItemProvider.REPORTSALES_CONTENT_URI, values);
     }
 }

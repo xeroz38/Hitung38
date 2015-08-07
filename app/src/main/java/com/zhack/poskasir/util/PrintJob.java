@@ -31,8 +31,8 @@ public class PrintJob {
     private WakeLock mLock;
 
     public PrintJob(Context context, ArrayList<POSData> posData, int payAmount) {
-        HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
         try {
+            HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
             mSerialPrinter.OpenPrinter(new SerialParam(115200, "/dev/ttyS1", 0), new SerialDataHandler());
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,22 +97,22 @@ public class PrintJob {
                 mSerialPrinter.printString("" + (i+1) + ". " + posData.get(i).title);
                 mSerialPrinter.sendLineFeed();
                 mSerialPrinter.printString("   " + posData.get(i).quantity + " X " + posData.get(i).price +
-                        "     =      " + posData.get(i).quantity * posData.get(i).price);
+                        " =          " + posData.get(i).quantity * posData.get(i).price);
                 mSerialPrinter.sendLineFeed();
             }
             mSerialPrinter.printString("================================");
             mSerialPrinter.printString("Sub Total   :           " + totalPrice);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Service     :           " + "Rp0");
+            mSerialPrinter.printString("Service     :           " + "0");
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("Pajak       :    10%    " + totalPrice / 10);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("            ====================");
+            mSerialPrinter.printString("            --------------------");
             mSerialPrinter.printString("Grand Total :           " + (totalPrice + totalPrice / 10));
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("Bayar       :           " + payAmount);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Kembalian   :           " + (payAmount - (totalPrice - totalPrice / 10)));
+            mSerialPrinter.printString("Kembalian   :           " + (payAmount - (totalPrice + totalPrice / 10)));
 
             mSerialPrinter.walkPaper(120);
         } catch (Exception e) {
