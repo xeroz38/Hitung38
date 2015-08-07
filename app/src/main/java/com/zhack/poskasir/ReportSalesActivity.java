@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
+import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.Utils;
@@ -111,19 +112,23 @@ public class ReportSalesActivity extends Activity {
                     report.pay = cursor.getInt(reportPay);
                     report.date = cursor.getString(reportDate);
 
-                    String json = cursor.getString(reportPOSData);
-                    ArrayList<POSData> posData = new ArrayList<POSData>();
-                    JSONArray jsonArr = new JSONArray(json);
-                    for (int i=0; i < jsonArr.length(); i++) {
-                        POSData pos = new POSData();
-                        pos.image = jsonArr.getJSONObject(i).getString(POSData.POS_IMAGE);
-                        pos.title = jsonArr.getJSONObject(i).getString(POSData.POS_TITLE);
-                        pos.quantity = jsonArr.getJSONObject(i).getInt(POSData.POS_QUANTITY);
-                        pos.price = jsonArr.getJSONObject(i).getInt(POSData.POS_PRICE);
+                    if (cursor.getString(reportPOSData).equals(Constant.SPEEDORDER)) {
+                        report.posData = new ArrayList<POSData>();
+                    } else {
+                        String json = cursor.getString(reportPOSData);
+                        ArrayList<POSData> posData = new ArrayList<POSData>();
+                        JSONArray jsonArr = new JSONArray(json);
+                        for (int i=0; i < jsonArr.length(); i++) {
+                            POSData pos = new POSData();
+                            pos.image = jsonArr.getJSONObject(i).getString(POSData.POS_IMAGE);
+                            pos.title = jsonArr.getJSONObject(i).getString(POSData.POS_TITLE);
+                            pos.quantity = jsonArr.getJSONObject(i).getInt(POSData.POS_QUANTITY);
+                            pos.price = jsonArr.getJSONObject(i).getInt(POSData.POS_PRICE);
 
-                        posData.add(pos);
+                            posData.add(pos);
+                        }
+                        report.posData = posData;
                     }
-                    report.posData = posData;
 
                     list.add(report);
                 }

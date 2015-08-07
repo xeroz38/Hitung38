@@ -73,7 +73,7 @@ public class PointOfSalesDetailActivity extends Activity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Kembalian tidak cocok", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Pembayaran tidak cukup", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -153,7 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                android:layout_weight=".25"
+                android:layout_weight=".20"
                 android:background="@drawable/main_bg_rounded"
                 android:text="+"
                 android:textSize="50dp" />
@@ -163,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                android:layout_weight=".25"
+                android:layout_weight=".20"
                 android:background="@drawable/main_bg_rounded"
                 android:text="-"
                 android:textSize="50dp" />
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                android:layout_weight=".25"
+                android:layout_weight=".20"
                 android:background="@drawable/main_bg_rounded"
                 android:text="*"
                 android:textSize="50dp" />
@@ -183,9 +183,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
-                android:layout_weight=".25"
+                android:layout_weight=".20"
                 android:background="@drawable/main_bg_rounded"
                 android:text="/"
+                android:textSize="50dp" />
+
+            <Button
+                android:id="@+id/equal_btn"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight=".20"
+                android:background="@drawable/main_bg_rounded"
+                android:text="="
                 android:textSize="50dp" />
         </LinearLayout>
 
@@ -195,16 +205,43 @@
             android:layout_weight=".4"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/totalprice_text"
+            <EditText
+                android:id="@+id/input_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/main_bg_rounded"
+                android:cursorVisible="false"
                 android:gravity="center"
+                android:inputType="number"
                 android:padding="5dp"
-                android:text="0"
-                android:textSize="25dp" />
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/operator_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/input_edit"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/main_bg_rounded"
+                android:padding="5dp"
+                android:textSize="30dp"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/input2_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/operator_text"
+                android:layout_margin="5dp"
+                android:background="@drawable/main_bg_rounded"
+                android:cursorVisible="false"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="5dp"
+                android:textSize="30dp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/done_btn"

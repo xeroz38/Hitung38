@@ -54,6 +54,9 @@
         <activity
             android:name=".SpeedOrderActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".SpeedOrderDetailActivity"
+            android:screenOrientation="landscape" />
 
         <provider
             android:name=".util.ItemProvider"
