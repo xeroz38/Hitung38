@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 import com.zhack.poskasir.util.PrintJob;
+import com.zhack.poskasir.util.PushInvoiceService;
 import com.zhack.poskasir.util.Utils;
 
 import org.json.JSONArray;
@@ -67,6 +69,11 @@ public class PointOfSalesDetailActivity extends Activity {
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     insertReportSalesData();
+                    // Push data through service
+                    Intent ints = new Intent(getApplicationContext(), PushInvoiceService.class);
+                    ints.setData(Uri.parse("COBA"));
+                    startService(ints);
+                    // Print invoice
                     new PrintJob(getApplicationContext(), mPOSData, Integer.parseInt(mPayEdit.getText().toString()));
                     // Clear all intent to MainActivity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);

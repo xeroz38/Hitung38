@@ -50,7 +50,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSpeedOrderBtn.setOnClickListener(this);
         mReportBtn.setOnClickListener(this);
 
-        mNoPDText.setText("No.PD : " + sharedPref.getLong(Constant.NO_PD, 0));
+        mNoPDText.setText("No.PD       : " + sharedPref.getLong(Constant.NO_PD, 0));
         mRestaurantText.setText("Restoran : " + sharedPref.getString(Constant.RESTAURANT, ""));
 
         return view;
