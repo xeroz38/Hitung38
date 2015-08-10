@@ -1,6 +1,7 @@
 package com.zhack.poskasir.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
@@ -27,10 +28,12 @@ public class PrintJob {
     private static final String TAG = "PrintJob";
 
     private Context mContext;
+    private SharedPreferences sharedPref;
     private SerialPrinter mSerialPrinter = SerialPrinter.GetSerialPrinter();
     private WakeLock mLock;
 
     public PrintJob(Context context, ArrayList<POSData> posData, int payAmount) {
+        mContext = context;
         try {
             HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
             mSerialPrinter.OpenPrinter(new SerialParam(115200, "/dev/ttyS1", 0), new SerialDataHandler());
@@ -39,6 +42,7 @@ public class PrintJob {
         }
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
+        sharedPref = mContext.getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
 
         // Print Array List
         new WriteThread(posData, payAmount).start();
@@ -75,16 +79,16 @@ public class PrintJob {
         try {
             mSerialPrinter.printString("PEMPROV DKI JAKARTA");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("RM Duo Sakato");
+            mSerialPrinter.printString(sharedPref.getString(Constant.RESTAURANT, ""));
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Harapan Indah, Jakarta 10210");
+            mSerialPrinter.printString(sharedPref.getString(Constant.ADDRESS, ""));
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("Telp. 021-888 1234");
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
             mSerialPrinter.printString("STRUK       : " + "F102032521567");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("TANGGAL     : " + "05-Feb-2015 03:15");
+            mSerialPrinter.printString("TANGGAL     : " + Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm"));
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("KASIR       : " + "0001 / FTF GLOBAL");
             mSerialPrinter.sendLineFeed();

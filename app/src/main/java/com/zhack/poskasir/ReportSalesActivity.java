@@ -167,13 +167,9 @@ public class ReportSalesActivity extends Activity {
             ViewHolder holder = (ViewHolder) rowView.getTag();
             holder.id.setText(mReportData.get(position).id);
             holder.price.setText(Utils.convertRp(mReportData.get(position).price));
-            holder.date.setText(convertDate(mReportData.get(position).date,"dd/MM/yyyy hh:mm:ss"));
+            holder.date.setText(Utils.convertDate(mReportData.get(position).date, "dd/MM/yyyy hh:mm:ss"));
 
             return rowView;
-        }
-
-        public String convertDate(String dateInMilliseconds,String dateFormat) {
-            return DateFormat.format(dateFormat, Long.parseLong(dateInMilliseconds)).toString();
         }
 
         @Override

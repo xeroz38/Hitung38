@@ -4,9 +4,16 @@ package com.zhack.poskasir.util;
  * Created by xeRoz on 7/30/2015.
  */
 public class Constant {
+    public static final String MAIN_URL         = "http://localhost:8080";
+    public static final String URL_NOPD_INFO    = MAIN_URL + "/api/nopd/";
+    public static final String URL_REG_IMEI     = MAIN_URL + "/api/device/add";
+    public static final String URL_BEAT         = MAIN_URL + "/api/transaction/heartbeat";
+    public static final String URL_TRANS        = MAIN_URL + "/api/transaction/detail";
+
     public static final String ZHACK_SP         = "zhack_sp";
     public static final String NO_PD            = "no_pd";
     public static final String RESTAURANT       = "restaurant";
+    public static final String ADDRESS          = "address";
     public static final String SPEEDORDER       = "speedorder";
     public static final String SPEEDORDER_PRICE = "speedorder_price";
 

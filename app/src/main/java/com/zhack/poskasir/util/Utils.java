@@ -1,5 +1,7 @@
 package com.zhack.poskasir.util;
 
+import android.text.format.DateFormat;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -20,5 +22,9 @@ public class Utils {
         currencyIndonesia.setDecimalFormatSymbols(formatRp);
 
         return currencyIndonesia.format(num);
+    }
+
+    public static String convertDate(String dateInMilliseconds,String dateFormat) {
+        return DateFormat.format(dateFormat, Long.parseLong(dateInMilliseconds)).toString();
     }
 }

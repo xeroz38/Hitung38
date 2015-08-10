@@ -39,8 +39,10 @@ public class RegistrationActivity extends Activity {
             public void onClick(View v) {
                 if (mNoPDText.getText().toString().trim().length() != 16) {
                     Toast.makeText(getApplicationContext(), "No PD harus 16 digit", Toast.LENGTH_SHORT).show();
-                } else if (mNoPDText.getText().toString().trim().length() < 1 || mRestaurantText.getText().toString().trim().length() < 1) {
-                    Toast.makeText(getApplicationContext(), "No PD dan alamat harus diisi", Toast.LENGTH_SHORT).show();
+                } else if (mNoPDText.getText().toString().trim().length() < 1 ||
+                        mRestaurantText.getText().toString().trim().length() < 1 ||
+                        mAddressText.getText().toString().trim().length() < 1) {
+                    Toast.makeText(getApplicationContext(), "Harus diisi", Toast.LENGTH_SHORT).show();
                 } else {
                     requestRegistrationStatus();
                 }
@@ -58,5 +60,6 @@ public class RegistrationActivity extends Activity {
         SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
         sp.edit().putLong(Constant.NO_PD, Long.parseLong(mNoPDText.getText().toString())).apply();
         sp.edit().putString(Constant.RESTAURANT, mRestaurantText.getText().toString()).apply();
+        sp.edit().putString(Constant.ADDRESS, mAddressText.getText().toString()).apply();
     }
 }
