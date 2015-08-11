@@ -11,13 +11,14 @@ import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
+import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
 import com.zhack.poskasir.util.ItemProvider;
 
@@ -26,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 
 
 public class MainActivity extends FragmentActivity {
@@ -165,7 +167,7 @@ public class MainActivity extends FragmentActivity {
                 .commit();
     }
 
-    private class HeartBeatTask extends AsyncTask<Void, Void, Boolean> {
+    private class HeartBeatTask extends AsyncTask<Void, Void, Integer> {
 
         private ProgressDialog dialog;
 
@@ -176,25 +178,27 @@ public class MainActivity extends FragmentActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             HttpConnect con = new HttpConnect();
             try {
-                String strObj = con.sendGet("http://www.lowyat.net/");
-                Log.e("##zun", strObj);
+                int responseCode = con.sendPost(Constant.URL_BEAT, "");
+                return responseCode;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            return true;
+            return HttpURLConnection.HTTP_INTERNAL_ERROR;
         }
 
         @Override
-        protected void onPostExecute(Boolean isValid) {
-            super.onPostExecute(isValid);
+        protected void onPostExecute(Integer responseCode) {
+            super.onPostExecute(responseCode);
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            if (isValid) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                Toast.makeText(getApplicationContext(), "Sukses", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Gagal", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -22,7 +22,7 @@ public class PushInvoiceService extends IntentService {
         String price = intent.getStringExtra(Constant.TRAN_PRICE);
         String tax = intent.getStringExtra(Constant.TRAN_TAX);
 
-        String strObj = null;
+        int strObj = 0;
         try {
             strObj = con.sendGet("http://www.lowyat.net/");
         } catch (Exception e) {
@@ -32,6 +32,6 @@ public class PushInvoiceService extends IntentService {
         Log.e("PushInvoiceService", imei);
         Log.e("PushInvoiceService", invoiceId);
         Log.e("PushInvoiceService", price);
-        Log.e("PushInvoiceService", strObj);
+        Log.e("PushInvoiceService", "" + strObj);
     }
 }

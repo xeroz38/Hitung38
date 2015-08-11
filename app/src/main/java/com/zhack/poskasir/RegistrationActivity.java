@@ -23,6 +23,7 @@ import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
 import com.zhack.poskasir.util.Utils;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 
 /**
@@ -70,7 +71,7 @@ public class RegistrationActivity extends Activity {
         new LocationTask().execute();
     }
 
-    private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
+    private class RegisterTask extends AsyncTask<Void, Void, Integer> {
 
         private ProgressDialog dialog;
 
@@ -81,26 +82,36 @@ public class RegistrationActivity extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             HttpConnect con = new HttpConnect();
             try {
-                String strObj = con.sendGet("http://www.lowyat.net/");
-                Log.e("##zun", strObj);
+                int responseCodeVerify = con.sendGet(Constant.URL_NOPD_INFO + mNoPDText.getText().toString());
+                if (responseCodeVerify == HttpURLConnection.HTTP_OK) {
+                    int responseCodeReg = con.sendPost(Constant.URL_REG_IMEI, "imei=" + telephonyManager.getDeviceId() +
+                            "&latitude=" + "0" +
+                            "&longitude=" + "0" +
+                            "&nopd=" + mNoPDText.getText().toString());
+
+                    if (responseCodeReg == HttpURLConnection.HTTP_OK) {
+                        return responseCodeReg;
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            return true;
+            return HttpURLConnection.HTTP_INTERNAL_ERROR;
         }
 
         @Override
-        protected void onPostExecute(Boolean isValid) {
-            super.onPostExecute(isValid);
+        protected void onPostExecute(Integer responseCode) {
+            super.onPostExecute(responseCode);
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
-            if (isValid) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 requestRegistrationStatus();
+            } else {
+                Toast.makeText(getApplicationContext(), "Gagal", Toast.LENGTH_SHORT).show();
             }
         }
     }
