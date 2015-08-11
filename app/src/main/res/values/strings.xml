@@ -35,6 +35,7 @@
     <string name="restaurant">Restoran</string>
     <string name="register">Daftar</string>
     <string name="address">Alamat</string>
+    <string name="heartbeat">Heart Beat</string>
     <string name="speed_order">Speed Order</string>
     <string name="no_paper">Kertas Habis</string>
     <string name="buff_fulled">Buffer Penuh</string>

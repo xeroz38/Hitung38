@@ -83,14 +83,10 @@ public class PrintJob {
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString(sharedPref.getString(Constant.ADDRESS, ""));
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Telp. 021-888 1234");
-            mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
-            mSerialPrinter.printString("STRUK       : " + "F102032521567");
+            mSerialPrinter.printString("STRUK       : " + "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9));
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("TANGGAL     : " + Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm"));
-            mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("KASIR       : " + "0001 / FTF GLOBAL");
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
 

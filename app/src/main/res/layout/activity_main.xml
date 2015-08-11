@@ -13,7 +13,8 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/darker_gray">
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/add_btn"
@@ -23,5 +24,14 @@
             android:background="@drawable/main_bg_rounded"
             android:padding="5dp"
             android:text="@string/add_item" />
+
+        <Button
+            android:id="@+id/heartbeat_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/main_bg_rounded"
+            android:padding="5dp"
+            android:text="@string/heartbeat" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

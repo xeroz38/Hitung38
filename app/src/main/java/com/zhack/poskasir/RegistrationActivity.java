@@ -1,17 +1,22 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhack.poskasir.util.Constant;
+import com.zhack.poskasir.util.HttpConnect;
+import com.zhack.poskasir.util.Utils;
 
 /**
  * Created by zunaidi.chandra on 06/08/2015.
@@ -34,6 +39,7 @@ public class RegistrationActivity extends Activity {
 
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         mIMEIText.setText(telephonyManager.getDeviceId());
+
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,10 +50,49 @@ public class RegistrationActivity extends Activity {
                         mAddressText.getText().toString().trim().length() < 1) {
                     Toast.makeText(getApplicationContext(), "Harus diisi", Toast.LENGTH_SHORT).show();
                 } else {
-                    requestRegistrationStatus();
+                    if (Utils.isConnected(getApplicationContext())) {
+                        new RegisterTask(RegistrationActivity.this).execute();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Koneksi bermasalah", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+    }
+
+    private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private ProgressDialog dialog;
+
+        public RegisterTask(Context context) {
+            dialog = new ProgressDialog(context);
+            dialog.setMessage("Loading");
+            dialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            HttpConnect con = new HttpConnect();
+            try {
+                String strObj = con.sendGet("http://www.lowyat.net/");
+                Log.e("##zun", strObj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isValid) {
+            super.onPostExecute(isValid);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (isValid) {
+                requestRegistrationStatus();
+            }
+        }
     }
 
     private void requestRegistrationStatus() {

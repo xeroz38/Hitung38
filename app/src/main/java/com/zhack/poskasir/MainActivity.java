@@ -1,19 +1,24 @@
 package com.zhack.poskasir;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
+import com.zhack.poskasir.util.HttpConnect;
 import com.zhack.poskasir.util.ItemProvider;
 
 import java.io.File;
@@ -27,7 +32,7 @@ public class MainActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private LinearLayout mLeftLayout;
-    private Button mAddDummyBtn;
+    private Button mAddDummyBtn, mHeartBeatBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,13 @@ public class MainActivity extends FragmentActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftLayout = (LinearLayout) findViewById(R.id.left_drawer);
         mAddDummyBtn = (Button) findViewById(R.id.add_btn);
+        mHeartBeatBtn = (Button) findViewById(R.id.heartbeat_btn);
+        mHeartBeatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new HeartBeatTask(MainActivity.this).execute();
+            }
+        });
         mAddDummyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,5 +163,39 @@ public class MainActivity extends FragmentActivity {
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, new MainActivityFragment())
                 .commit();
+    }
+
+    private class HeartBeatTask extends AsyncTask<Void, Void, Boolean> {
+
+        private ProgressDialog dialog;
+
+        public HeartBeatTask(Context context) {
+            dialog = new ProgressDialog(context);
+            dialog.setMessage("Loading");
+            dialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            HttpConnect con = new HttpConnect();
+            try {
+                String strObj = con.sendGet("http://www.lowyat.net/");
+                Log.e("##zun", strObj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isValid) {
+            super.onPostExecute(isValid);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (isValid) {
+            }
+        }
     }
 }
