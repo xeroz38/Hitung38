@@ -33,6 +33,7 @@ public class RegistrationActivity extends Activity {
     private double latitude, longitude;
     private TextView mIMEIText, mNoPDText, mRestaurantText, mAddressText;
     private Button mRegisterBtn;
+    private TelephonyManager telephonyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class RegistrationActivity extends Activity {
         mAddressText = (TextView) findViewById(R.id.address_text);
         mRegisterBtn = (Button) findViewById(R.id.register_btn);
 
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         mIMEIText.setText(telephonyManager.getDeviceId());
 
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +142,7 @@ public class RegistrationActivity extends Activity {
         finish();
         // Save info
         SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
+        sp.edit().putString(Constant.IMEI, telephonyManager.getDeviceId()).apply();
         sp.edit().putLong(Constant.NO_PD, Long.parseLong(mNoPDText.getText().toString())).apply();
         sp.edit().putString(Constant.RESTAURANT, mRestaurantText.getText().toString()).apply();
         sp.edit().putString(Constant.ADDRESS, mAddressText.getText().toString()).apply();

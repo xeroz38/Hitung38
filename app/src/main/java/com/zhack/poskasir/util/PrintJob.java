@@ -1,7 +1,6 @@
 package com.zhack.poskasir.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
@@ -14,9 +13,7 @@ import com.hdx.lib.serial.SerialParam;
 import com.hdx.lib.serial.SerialPortOperaion;
 import com.hdx.lib.serial.SerialPortOperaion.SerialReadData;
 import com.zhack.poskasir.R;
-import com.zhack.poskasir.model.POSData;
-
-import java.util.ArrayList;
+import com.zhack.poskasir.model.Invoice;
 
 import hdx.HdxUtil;
 
@@ -25,37 +22,28 @@ import hdx.HdxUtil;
  */
 public class PrintJob {
 
-    private static final String TAG = "PrintJob";
-
     private Context mContext;
-    private SharedPreferences sharedPref;
-    private SerialPrinter mSerialPrinter = SerialPrinter.GetSerialPrinter();
+    private Invoice mInvoice;
+    private SerialPrinter mSerialPrinter;
     private WakeLock mLock;
 
-    public PrintJob(Context context, ArrayList<POSData> posData, int payAmount) {
+    public PrintJob(Context context, Invoice invoice) {
         mContext = context;
+        mInvoice = invoice;
         try {
             HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
+            mSerialPrinter = SerialPrinter.GetSerialPrinter();
             mSerialPrinter.OpenPrinter(new SerialParam(115200, "/dev/ttyS1", 0), new SerialDataHandler());
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "PrintJob");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
-        sharedPref = mContext.getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
-
         // Print Array List
-        new WriteThread(posData, payAmount).start();
+        new WriteThread().start();
     }
 
     private class WriteThread extends Thread {
-        ArrayList<POSData> posData;
-        int payAmount;
-
-        public WriteThread(ArrayList<POSData> posData, int payAmount) {
-            this.posData = posData;
-            this.payAmount = payAmount;
-        }
 
         public void run() {
             super.run();
@@ -63,7 +51,7 @@ public class PrintJob {
             try {
                 HdxUtil.SetPrinterPower(1);
                 sleep(200);
-                printStringChar(posData, payAmount);
+                printStringChar();
                 sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -74,30 +62,30 @@ public class PrintJob {
         }
     }
 
-    private  void printStringChar(ArrayList<POSData> posData, int payAmount) {
-        Log.e(TAG, "Start Print");
+    private  void printStringChar() {
+        Log.e("PrintJob", "Start Print");
         try {
             mSerialPrinter.printString("PEMPROV DKI JAKARTA");
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString(sharedPref.getString(Constant.RESTAURANT, ""));
+            mSerialPrinter.printString(mInvoice.restaurant);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString(sharedPref.getString(Constant.ADDRESS, ""));
+            mSerialPrinter.printString(mInvoice.address);
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
-            mSerialPrinter.printString("STRUK       : " + "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9));
+            mSerialPrinter.printString("STRUK       : " + mInvoice.id);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("TANGGAL     : " + Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm"));
+            mSerialPrinter.printString("TANGGAL     : " + mInvoice.date);
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
 
             int totalPrice = 0;
-            for (int i=0; i<posData.size(); i++) {
-                totalPrice += posData.get(i).quantity * posData.get(i).price;
+            for (int i=0; i<mInvoice.posData.size(); i++) {
+                totalPrice += mInvoice.posData.get(i).quantity * mInvoice.posData.get(i).price;
 
-                mSerialPrinter.printString("" + (i+1) + ". " + posData.get(i).title);
+                mSerialPrinter.printString("" + (i+1) + ". " + mInvoice.posData.get(i).title);
                 mSerialPrinter.sendLineFeed();
-                mSerialPrinter.printString("   " + posData.get(i).quantity + " X " + posData.get(i).price +
-                        " =          " + posData.get(i).quantity * posData.get(i).price);
+                mSerialPrinter.printString("   " + mInvoice.posData.get(i).quantity + " X " + mInvoice.posData.get(i).price +
+                        " =          " + mInvoice.posData.get(i).quantity * mInvoice.posData.get(i).price);
                 mSerialPrinter.sendLineFeed();
             }
             mSerialPrinter.printString("================================");
@@ -110,15 +98,15 @@ public class PrintJob {
             mSerialPrinter.printString("            --------------------");
             mSerialPrinter.printString("Grand Total :           " + (totalPrice + totalPrice / 10));
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Bayar       :           " + payAmount);
+            mSerialPrinter.printString("Bayar       :           " + mInvoice.pay);
             mSerialPrinter.sendLineFeed();
-            mSerialPrinter.printString("Kembalian   :           " + (payAmount - (totalPrice + totalPrice / 10)));
+            mSerialPrinter.printString("Kembalian   :           " + (mInvoice.pay - (totalPrice + totalPrice / 10)));
 
             mSerialPrinter.walkPaper(120);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.e(TAG, "Print End");
+        Log.e("PrintJob", "Print End");
     }
 
     private class SerialDataHandler extends Handler {
@@ -130,7 +118,7 @@ public class PrintJob {
                     for (int x=0;x<data.size;x++) {
                         sb.append(String.format("%02x", data.data[x]));
                     }
-                    Log.d(TAG, "data =" + sb);
+                    Log.d("PrintJob", "data =" + sb);
                     if ((data.data[0]&1) == 1) {
                         Toast.makeText(mContext, mContext.getString(R.string.no_paper), Toast.LENGTH_SHORT).show();
                     }

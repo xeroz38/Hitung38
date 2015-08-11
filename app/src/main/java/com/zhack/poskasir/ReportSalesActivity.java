@@ -1,12 +1,13 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
@@ -39,6 +41,7 @@ public class ReportSalesActivity extends Activity {
     private POSAdapter mPOSAdapter;
     private TextView mTotalPriceText, mReportPriceText, mPrintText;
     private ListView mReportList, mReportDetailList;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class ReportSalesActivity extends Activity {
         mPrintText = (TextView) findViewById(R.id.print_text);
         mReportList = (ListView) findViewById(R.id.report_list);
         mReportDetailList = (ListView) findViewById(R.id.report_detail_list);
+
+        sharedPref = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
         mReportData = getReportSalesListData();
         mReportList.setAdapter(new ReportAdapter());
         mPOSAdapter = new POSAdapter();
@@ -66,7 +71,14 @@ public class ReportSalesActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mReportData.size() > 0) {
-                    new PrintJob(getApplicationContext(), mReportData.get(postReport).posData, mReportData.get(postReport).pay);
+                    Invoice invoice = new Invoice();
+                    invoice.id = "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
+                    invoice.address = sharedPref.getString(Constant.ADDRESS, "");
+                    invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");
+                    invoice.pay = mReportData.get(postReport).pay;
+                    invoice.posData = mReportData.get(postReport).posData;
+                    new PrintJob(getApplicationContext(), invoice);
                 }
             }
         });

@@ -2,7 +2,9 @@ package com.zhack.poskasir;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
@@ -33,6 +36,7 @@ public class SpeedOrderDetailActivity extends Activity {
     private TextView mSubPriceText, mTaxPriceText, mTotalPriceText, mChangePriceText;
     private EditText mPayEdit;
     private Button mDoneBtn;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class SpeedOrderDetailActivity extends Activity {
         if (getIntent() != null) {
             totalPrice = getIntent().getExtras().getLong(Constant.SPEEDORDER_PRICE);
         }
+        sharedPref = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
 
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +62,14 @@ public class SpeedOrderDetailActivity extends Activity {
                     // Insert to sqlite
                     insertReportSalesData();
                     // Print info
-                    new PrintJob(getApplicationContext(), mPOSData, Integer.parseInt(mPayEdit.getText().toString()));
+                    Invoice invoice = new Invoice();
+                    invoice.id = "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
+                    invoice.address = sharedPref.getString(Constant.ADDRESS, "");
+                    invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");
+                    invoice.pay = Integer.parseInt(mPayEdit.getText().toString());
+                    invoice.posData = mPOSData;
+                    new PrintJob(getApplicationContext(), invoice);
                     // Clear all intent to MainActivity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

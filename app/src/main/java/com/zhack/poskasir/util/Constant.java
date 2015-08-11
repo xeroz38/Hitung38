@@ -11,11 +11,16 @@ public class Constant {
     public static final String URL_TRANS        = MAIN_URL + "/api/transaction/detail";
 
     public static final String ZHACK_SP         = "zhack_sp";
+    public static final String IMEI             = "imei";
     public static final String NO_PD            = "no_pd";
     public static final String RESTAURANT       = "restaurant";
     public static final String ADDRESS          = "address";
     public static final String SPEEDORDER       = "speedorder";
+
     public static final String SPEEDORDER_PRICE = "speedorder_price";
+    public static final String TRAN_INVOICE     = "trans_invoice";
+    public static final String TRAN_PRICE       = "trans_price";
+    public static final String TRAN_TAX         = "trans_tax";
 
     public static final String ITEM_NAME        = "item_name";
     public static final String ITEM_IMAGE       = "item_image";

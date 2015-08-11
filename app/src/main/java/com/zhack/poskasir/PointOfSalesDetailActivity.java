@@ -2,10 +2,11 @@ package com.zhack.poskasir;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
@@ -45,6 +47,7 @@ public class PointOfSalesDetailActivity extends Activity {
     private EditText mPayEdit;
     private Button mDoneBtn;
     private ListView mItemGrid;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,19 +65,30 @@ public class PointOfSalesDetailActivity extends Activity {
         if (getIntent() != null) {
             mPOSData = getIntent().getParcelableArrayListExtra(Constant.ITEM_LIST);
         }
-
+        sharedPref = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
         mItemGrid.setAdapter(new ItemAdapter());
         mDoneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
+                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
                     insertReportSalesData();
                     // Push data through service
-                    Intent ints = new Intent(getApplicationContext(), PushInvoiceService.class);
-                    ints.setData(Uri.parse("COBA"));
-                    startService(ints);
+                    Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
+                    intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
+                    intService.putExtra(Constant.TRAN_INVOICE, invoiceId);
+                    intService.putExtra(Constant.TRAN_PRICE, String.valueOf(totalPrice));
+                    intService.putExtra(Constant.TRAN_TAX, String.valueOf(totalPrice / 10));
+                    startService(intService);
                     // Print invoice
-                    new PrintJob(getApplicationContext(), mPOSData, Integer.parseInt(mPayEdit.getText().toString()));
+                    Invoice invoice = new Invoice();
+                    invoice.id = invoiceId;
+                    invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
+                    invoice.address = sharedPref.getString(Constant.ADDRESS, "");
+                    invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");
+                    invoice.pay = Integer.parseInt(mPayEdit.getText().toString());
+                    invoice.posData = mPOSData;
+                    new PrintJob(getApplicationContext(), invoice);
                     // Clear all intent to MainActivity
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
