@@ -5,6 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -18,11 +23,14 @@ import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
 import com.zhack.poskasir.util.Utils;
 
+import java.util.List;
+
 /**
  * Created by zunaidi.chandra on 06/08/2015.
  */
 public class RegistrationActivity extends Activity {
 
+    private double latitude, longitude;
     private TextView mIMEIText, mNoPDText, mRestaurantText, mAddressText;
     private Button mRegisterBtn;
 
@@ -58,6 +66,7 @@ public class RegistrationActivity extends Activity {
                 }
             }
         });
+        new LocationTask().execute();
     }
 
     private class RegisterTask extends AsyncTask<Void, Void, Boolean> {
@@ -92,6 +101,35 @@ public class RegistrationActivity extends Activity {
             if (isValid) {
                 requestRegistrationStatus();
             }
+        }
+    }
+
+    private class LocationTask extends AsyncTask<Void, Void, Void> {
+
+        private String bestProvider;
+        private List<Address> user = null;
+        private Geocoder geocoder;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            bestProvider = lm.getBestProvider(criteria, false);
+            Location location = lm.getLastKnownLocation(bestProvider);
+
+            if (location != null) {
+                geocoder = new Geocoder(getApplicationContext());
+                try {
+                    user = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    latitude=(double)user.get(0).getLatitude();
+                    longitude=(double)user.get(0).getLongitude();
+
+                    Log.e("RegistrationActivity", "Coordinate = " + String.valueOf(latitude + " / " + longitude));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         }
     }
 
