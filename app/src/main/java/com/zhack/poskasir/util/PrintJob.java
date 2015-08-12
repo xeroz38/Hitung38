@@ -24,7 +24,7 @@ public class PrintJob {
 
     private Context mContext;
     private Invoice mInvoice;
-    private SerialPrinter mSerialPrinter;
+    private SerialPrinter mSerialPrinter = SerialPrinter.GetSerialPrinter();;
     private WakeLock mLock;
 
     public PrintJob(Context context, Invoice invoice) {
@@ -32,13 +32,12 @@ public class PrintJob {
         mInvoice = invoice;
         try {
             HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
-            mSerialPrinter = SerialPrinter.GetSerialPrinter();
             mSerialPrinter.OpenPrinter(new SerialParam(115200, "/dev/ttyS1", 0), new SerialDataHandler());
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "PrintJob");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "PrintJob");
         // Print Array List
         new WriteThread().start();
     }
