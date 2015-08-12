@@ -27,7 +27,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPref = getActivity().getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
-        if (!sharedPref.contains(Constant.NO_PD)) {
+        if (!sharedPref.contains(Constant.NOPD)) {
             Intent intent = new Intent(getActivity(), RegistrationActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -50,7 +50,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
         mSpeedOrderBtn.setOnClickListener(this);
         mReportBtn.setOnClickListener(this);
 
-        mNoPDText.setText("No.PD       : " + sharedPref.getLong(Constant.NO_PD, 0));
+        mNoPDText.setText("No.PD       : " + sharedPref.getLong(Constant.NOPD, 0));
         mRestaurantText.setText("Restoran : " + sharedPref.getString(Constant.RESTAURANT, ""));
 
         return view;

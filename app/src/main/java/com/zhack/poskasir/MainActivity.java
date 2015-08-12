@@ -22,6 +22,8 @@ import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
 import com.zhack.poskasir.util.ItemProvider;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,7 +50,7 @@ public class MainActivity extends FragmentActivity {
         mHeartBeatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new HeartBeatTask(MainActivity.this).execute();
+                new HeartBeatTask(MainActivity.this).execute(getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE).getString(Constant.IMEI, ""));
             }
         });
         mAddDummyBtn.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +169,7 @@ public class MainActivity extends FragmentActivity {
                 .commit();
     }
 
-    private class HeartBeatTask extends AsyncTask<Void, Void, Integer> {
+    private class HeartBeatTask extends AsyncTask<String, Void, Integer> {
 
         private ProgressDialog dialog;
 
@@ -178,10 +180,15 @@ public class MainActivity extends FragmentActivity {
         }
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected Integer doInBackground(String... params) {
+            // params[0] = imei
             HttpConnect con = new HttpConnect();
             try {
-                int responseCode = con.sendPost(Constant.URL_BEAT, "");
+                JSONObject json = new JSONObject();
+                json.put("imei", params[0]);
+                json.put("tipe", 1);
+                int responseCode = con.sendPost(Constant.URL_BEAT, json.toString());
+
                 return responseCode;
             } catch (Exception e) {
                 e.printStackTrace();

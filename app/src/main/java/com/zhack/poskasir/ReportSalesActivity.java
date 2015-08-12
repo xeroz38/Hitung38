@@ -72,7 +72,7 @@ public class ReportSalesActivity extends Activity {
             public void onClick(View v) {
                 if (mReportData.size() > 0) {
                     Invoice invoice = new Invoice();
-                    invoice.id = "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    invoice.id = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
                     invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
                     invoice.address = sharedPref.getString(Constant.ADDRESS, "");
                     invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");

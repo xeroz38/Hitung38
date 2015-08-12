@@ -71,11 +71,12 @@ public class PointOfSalesDetailActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
-                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
                     insertReportSalesData();
                     // Push data through service
+                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
                     Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
                     intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
+                    intService.putExtra(Constant.NOPD, sharedPref.getLong(Constant.NOPD, 0));
                     intService.putExtra(Constant.TRAN_INVOICE, invoiceId);
                     intService.putExtra(Constant.TRAN_PRICE, String.valueOf(totalPrice));
                     intService.putExtra(Constant.TRAN_TAX, String.valueOf(totalPrice / 10));

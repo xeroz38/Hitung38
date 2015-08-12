@@ -24,7 +24,7 @@ public class HttpConnect {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
-        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+        con.setRequestProperty("Content-Type", "application/json");
         con.setDoOutput(true);
 
         DataOutputStream out = new DataOutputStream(con.getOutputStream());

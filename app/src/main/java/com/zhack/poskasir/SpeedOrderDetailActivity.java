@@ -20,6 +20,7 @@ import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ItemProvider;
 import com.zhack.poskasir.util.PrintJob;
+import com.zhack.poskasir.util.PushInvoiceService;
 import com.zhack.poskasir.util.Utils;
 
 import org.json.JSONArray;
@@ -61,9 +62,18 @@ public class SpeedOrderDetailActivity extends Activity {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     // Insert to sqlite
                     insertReportSalesData();
+                    // Push data through service
+                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
+                    intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
+                    intService.putExtra(Constant.NOPD, sharedPref.getLong(Constant.NOPD, 0));
+                    intService.putExtra(Constant.TRAN_INVOICE, invoiceId);
+                    intService.putExtra(Constant.TRAN_PRICE, String.valueOf(totalPrice));
+                    intService.putExtra(Constant.TRAN_TAX, String.valueOf(totalPrice / 10));
+                    startService(intService);
                     // Print info
                     Invoice invoice = new Invoice();
-                    invoice.id = "JK-" + String.valueOf(sharedPref.getLong(Constant.NO_PD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    invoice.id = invoiceId;
                     invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
                     invoice.address = sharedPref.getString(Constant.ADDRESS, "");
                     invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");

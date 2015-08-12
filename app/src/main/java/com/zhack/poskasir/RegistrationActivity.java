@@ -23,6 +23,8 @@ import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
 import com.zhack.poskasir.util.Utils;
 
+import org.json.JSONObject;
+
 import java.net.HttpURLConnection;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class RegistrationActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Harus diisi", Toast.LENGTH_SHORT).show();
                 } else {
                     if (Utils.isConnected(getApplicationContext())) {
-                        new RegisterTask(RegistrationActivity.this).execute();
+                        new RegisterTask(RegistrationActivity.this).execute(mNoPDText.getText().toString(), telephonyManager.getDeviceId());
                     } else {
                         Toast.makeText(getApplicationContext(), "Koneksi bermasalah", Toast.LENGTH_SHORT).show();
                     }
@@ -71,7 +73,7 @@ public class RegistrationActivity extends Activity {
         new LocationTask().execute();
     }
 
-    private class RegisterTask extends AsyncTask<Void, Void, Integer> {
+    private class RegisterTask extends AsyncTask<String, Void, Integer> {
 
         private ProgressDialog dialog;
 
@@ -82,15 +84,18 @@ public class RegistrationActivity extends Activity {
         }
 
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected Integer doInBackground(String... params) {
+            // params[0] = nopd, params[1] = imei
             HttpConnect con = new HttpConnect();
             try {
-                int responseCodeVerify = con.sendGet(Constant.URL_NOPD_INFO + mNoPDText.getText().toString());
+                int responseCodeVerify = con.sendGet(Constant.URL_NOPD_INFO + params[0]);
                 if (responseCodeVerify == HttpURLConnection.HTTP_OK) {
-                    int responseCodeReg = con.sendPost(Constant.URL_REG_IMEI, "imei=" + telephonyManager.getDeviceId() +
-                            "&latitude=" + "0" +
-                            "&longitude=" + "0" +
-                            "&nopd=" + mNoPDText.getText().toString());
+                    JSONObject json = new JSONObject();
+                    json.put("imei", params[1]);
+                    json.put("latitude", String.valueOf(latitude));
+                    json.put("longitude", String.valueOf(longitude));
+                    json.put("nopd", params[0]);
+                    int responseCodeReg = con.sendPost(Constant.URL_REG_IMEI, json.toString());
 
                     if (responseCodeReg == HttpURLConnection.HTTP_OK) {
                         return responseCodeReg;
@@ -154,7 +159,7 @@ public class RegistrationActivity extends Activity {
         // Save info
         SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
         sp.edit().putString(Constant.IMEI, telephonyManager.getDeviceId()).apply();
-        sp.edit().putLong(Constant.NO_PD, Long.parseLong(mNoPDText.getText().toString())).apply();
+        sp.edit().putLong(Constant.NOPD, Long.parseLong(mNoPDText.getText().toString())).apply();
         sp.edit().putString(Constant.RESTAURANT, mRestaurantText.getText().toString()).apply();
         sp.edit().putString(Constant.ADDRESS, mAddressText.getText().toString()).apply();
     }
