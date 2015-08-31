@@ -43,6 +43,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set IP from sharedPref
+        Constant.MAIN_URL = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE).getString(Constant.IP, "");
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftLayout = (LinearLayout) findViewById(R.id.left_drawer);
         mAddDummyBtn = (Button) findViewById(R.id.add_btn);

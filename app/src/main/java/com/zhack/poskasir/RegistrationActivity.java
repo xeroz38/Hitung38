@@ -1,6 +1,7 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,7 +72,40 @@ public class RegistrationActivity extends Activity {
                 }
             }
         });
+        showRegisterIPDialog();
         new LocationTask().execute();
+    }
+
+    private void showRegisterIPDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.view_registerip_dialog);
+        dialog.setTitle(R.string.address);
+
+        final EditText ip = (EditText) dialog.findViewById(R.id.ip_edit);
+        final EditText port = (EditText) dialog.findViewById(R.id.port_edit);
+
+        Button saveBtn = (Button) dialog.findViewById(R.id.ok_btn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ip.getText().toString().trim().length() > 0) {
+                    // Save sharepref ip address
+                    SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
+                    if (port.getText().toString().trim().length() > 0) {
+                        sp.edit().putString(Constant.IP, ip.getText().toString() + ":" + port.getText().toString()).apply();
+                        Constant.MAIN_URL = ip.getText().toString() + ":" + port.getText().toString();
+                    } else {
+                        sp.edit().putString(Constant.IP, ip.getText().toString()).apply();
+                        Constant.MAIN_URL = ip.getText().toString();
+                    }
+
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Harus isi", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog.show();
     }
 
     private class RegisterTask extends AsyncTask<String, Void, Integer> {

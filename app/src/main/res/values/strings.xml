@@ -39,4 +39,6 @@
     <string name="speed_order">Speed Order</string>
     <string name="no_paper">Kertas Habis</string>
     <string name="buff_fulled">Buffer Penuh</string>
+    <string name="ip">IP</string>
+    <string name="port">Port</string>
 </resources>

@@ -4,13 +4,14 @@ package com.zhack.poskasir.util;
  * Created by xeRoz on 7/30/2015.
  */
 public class Constant {
-    public static final String MAIN_URL         = "http://192.168.0.105:8080";
+    public static String MAIN_URL               = "http://192.168.1.100:8080";
     public static final String URL_NOPD_INFO    = MAIN_URL + "/api/nopd/";
     public static final String URL_REG_IMEI     = MAIN_URL + "/api/device/add";
     public static final String URL_BEAT         = MAIN_URL + "/api/transaction/alert";
     public static final String URL_TRANS        = MAIN_URL + "/api/transaction/detail";
 
     public static final String ZHACK_SP         = "zhack_sp";
+    public static final String IP               = "ip";
     public static final String IMEI             = "imei";
     public static final String NOPD             = "nopd";
     public static final String RESTAURANT       = "restaurant";
