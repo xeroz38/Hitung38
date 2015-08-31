@@ -18,7 +18,7 @@ import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.PushInvoiceService;
 import com.zhack.poskasir.util.Utils;
@@ -60,13 +60,15 @@ public class SpeedOrderDetailActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
+                    String timeMillis = String.valueOf(System.currentTimeMillis());
                     // Insert to sqlite
-                    insertReportSalesData();
+                    insertReportSalesData(timeMillis);
                     // Push data through service
-                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + timeMillis.substring(9);
                     Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
                     intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
                     intService.putExtra(Constant.NOPD, sharedPref.getLong(Constant.NOPD, 0));
+                    intService.putExtra(Constant.DATE, timeMillis);
                     intService.putExtra(Constant.TRAN_INVOICE, invoiceId);
                     intService.putExtra(Constant.TRAN_PRICE, String.valueOf(totalPrice));
                     intService.putExtra(Constant.TRAN_TAX, String.valueOf(totalPrice / 10));
@@ -76,7 +78,7 @@ public class SpeedOrderDetailActivity extends Activity {
                     invoice.id = invoiceId;
                     invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
                     invoice.address = sharedPref.getString(Constant.ADDRESS, "");
-                    invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");
+                    invoice.date = Utils.convertDate(timeMillis, "dd/MM/yyyy hh:mm");
                     invoice.pay = Integer.parseInt(mPayEdit.getText().toString());
                     invoice.posData = mPOSData;
                     new PrintJob(getApplicationContext(), invoice);
@@ -110,7 +112,7 @@ public class SpeedOrderDetailActivity extends Activity {
         mTotalPriceText.setText(Utils.convertRp((int) (totalPrice + (totalPrice / 10))));
     }
 
-    private void insertReportSalesData() {
+    private void insertReportSalesData(String timeMillis) {
         // Speed Order info
         mPOSData = new ArrayList<POSData>();
         POSData pos = new POSData();
@@ -130,8 +132,8 @@ public class SpeedOrderDetailActivity extends Activity {
         ContentValues values = new ContentValues();
         values.put(ReportSales.PRICE, totalPrice);
         values.put(ReportSales.PAY, Integer.parseInt(mPayEdit.getText().toString()));
-        values.put(ReportSales.DATE, String.valueOf(System.currentTimeMillis()));
+        values.put(ReportSales.DATE, timeMillis);
         values.put(ReportSales.POS_DATA, jsonArr.toString());
-        getContentResolver().insert(ItemProvider.REPORTSALES_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.REPORTSALES_CONTENT_URI, values);
     }
 }

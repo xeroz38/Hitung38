@@ -24,7 +24,7 @@ import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.Utils;
 
 import java.util.ArrayList;
@@ -168,7 +168,7 @@ public class PointOfSalesActivity extends Activity {
         ArrayList<Item> list = null;
         Cursor cursor = null;
         try	{
-            cursor = getContentResolver().query(ItemProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
+            cursor = getContentResolver().query(ZhackProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int itemTitle = cursor.getColumnIndexOrThrow(Item.ITEM_TITLE);
                 int itemImage = cursor.getColumnIndexOrThrow(Item.ITEM_IMAGE);
@@ -196,7 +196,7 @@ public class PointOfSalesActivity extends Activity {
         ArrayList<ItemGroup> list = null;
         Cursor cursor = null;
         try	{
-            cursor = getContentResolver().query(ItemProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+            cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
 

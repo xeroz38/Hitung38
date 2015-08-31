@@ -61,7 +61,7 @@
             android:screenOrientation="landscape" />
 
         <provider
-            android:name=".util.ItemProvider"
+            android:name=".util.ZhackProvider"
             android:authorities="com.zhack.poskasir"
             android:exported="false" />
         <receiver android:name="com.zhack.poskasir.util.BootReceiver">

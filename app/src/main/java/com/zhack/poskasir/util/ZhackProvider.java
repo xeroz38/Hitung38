@@ -12,16 +12,20 @@ import android.net.Uri;
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.ReportSales;
+import com.zhack.poskasir.model.Transaction;
 
-public class ItemProvider extends ContentProvider {
+public class ZhackProvider extends ContentProvider {
 
-    public static final String TABLE_ITEM = "item_data";
-    public static final String TABLE_ITEMGROUP = "itemgroup_data";
-    public static final String TABLE_REPORTSALES = "reportsales_data";
+    public static final String TABLE_ITEM           = "item_data";
+    public static final String TABLE_ITEMGROUP      = "itemgroup_data";
+    public static final String TABLE_REPORTSALES    = "reportsales_data";
+    public static final String TABLE_TRANSACTION    = "transaction";
+
     public static final String CONTENT_AUTHORITY = "com.zhack.poskasir";
     public static final Uri ITEM_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY).buildUpon().appendPath(TABLE_ITEM).build();
     public static final Uri ITEMGROUP_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY).buildUpon().appendPath(TABLE_ITEMGROUP).build();
     public static final Uri REPORTSALES_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY).buildUpon().appendPath(TABLE_REPORTSALES).build();
+    public static final Uri TRANSACTION_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY).buildUpon().appendPath(TABLE_TRANSACTION).build();
 
     public class ZhackSQLiteOpenHelper extends SQLiteOpenHelper {
 
@@ -51,6 +55,13 @@ public class ItemProvider extends ContentProvider {
                     + ReportSales.DATE + " TEXT,"
                     + ReportSales.POS_DATA + " TEXT,"
                     + "UNIQUE (" + ReportSales.ID + ") ON CONFLICT REPLACE)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRANSACTION + " ("
+                    + Transaction.TRANS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Transaction.TRANS_INVOICE + " TEXT,"
+                    + Transaction.TRANS_DATE + " TEXT,"
+                    + Transaction.TRANS_PRICE + " TEXT,"
+                    + Transaction.TRANS_TAX + " TEXT,"
+                    + "UNIQUE (" + Transaction.TRANS_ID + ") ON CONFLICT REPLACE)");
         }
 
         @Override
@@ -76,13 +87,22 @@ public class ItemProvider extends ContentProvider {
                     + ReportSales.DATE + " TEXT,"
                     + ReportSales.POS_DATA + " TEXT,"
                     + "UNIQUE (" + ReportSales.ID + ") ON CONFLICT REPLACE)");
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRANSACTION + " ("
+                    + Transaction.TRANS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + Transaction.TRANS_INVOICE + " TEXT,"
+                    + Transaction.TRANS_DATE + " TEXT,"
+                    + Transaction.TRANS_PRICE + " TEXT,"
+                    + Transaction.TRANS_TAX + " TEXT,"
+                    + "UNIQUE (" + Transaction.TRANS_ID + ") ON CONFLICT REPLACE)");
         }
     }
 
     private static final UriMatcher S_URI_MATCHER = buildUriMatcher();
-    private static final int MATCH_ITEM = 101;
-    private static final int MATCH_ITEMGROUP = 102;
-    private static final int MATCH_REPORTSALES = 103;
+    private static final int MATCH_ITEM         = 101;
+    private static final int MATCH_ITEMGROUP    = 102;
+    private static final int MATCH_REPORTSALES  = 103;
+    private static final int MATCH_TRANSACTION  = 104;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -90,6 +110,7 @@ public class ItemProvider extends ContentProvider {
         matcher.addURI(CONTENT_AUTHORITY, TABLE_ITEM, MATCH_ITEM);
         matcher.addURI(CONTENT_AUTHORITY, TABLE_ITEMGROUP, MATCH_ITEMGROUP);
         matcher.addURI(CONTENT_AUTHORITY, TABLE_REPORTSALES, MATCH_REPORTSALES);
+        matcher.addURI(CONTENT_AUTHORITY, TABLE_TRANSACTION, MATCH_TRANSACTION);
 
         return matcher;
     }
@@ -133,6 +154,14 @@ public class ItemProvider extends ContentProvider {
                 }
                 return db.query(TABLE_REPORTSALES, columns, selection, selectionArgs, null, null, sort);
             }
+            case MATCH_TRANSACTION: {
+                SQLiteDatabase db = openHelper.getReadableDatabase();
+
+                if (sort == null) {
+                    sort = Transaction.TRANS_ID + " ASC";
+                }
+                return db.query(TABLE_TRANSACTION, columns, selection, selectionArgs, null, null, sort);
+            }
         }
 
         return null;
@@ -157,9 +186,9 @@ public class ItemProvider extends ContentProvider {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                String storageId = values.getAsString(Item.ITEM_ID);
+                String itemId = values.getAsString(Item.ITEM_ID);
 
-                return ITEM_CONTENT_URI.buildUpon().appendPath(storageId).build();
+                return ITEM_CONTENT_URI.buildUpon().appendPath(itemId).build();
             }
             case MATCH_ITEMGROUP: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
@@ -169,9 +198,9 @@ public class ItemProvider extends ContentProvider {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                String storageId = values.getAsString(ItemGroup.ITEMGROUP_ID);
+                String itemGroupId = values.getAsString(ItemGroup.ITEMGROUP_ID);
 
-                return ITEMGROUP_CONTENT_URI.buildUpon().appendPath(storageId).build();
+                return ITEMGROUP_CONTENT_URI.buildUpon().appendPath(itemGroupId).build();
             }
             case MATCH_REPORTSALES: {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
@@ -181,9 +210,21 @@ public class ItemProvider extends ContentProvider {
                 db.setTransactionSuccessful();
                 db.endTransaction();
 
-                String storageId = values.getAsString(ReportSales.ID);
+                String reportID = values.getAsString(ReportSales.ID);
 
-                return REPORTSALES_CONTENT_URI.buildUpon().appendPath(storageId).build();
+                return REPORTSALES_CONTENT_URI.buildUpon().appendPath(reportID).build();
+            }
+            case MATCH_TRANSACTION: {
+                SQLiteDatabase db = openHelper.getWritableDatabase();
+
+                db.beginTransaction();
+                db.insert(TABLE_TRANSACTION, null, values);
+                db.setTransactionSuccessful();
+                db.endTransaction();
+
+                String transId = values.getAsString(Transaction.TRANS_ID);
+
+                return TRANSACTION_CONTENT_URI.buildUpon().appendPath(transId).build();
             }
         }
 
@@ -226,6 +267,16 @@ public class ItemProvider extends ContentProvider {
 
                 return 0;
             }
+            case MATCH_TRANSACTION: {
+                SQLiteDatabase db = openHelper.getWritableDatabase();
+
+                db.beginTransaction();
+                db.delete(TABLE_TRANSACTION, selection, selectionArgs);
+                db.setTransactionSuccessful();
+                db.endTransaction();
+
+                return 0;
+            }
         }
 
         return 0;
@@ -250,6 +301,11 @@ public class ItemProvider extends ContentProvider {
                 SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 return db.update(TABLE_REPORTSALES, values, selection, selectionArgs);
+            }
+            case MATCH_TRANSACTION: {
+                SQLiteDatabase db = openHelper.getWritableDatabase();
+
+                return db.update(TABLE_TRANSACTION, values, selection, selectionArgs);
             }
         }
 

@@ -24,7 +24,7 @@ import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
-import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.Utils;
 
 import org.json.JSONObject;
@@ -209,84 +209,84 @@ public class MainActivity extends FragmentActivity {
         valuesI.put(Item.ITEM_IMAGE, "img_1");
         valuesI.put(Item.ITEM_CATEGORY, "Indonesian");
         valuesI.put(Item.ITEM_PRICE, "10000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI1 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Fu Yung Hai");
         valuesI.put(Item.ITEM_IMAGE, "img_2");
         valuesI.put(Item.ITEM_CATEGORY, "Chinese");
         valuesI.put(Item.ITEM_PRICE, "20000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI2 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Bim Bim Bap");
         valuesI.put(Item.ITEM_IMAGE, "img_3");
         valuesI.put(Item.ITEM_CATEGORY, "Korean");
         valuesI.put(Item.ITEM_PRICE, "30000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI3 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Sushi");
         valuesI.put(Item.ITEM_IMAGE, "img_4");
         valuesI.put(Item.ITEM_CATEGORY, "Japanese");
         valuesI.put(Item.ITEM_PRICE, "10000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI4 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Roti Prata");
         valuesI.put(Item.ITEM_IMAGE, "img_5");
         valuesI.put(Item.ITEM_CATEGORY, "Indian");
         valuesI.put(Item.ITEM_PRICE, "20000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI5 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Bistik Sapi");
         valuesI.put(Item.ITEM_IMAGE, "img_6");
         valuesI.put(Item.ITEM_CATEGORY, "Western");
         valuesI.put(Item.ITEM_PRICE, "30000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI6 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Es Kopyor");
         valuesI.put(Item.ITEM_IMAGE, "img_7");
         valuesI.put(Item.ITEM_CATEGORY, "Minuman");
         valuesI.put(Item.ITEM_PRICE, "10000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues valuesI7 = new ContentValues();
         valuesI.put(Item.ITEM_TITLE, "Jus Melon");
         valuesI.put(Item.ITEM_IMAGE, "img_8");
         valuesI.put(Item.ITEM_CATEGORY, "Minuman");
         valuesI.put(Item.ITEM_PRICE, "10000");
-        getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, valuesI);
+        getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, valuesI);
 
         ContentValues values = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Indonesian");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         ContentValues values1 = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Chinese");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         ContentValues values2 = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Japanese");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         ContentValues values3 = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Korean");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         ContentValues values4 = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Indian");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         ContentValues values5 = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Western");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         ContentValues values6 = new ContentValues();
         values.put(ItemGroup.ITEMGROUP_TITLE, "Minuman");
-        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
 
         int[] img = new int[] {R.drawable.img_1, R.drawable.img_2, R.drawable.img_3,
                 R.drawable.img_4, R.drawable.img_5, R.drawable.img_6,

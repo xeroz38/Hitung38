@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.ZhackProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -85,7 +85,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         ArrayList<String> list = null;
         Cursor cursor = null;
         try {
-            cursor = getContentResolver().query(ItemProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+            cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
 
@@ -119,15 +119,15 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
 
         if (isEdit) {
             values.put(Item.ITEM_IMAGE, imageBdl);
-            getContentResolver().update(ItemProvider.ITEM_CONTENT_URI, values, Item.ITEM_TITLE + "=?", new String[]{nameBdl});
+            getContentResolver().update(ZhackProvider.ITEM_CONTENT_URI, values, Item.ITEM_TITLE + "=?", new String[]{nameBdl});
         } else {
             values.put(Item.ITEM_IMAGE, imageName);
-            getContentResolver().insert(ItemProvider.ITEM_CONTENT_URI, values);
+            getContentResolver().insert(ZhackProvider.ITEM_CONTENT_URI, values);
         }
     }
 
     private boolean checkBarangExistInDB(String title) {
-        Cursor cursor = getContentResolver().query(ItemProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, Item.ITEM_TITLE + "=?", new String[]{title}, null);
+        Cursor cursor = getContentResolver().query(ZhackProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, Item.ITEM_TITLE + "=?", new String[]{title}, null);
         if(cursor.getCount() > 0){
             return true;
         }
@@ -178,7 +178,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
             }
             case R.id.delete_btn: {
                 if (nameBdl != null) {
-                    getContentResolver().delete(ItemProvider.ITEM_CONTENT_URI, Item.ITEM_TITLE + "=?",new String[]{nameBdl});
+                    getContentResolver().delete(ZhackProvider.ITEM_CONTENT_URI, Item.ITEM_TITLE + "=?",new String[]{nameBdl});
                 }
                 finish();
                 break;

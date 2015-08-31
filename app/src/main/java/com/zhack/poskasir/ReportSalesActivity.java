@@ -22,7 +22,7 @@ import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.Utils;
 
@@ -108,7 +108,7 @@ public class ReportSalesActivity extends Activity {
         ArrayList<ReportSales> list = null;
         Cursor cursor = null;
         try {
-            cursor = getContentResolver().query(ItemProvider.REPORTSALES_CONTENT_URI, ReportSales.QUERY_SHORT, null, null, null);
+            cursor = getContentResolver().query(ZhackProvider.REPORTSALES_CONTENT_URI, ReportSales.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int reportId = cursor.getColumnIndexOrThrow(ReportSales.ID);
                 int reportPrice = cursor.getColumnIndexOrThrow(ReportSales.PRICE);

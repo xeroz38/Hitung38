@@ -16,6 +16,7 @@ public class Constant {
     public static final String NOPD             = "nopd";
     public static final String RESTAURANT       = "restaurant";
     public static final String ADDRESS          = "address";
+    public static final String DATE             = "date";
     public static final String SPEEDORDER       = "speedorder";
 
     public static final String SPEEDORDER_PRICE = "speedorder_price";

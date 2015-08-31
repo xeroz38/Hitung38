@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhack.poskasir.model.ItemGroup;
-import com.zhack.poskasir.util.ItemProvider;
+import com.zhack.poskasir.util.ZhackProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,7 @@ public class MasterGroupActivity extends Activity {
         ArrayList<ItemGroup> list = null;
         Cursor cursor = null;
         try	{
-            cursor = getContentResolver().query(ItemProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+            cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
 
@@ -102,9 +102,9 @@ public class MasterGroupActivity extends Activity {
                     ContentValues values = new ContentValues();
                     values.put(ItemGroup.ITEMGROUP_TITLE, text.getText().toString());
                     if (content != null) {
-                        getContentResolver().update(ItemProvider.ITEMGROUP_CONTENT_URI, values, ItemGroup.ITEMGROUP_TITLE + "=?", new String[]{content});
+                        getContentResolver().update(ZhackProvider.ITEMGROUP_CONTENT_URI, values, ItemGroup.ITEMGROUP_TITLE + "=?", new String[]{content});
                     } else {
-                        getContentResolver().insert(ItemProvider.ITEMGROUP_CONTENT_URI, values);
+                        getContentResolver().insert(ZhackProvider.ITEMGROUP_CONTENT_URI, values);
                     }
 
                     mItemGroupData = getItemGroupListData();
