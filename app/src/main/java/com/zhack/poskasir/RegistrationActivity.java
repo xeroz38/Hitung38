@@ -106,22 +106,17 @@ public class RegistrationActivity extends Activity {
         dialog.setTitle(R.string.address);
 
         final EditText ip = (EditText) dialog.findViewById(R.id.ip_edit);
-        final EditText port = (EditText) dialog.findViewById(R.id.port_edit);
+        final Button saveBtn = (Button) dialog.findViewById(R.id.ok_btn);
 
-        Button saveBtn = (Button) dialog.findViewById(R.id.ok_btn);
+        ip.setText(getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE).getString(Constant.IP, ""));
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ip.getText().toString().trim().length() > 0) {
                     // Save sharepref ip address
                     SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
-                    if (port.getText().toString().trim().length() > 0) {
-                        sp.edit().putString(Constant.IP, ip.getText().toString() + ":" + port.getText().toString()).apply();
-                        Constant.MAIN_URL = "http://" + ip.getText().toString() + ":" + port.getText().toString();
-                    } else {
-                        sp.edit().putString(Constant.IP, ip.getText().toString()).apply();
-                        Constant.MAIN_URL = "http://" + ip.getText().toString();
-                    }
+                    sp.edit().putString(Constant.IP, ip.getText().toString()).apply();
+                    Constant.MAIN_URL = "http://" + ip.getText().toString();
 
                     dialog.dismiss();
                 } else {

@@ -33,5 +33,23 @@
             android:background="@drawable/main_bg_rounded"
             android:padding="5dp"
             android:text="@string/heartbeat" />
+
+        <Button
+            android:id="@+id/ipaddress_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/main_bg_rounded"
+            android:padding="5dp"
+            android:text="@string/ip" />
+
+        <Button
+            android:id="@+id/log_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/main_bg_rounded"
+            android:padding="5dp"
+            android:text="@string/log" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

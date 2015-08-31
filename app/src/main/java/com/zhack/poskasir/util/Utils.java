@@ -3,8 +3,13 @@ package com.zhack.poskasir.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.text.format.DateFormat;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -39,5 +44,15 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static void writeToFile(String data) {
+        try {
+            Writer fileWriter = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/poskasir/log", true));
+            fileWriter.append(data).append("\n");
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

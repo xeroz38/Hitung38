@@ -40,5 +40,5 @@
     <string name="no_paper">Kertas Habis</string>
     <string name="buff_fulled">Buffer Penuh</string>
     <string name="ip">IP</string>
-    <string name="port">Port</string>
+    <string name="log">Log</string>
 </resources>
