@@ -190,7 +190,7 @@ public class MainActivity extends FragmentActivity {
                 JSONObject json = new JSONObject();
                 json.put("imei", params[0]);
                 json.put("tipe", 1);
-                int responseCode = con.sendPost(Constant.URL_BEAT, json.toString());
+                int responseCode = con.sendPost(Constant.MAIN_URL + Constant.URL_BEAT, json.toString());
 
                 return responseCode;
             } catch (Exception e) {

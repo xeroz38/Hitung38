@@ -84,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:ems="15"
+                android:enabled="false"
                 android:gravity="center"
                 android:singleLine="true" />
         </LinearLayout>
@@ -105,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:ems="15"
+                android:enabled="false"
                 android:gravity="center"
                 android:maxLines="5" />
         </LinearLayout>
@@ -116,5 +118,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/main_bg_rounded"
+        android:enabled="false"
         android:text="@string/register" />
 </LinearLayout>

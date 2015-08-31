@@ -5,10 +5,10 @@ package com.zhack.poskasir.util;
  */
 public class Constant {
     public static String MAIN_URL               = "http://192.168.1.100:8080";
-    public static final String URL_NOPD_INFO    = MAIN_URL + "/api/nopd/";
-    public static final String URL_REG_IMEI     = MAIN_URL + "/api/device/add";
-    public static final String URL_BEAT         = MAIN_URL + "/api/transaction/alert";
-    public static final String URL_TRANS        = MAIN_URL + "/api/transaction/detail";
+    public static final String URL_NOPD_INFO    = "/api/nopd/";
+    public static final String URL_REG_IMEI     = "/api/device/add";
+    public static final String URL_BEAT         = "/api/transaction/alert";
+    public static final String URL_TRANS        = "/api/transaction/detail";
 
     public static final String ZHACK_SP         = "zhack_sp";
     public static final String IP               = "ip";

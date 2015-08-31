@@ -14,6 +14,8 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +56,28 @@ public class RegistrationActivity extends Activity {
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         mIMEIText.setText(telephonyManager.getDeviceId());
 
+        mNoPDText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 16) {
+                    if (Utils.isConnected(getApplicationContext())) {
+                        new VerifyNoPDTask(RegistrationActivity.this).execute(mNoPDText.getText().toString());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Koneksi bermasalah", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,10 +117,10 @@ public class RegistrationActivity extends Activity {
                     SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
                     if (port.getText().toString().trim().length() > 0) {
                         sp.edit().putString(Constant.IP, ip.getText().toString() + ":" + port.getText().toString()).apply();
-                        Constant.MAIN_URL = ip.getText().toString() + ":" + port.getText().toString();
+                        Constant.MAIN_URL = "http://" + ip.getText().toString() + ":" + port.getText().toString();
                     } else {
                         sp.edit().putString(Constant.IP, ip.getText().toString()).apply();
-                        Constant.MAIN_URL = ip.getText().toString();
+                        Constant.MAIN_URL = "http://" + ip.getText().toString();
                     }
 
                     dialog.dismiss();
@@ -106,6 +130,43 @@ public class RegistrationActivity extends Activity {
             }
         });
         dialog.show();
+    }
+
+    private class VerifyNoPDTask extends AsyncTask<String, Void, Integer> {
+
+        private ProgressDialog dialog;
+
+        public VerifyNoPDTask(Context context) {
+            dialog = new ProgressDialog(context);
+            dialog.setMessage("Loading");
+            dialog.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            // params[0] = nopd
+            HttpConnect con = new HttpConnect();
+            try {
+                return con.sendGet(Constant.MAIN_URL + Constant.URL_NOPD_INFO + params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return HttpURLConnection.HTTP_INTERNAL_ERROR;
+        }
+
+        @Override
+        protected void onPostExecute(Integer responseCode) {
+            super.onPostExecute(responseCode);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                mRegisterBtn.setEnabled(true);
+                mNoPDText.setEnabled(false);
+            } else {
+                Toast.makeText(getApplicationContext(), "NoPD Salah", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private class RegisterTask extends AsyncTask<String, Void, Integer> {
@@ -123,19 +184,13 @@ public class RegistrationActivity extends Activity {
             // params[0] = nopd, params[1] = imei
             HttpConnect con = new HttpConnect();
             try {
-                int responseCodeVerify = con.sendGet(Constant.URL_NOPD_INFO + params[0]);
-                if (responseCodeVerify == HttpURLConnection.HTTP_OK) {
-                    JSONObject json = new JSONObject();
-                    json.put("imei", params[1]);
-                    json.put("latitude", String.valueOf(latitude));
-                    json.put("longitude", String.valueOf(longitude));
-                    json.put("nopd", params[0]);
-                    int responseCodeReg = con.sendPost(Constant.URL_REG_IMEI, json.toString());
+                JSONObject json = new JSONObject();
+                json.put("imei", params[1]);
+                json.put("latitude", String.valueOf(latitude));
+                json.put("longitude", String.valueOf(longitude));
+                json.put("nopd", params[0]);
 
-                    if (responseCodeReg == HttpURLConnection.HTTP_OK) {
-                        return responseCodeReg;
-                    }
-                }
+                return con.sendPost(Constant.MAIN_URL + Constant.URL_REG_IMEI, json.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }

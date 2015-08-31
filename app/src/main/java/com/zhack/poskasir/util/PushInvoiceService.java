@@ -27,7 +27,7 @@ public class PushInvoiceService extends IntentService {
             json.put("pajak", intent.getStringExtra(Constant.TRAN_TAX));
             json.put("noStruk", intent.getStringExtra(Constant.TRAN_INVOICE));
             json.put("nopd", String.valueOf(intent.getLongExtra(Constant.NOPD, 0)));
-            int responseCode = con.sendPost(Constant.URL_TRANS, json.toString());
+            int responseCode = con.sendPost(Constant.MAIN_URL + Constant.URL_TRANS, json.toString());
 
             Log.e("PushInvoiceService", String.valueOf(responseCode));
         } catch (Exception e) {
