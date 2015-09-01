@@ -27,10 +27,10 @@ import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.PushInvoiceService;
 import com.zhack.poskasir.util.Utils;
+import com.zhack.poskasir.util.ZhackProvider;
 
 import org.json.JSONArray;
 
@@ -72,10 +72,15 @@ public class PointOfSalesDetailActivity extends Activity {
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     String timeMillis = String.valueOf(System.currentTimeMillis());
-                    // Insert SQLlite
+                    int counter = sharedPref.getInt(Constant.COUNT, 0);
+                    ++counter;
+                    sharedPref.edit().putInt(Constant.COUNT, counter).apply();
+                    String invoiceId = "N"
+                            + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-"
+                            + ("000" + counter).substring(String.valueOf(counter).length());
+                    // Insert to sqlite, N means Normal Order
                     insertReportSalesData(timeMillis);
                     // Push data through service
-                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + timeMillis.substring(9);
                     Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
                     intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
                     intService.putExtra(Constant.NOPD, sharedPref.getLong(Constant.NOPD, 0));

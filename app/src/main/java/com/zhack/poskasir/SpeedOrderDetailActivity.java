@@ -61,10 +61,15 @@ public class SpeedOrderDetailActivity extends Activity {
             public void onClick(View v) {
                 if (mPayEdit.getText().toString().trim().length() > 0 && Integer.parseInt(mPayEdit.getText().toString()) >= (totalPrice + (totalPrice / 10))) {
                     String timeMillis = String.valueOf(System.currentTimeMillis());
-                    // Insert to sqlite
+                    int counter = sharedPref.getInt(Constant.COUNT, 0);
+                    ++counter;
+                    sharedPref.edit().putInt(Constant.COUNT, counter).apply();
+                    String invoiceId = "S"
+                            + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-"
+                            + ("000" + counter).substring(String.valueOf(counter).length());
+                    // Insert to sqlite, S means Speed Order
                     insertReportSalesData(timeMillis);
                     // Push data through service
-                    String invoiceId = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + timeMillis.substring(9);
                     Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
                     intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
                     intService.putExtra(Constant.NOPD, sharedPref.getLong(Constant.NOPD, 0));

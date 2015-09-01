@@ -126,14 +126,6 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private boolean checkBarangExistInDB(String title) {
-        Cursor cursor = getContentResolver().query(ZhackProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, Item.ITEM_TITLE + "=?", new String[]{title}, null);
-        if(cursor.getCount() > 0){
-            return true;
-        }
-        return false;
-    }
-
     private void createDirectoryAndSaveFile(Bitmap imageToSave) {
         File direct = new File(Environment.getExternalStorageDirectory() + "/poskasir/img");
         if (!direct.exists()) {

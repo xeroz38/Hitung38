@@ -75,7 +75,7 @@ public class PointOfSalesActivity extends Activity {
                     mItemData = sortItemByGroupData(mItemGroupData.get(position).title);
                     mItemAdapter.notifyDataSetChanged();
                 } else {
-                    if (checkDataExist(mItemData.get(position))) {
+                    if (isItemExist(mItemData.get(position))) {
                         for (int i = 0; i < mPOSData.size(); i++) {
                             if (mPOSData.get(i).title.equals(mItemData.get(position).title)) {
                                 mPOSData.get(i).quantity++;
@@ -145,7 +145,7 @@ public class PointOfSalesActivity extends Activity {
         mTotalPriceText.setText(Utils.convertRp(totalPrice));
     }
 
-    private boolean checkDataExist(Item item) {
+    private boolean isItemExist(Item item) {
         for (POSData pos : mPOSData) {
             if (pos.title.equals(item.title)) {
                 return true;

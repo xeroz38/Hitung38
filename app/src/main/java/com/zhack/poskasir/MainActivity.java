@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -22,23 +23,21 @@ import android.widget.Toast;
 
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
+import com.zhack.poskasir.model.Transaction;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
-import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.Utils;
+import com.zhack.poskasir.util.ZhackProvider;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 
 public class MainActivity extends FragmentActivity {
@@ -89,16 +88,38 @@ public class MainActivity extends FragmentActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, new MainActivityFragment()).commit();
     }
 
+    private ArrayList<Transaction> getTransactionListData() {
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+        Cursor cursor = getContentResolver().query(ZhackProvider.TRANSACTION_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            int invoiceCol = cursor.getColumnIndexOrThrow(Transaction.TRANS_INVOICE);
+            int dateCol = cursor.getColumnIndexOrThrow(Transaction.TRANS_DATE);
+            int priceCol = cursor.getColumnIndexOrThrow(Transaction.TRANS_PRICE);
+            int taxCol = cursor.getColumnIndexOrThrow(Transaction.TRANS_TAX);
+
+            while (cursor.moveToNext()) {
+                Transaction transaction = new Transaction();
+                transaction.invoice = cursor.getString(invoiceCol);
+                transaction.date = cursor.getString(dateCol);
+                transaction.price = cursor.getString(priceCol);
+                transaction.tax = cursor.getString(taxCol);
+
+                list.add(transaction);
+            }
+            return list;
+        } else {
+            return list = new ArrayList<Transaction>();
+        }
+    }
+
     private void showLogDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.view_loglist_dialog);
         dialog.setTitle(R.string.log);
 
-        Utils.writeToFile("" + System.currentTimeMillis());
-
         final TextView logContent = (TextView) dialog.findViewById(R.id.content_text);
         final Button okBtn = (Button) dialog.findViewById(R.id.ok_btn);
-        logContent.setText(readFromFile());
+        logContent.setText(Utils.readFromFile());
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,31 +154,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
         dialog.show();
-    }
-
-    private String readFromFile() {
-        String logText = "";
-        try {
-            InputStream inputStream = new FileInputStream(Environment.getExternalStorageDirectory() + "/poskasir/log");
-            if (inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString).append("\n");
-                }
-                inputStream.close();
-                logText = stringBuilder.toString();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return logText;
     }
 
     private class HeartBeatTask extends AsyncTask<String, Void, Integer> {
