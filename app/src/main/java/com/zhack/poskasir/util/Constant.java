@@ -4,11 +4,11 @@ package com.zhack.poskasir.util;
  * Created by xeRoz on 7/30/2015.
  */
 public class Constant {
-    public static String MAIN_URL               = "http://192.168.1.100:8080";
-    public static final String URL_NOPD_INFO    = "/api/nopd/";
-    public static final String URL_REG_IMEI     = "/api/device/add";
-    public static final String URL_BEAT         = "/api/transaction/alert";
-    public static final String URL_TRANS        = "/api/transaction/detail";
+    public static String MAIN_URL               = "http://128.199.195.61:8085";
+    public static final String URL_NOPD_INFO    = "/restapi/api/nopd/";
+    public static final String URL_REG_IMEI     = "/restapi/api/device/add";
+    public static final String URL_BEAT         = "/restapi/api/transaction/alert";
+    public static final String URL_TRANS        = "/restapi/api/transaction/detail";
 
     public static final String ZHACK_SP         = "zhack_sp";
     public static final String IP               = "ip";

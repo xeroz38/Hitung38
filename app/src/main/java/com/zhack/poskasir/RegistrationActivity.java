@@ -81,18 +81,10 @@ public class RegistrationActivity extends Activity {
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mNoPDText.getText().toString().trim().length() != 16) {
-                    Toast.makeText(getApplicationContext(), "No PD harus 16 digit", Toast.LENGTH_SHORT).show();
-                } else if (mNoPDText.getText().toString().trim().length() < 1 ||
-                        mRestaurantText.getText().toString().trim().length() < 1 ||
-                        mAddressText.getText().toString().trim().length() < 1) {
-                    Toast.makeText(getApplicationContext(), "Harus diisi", Toast.LENGTH_SHORT).show();
+                if (Utils.isConnected(getApplicationContext())) {
+                    new RegisterTask(RegistrationActivity.this).execute(mNoPDText.getText().toString(), telephonyManager.getDeviceId());
                 } else {
-                    if (Utils.isConnected(getApplicationContext())) {
-                        new RegisterTask(RegistrationActivity.this).execute(mNoPDText.getText().toString(), telephonyManager.getDeviceId());
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Koneksi bermasalah", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(getApplicationContext(), "Koneksi bermasalah", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -129,6 +121,7 @@ public class RegistrationActivity extends Activity {
 
     private class VerifyNoPDTask extends AsyncTask<String, Void, Integer> {
 
+        private JSONObject jsonObj;
         private ProgressDialog dialog;
 
         public VerifyNoPDTask(Context context) {
@@ -142,7 +135,11 @@ public class RegistrationActivity extends Activity {
             // params[0] = nopd
             HttpConnect con = new HttpConnect();
             try {
-                return con.sendGet(Constant.MAIN_URL + Constant.URL_NOPD_INFO + params[0]);
+                String response = con.sendGet(Constant.MAIN_URL + Constant.URL_NOPD_INFO + params[0]);
+                if (response != null) {
+                    jsonObj = new JSONObject(response);
+                    return HttpURLConnection.HTTP_OK;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -152,14 +149,20 @@ public class RegistrationActivity extends Activity {
         @Override
         protected void onPostExecute(Integer responseCode) {
             super.onPostExecute(responseCode);
+            try {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    mRestaurantText.setText(jsonObj.getString("namaObjekUsaha"));
+                    mAddressText.setText(jsonObj.getString("alamat"));
+                    mRegisterBtn.setEnabled(true);
+                    mNoPDText.setEnabled(false);
+                } else if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                    Toast.makeText(getApplicationContext(), "NoPD Salah", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (dialog.isShowing()) {
                 dialog.dismiss();
-            }
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                mRegisterBtn.setEnabled(true);
-                mNoPDText.setEnabled(false);
-            } else {
-                Toast.makeText(getApplicationContext(), "NoPD Salah", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -185,6 +188,8 @@ public class RegistrationActivity extends Activity {
                 json.put("longitude", String.valueOf(longitude));
                 json.put("nopd", params[0]);
 
+                Log.i("HttpConnect", "" + json.toString());
+
                 return con.sendPost(Constant.MAIN_URL + Constant.URL_REG_IMEI, json.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -199,7 +204,17 @@ public class RegistrationActivity extends Activity {
                 dialog.dismiss();
             }
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                requestRegistrationStatus();
+                // Save info
+                SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
+                sp.edit().putString(Constant.IMEI, telephonyManager.getDeviceId()).apply();
+                sp.edit().putLong(Constant.NOPD, Long.parseLong(mNoPDText.getText().toString())).apply();
+                sp.edit().putString(Constant.RESTAURANT, mRestaurantText.getText().toString()).apply();
+                sp.edit().putString(Constant.ADDRESS, mAddressText.getText().toString()).apply();
+                // Start new activity
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), "Gagal", Toast.LENGTH_SHORT).show();
             }
@@ -233,19 +248,5 @@ public class RegistrationActivity extends Activity {
             }
             return null;
         }
-    }
-
-    private void requestRegistrationStatus() {
-        // Start new activity
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-        // Save info
-        SharedPreferences sp = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
-        sp.edit().putString(Constant.IMEI, telephonyManager.getDeviceId()).apply();
-        sp.edit().putLong(Constant.NOPD, Long.parseLong(mNoPDText.getText().toString())).apply();
-        sp.edit().putString(Constant.RESTAURANT, mRestaurantText.getText().toString()).apply();
-        sp.edit().putString(Constant.ADDRESS, mAddressText.getText().toString()).apply();
     }
 }
