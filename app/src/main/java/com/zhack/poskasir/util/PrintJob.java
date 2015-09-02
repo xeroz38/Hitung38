@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class PrintJob {
     private Invoice mInvoice;
     private SerialPrinter mSerialPrinter = SerialPrinter.GetSerialPrinter();;
     private WakeLock mLock;
+    private TelephonyManager telephonyManager;
 
     public PrintJob(Context context, Invoice invoice) {
         mContext = context;
@@ -36,8 +38,9 @@ public class PrintJob {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
         mLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "PrintJob");
+        telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         // Print Array List
         new WriteThread().start();
     }
@@ -71,6 +74,8 @@ public class PrintJob {
             mSerialPrinter.printString(mInvoice.address);
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("================================");
+            mSerialPrinter.printString("MESIN       : " + telephonyManager.getDeviceId());
+            mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("STRUK       : " + mInvoice.id);
             mSerialPrinter.sendLineFeed();
             mSerialPrinter.printString("TANGGAL     : " + mInvoice.date);

@@ -39,7 +39,7 @@ public class ReportSalesActivity extends Activity {
     private int postReport = 0;
     private ArrayList<ReportSales> mReportData;
     private POSAdapter mPOSAdapter;
-    private TextView mTotalPriceText, mReportPriceText, mPrintText;
+    private TextView mTotalPriceText, mReportPriceText, mPrintText, mVoidText;
     private ListView mReportList, mReportDetailList;
     private SharedPreferences sharedPref;
 
@@ -51,6 +51,7 @@ public class ReportSalesActivity extends Activity {
         mTotalPriceText = (TextView) findViewById(R.id.totalprice_text);
         mReportPriceText = (TextView) findViewById(R.id.subtotal_text);
         mPrintText = (TextView) findViewById(R.id.print_text);
+        mVoidText = (TextView) findViewById(R.id.void_text);
         mReportList = (ListView) findViewById(R.id.report_list);
         mReportDetailList = (ListView) findViewById(R.id.report_detail_list);
 
@@ -64,6 +65,9 @@ public class ReportSalesActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 calculateReportPrice(position);
                 postReport = position;
+                mPrintText.setVisibility(View.VISIBLE);
+                mVoidText.setVisibility(View.VISIBLE);
+                mReportDetailList.setVisibility(View.VISIBLE);
                 mPOSAdapter.notifyDataSetChanged();
             }
         });
