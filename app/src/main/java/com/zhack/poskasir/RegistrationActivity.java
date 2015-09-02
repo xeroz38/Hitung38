@@ -187,8 +187,7 @@ public class RegistrationActivity extends Activity {
                 json.put("latitude", String.valueOf(latitude));
                 json.put("longitude", String.valueOf(longitude));
                 json.put("nopd", params[0]);
-
-                Log.i("HttpConnect", "" + json.toString());
+                Log.i("RegistrationActivity", "JSON parameter: " + json.toString());
 
                 return con.sendPost(Constant.MAIN_URL + Constant.URL_REG_IMEI, json.toString());
             } catch (Exception e) {

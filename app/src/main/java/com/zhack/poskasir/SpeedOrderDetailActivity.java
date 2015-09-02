@@ -66,6 +66,7 @@ public class SpeedOrderDetailActivity extends Activity {
                     sharedPref.edit().putInt(Constant.COUNT, counter).apply();
                     String invoiceId = "S"
                             + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-"
+                            + Utils.convertDate(timeMillis, "ddMMyy") + "-"
                             + ("000" + counter).substring(String.valueOf(counter).length());
                     // Insert to sqlite, S means Speed Order
                     insertReportSalesData(timeMillis);

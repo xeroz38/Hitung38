@@ -44,7 +44,6 @@ public class PushInvoiceService extends IntentService {
                 if (isInvoiceExist(intent.getStringExtra(Constant.TRAN_INVOICE))) {
                     getContentResolver().delete(ZhackProvider.TRANSACTION_CONTENT_URI,
                             Transaction.TRANS_INVOICE + "=?", new String[]{intent.getStringExtra(Constant.TRAN_INVOICE)});
-                    Log.e("PushInvoiceService", "delete Transaction " + intent.getStringExtra(Constant.TRAN_INVOICE));
                 }
             } else {
                 Utils.writeToFile(Utils.convertDate(intent.getStringExtra(Constant.DATE), "dd-MM-yyyy hh:mm:ss") +
@@ -59,10 +58,10 @@ public class PushInvoiceService extends IntentService {
                     values.put(Transaction.TRANS_PRICE, intent.getStringExtra(Constant.TRAN_PRICE));
                     values.put(Transaction.TRANS_TAX, intent.getStringExtra(Constant.TRAN_TAX));
                     getContentResolver().insert(ZhackProvider.TRANSACTION_CONTENT_URI, values);
-                    Log.e("PushInvoiceService", "insert Transaction " + intent.getStringExtra(Constant.TRAN_INVOICE));
                 }
             }
-            Log.e("PushInvoiceService", String.valueOf(responseCode));
+            Log.i("PushInvoiceService", "Url:" + Constant.MAIN_URL + Constant.URL_TRANS +
+                    " Response:" + responseCode + "\nJSON: " + json);
         } catch (Exception e) {
             e.printStackTrace();
         }

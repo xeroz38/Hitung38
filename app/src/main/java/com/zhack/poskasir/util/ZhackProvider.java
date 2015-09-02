@@ -16,10 +16,10 @@ import com.zhack.poskasir.model.Transaction;
 
 public class ZhackProvider extends ContentProvider {
 
-    public static final String TABLE_ITEM           = "item_data";
-    public static final String TABLE_ITEMGROUP      = "itemgroup_data";
-    public static final String TABLE_REPORTSALES    = "reportsales_data";
-    public static final String TABLE_TRANSACTION    = "transaction";
+    public static final String TABLE_ITEM           = "item_table";
+    public static final String TABLE_ITEMGROUP      = "itemgroup_table";
+    public static final String TABLE_REPORTSALES    = "reportsales_table";
+    public static final String TABLE_TRANSACTION    = "transaction_table";
 
     public static final String CONTENT_AUTHORITY = "com.zhack.poskasir";
     public static final Uri ITEM_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY).buildUpon().appendPath(TABLE_ITEM).build();

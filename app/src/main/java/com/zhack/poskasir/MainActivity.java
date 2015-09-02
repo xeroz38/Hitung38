@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Set IP from sharedPref
-        Constant.MAIN_URL = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE).getString(Constant.IP, "");
+        Constant.MAIN_URL = "http://" + getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE).getString(Constant.IP, "");
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mLeftLayout = (LinearLayout) findViewById(R.id.left_drawer);
@@ -174,25 +174,30 @@ public class MainActivity extends FragmentActivity {
                 JSONObject json = new JSONObject();
                 json.put("imei", params[0]);
                 json.put("tipe", 1);
-                int responseCode = con.sendPost(Constant.MAIN_URL + Constant.URL_BEAT, json.toString());
 
-                return responseCode;
+                return con.sendPost(Constant.MAIN_URL + Constant.URL_BEAT, json.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return HttpURLConnection.HTTP_INTERNAL_ERROR;
+            return null;
         }
 
         @Override
         protected void onPostExecute(Integer responseCode) {
             super.onPostExecute(responseCode);
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
             if (responseCode == HttpURLConnection.HTTP_OK) {
+                Utils.writeToFile(Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd-MM-yyyy hh:mm:ss") +
+                        " " + "Alert" +
+                        " " + "SUCCESS");
                 Toast.makeText(getApplicationContext(), "Sukses", Toast.LENGTH_SHORT).show();
             } else {
+                Utils.writeToFile(Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd-MM-yyyy hh:mm:ss") +
+                        " " + "Alert" +
+                        " " + "FAIL");
                 Toast.makeText(getApplicationContext(), "Gagal", Toast.LENGTH_SHORT).show();
+            }
+            if (dialog.isShowing()) {
+                dialog.dismiss();
             }
         }
     }

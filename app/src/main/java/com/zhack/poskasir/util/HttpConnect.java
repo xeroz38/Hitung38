@@ -36,28 +36,25 @@ public class HttpConnect {
         return null;
     }
 
-    public int sendPost(String url, String params) throws Exception {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setDoOutput(true);
+    public int sendPost(String url, String params) {
+        try {
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setConnectTimeout(15000);
+            con.setDoOutput(true);
 
-        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-        out.writeBytes(params);
-        out.flush();
-        out.close();
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(params);
+            out.flush();
+            out.close();
+            Log.i("HttpConnect", "Url:" + url + " Response:" + con.getResponseCode());
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            return con.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        in.close();
-        Log.i("HttpConnect", "Url:" + url + " Response:" + con.getResponseCode() + "\nJSON: " + response);
-
-        return con.getResponseCode();
+        return HttpURLConnection.HTTP_INTERNAL_ERROR;
     }
 }
