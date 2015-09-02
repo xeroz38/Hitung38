@@ -50,9 +50,11 @@ public class ZhackProvider extends ContentProvider {
                     + "UNIQUE (" + ItemGroup.ITEMGROUP_ID + ") ON CONFLICT REPLACE)");
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_REPORTSALES + " ("
                     + ReportSales.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + ReportSales.INVOICE + " TEXT,"
                     + ReportSales.PRICE + " INTEGER,"
                     + ReportSales.PAY + " INTEGER,"
                     + ReportSales.DATE + " TEXT,"
+                    + ReportSales.STATUS + " TEXT,"
                     + ReportSales.POS_DATA + " TEXT,"
                     + "UNIQUE (" + ReportSales.ID + ") ON CONFLICT REPLACE)");
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRANSACTION + " ("
@@ -82,9 +84,11 @@ public class ZhackProvider extends ContentProvider {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_REPORTSALES);
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_REPORTSALES + " ("
                     + ReportSales.ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + ReportSales.INVOICE + " TEXT,"
                     + ReportSales.PRICE + " INTEGER,"
                     + ReportSales.PAY + " INTEGER,"
                     + ReportSales.DATE + " TEXT,"
+                    + ReportSales.STATUS + " TEXT,"
                     + ReportSales.POS_DATA + " TEXT,"
                     + "UNIQUE (" + ReportSales.ID + ") ON CONFLICT REPLACE)");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSACTION);

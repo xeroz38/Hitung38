@@ -80,7 +80,7 @@ public class PointOfSalesDetailActivity extends Activity {
                             + Utils.convertDate(timeMillis, "ddMMyy") + "-"
                             + ("000" + counter).substring(String.valueOf(counter).length());
                     // Insert to sqlite, N means Normal Order
-                    insertReportSalesData(timeMillis);
+                    insertReportSalesData(timeMillis, invoiceId);
                     // Push data through service
                     Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
                     intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
@@ -139,7 +139,7 @@ public class PointOfSalesDetailActivity extends Activity {
     }
 
 
-    private void insertReportSalesData(String timeMillis) {
+    private void insertReportSalesData(String timeMillis, String invoiceId) {
         int totalPrice = 0;
         for (POSData pos : mPOSData) {
             totalPrice += pos.quantity * pos.price;
@@ -151,9 +151,11 @@ public class PointOfSalesDetailActivity extends Activity {
         }
 
         ContentValues values = new ContentValues();
+        values.put(ReportSales.INVOICE, invoiceId);
         values.put(ReportSales.PRICE, totalPrice);
         values.put(ReportSales.PAY, Integer.parseInt(mPayEdit.getText().toString()));
         values.put(ReportSales.DATE, timeMillis);
+        values.put(ReportSales.STATUS, "OK");
         values.put(ReportSales.POS_DATA, jsonArr.toString());
 
         getContentResolver().insert(ZhackProvider.REPORTSALES_CONTENT_URI, values);

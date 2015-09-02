@@ -41,4 +41,5 @@
     <string name="buff_fulled">Buffer Penuh</string>
     <string name="ip">IP</string>
     <string name="log">Log</string>
+    <string name="scheduler">Scheduler</string>
 </resources>

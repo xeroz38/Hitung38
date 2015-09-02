@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,7 @@ import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.Transaction;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.HttpConnect;
+import com.zhack.poskasir.util.PushInvoiceService;
 import com.zhack.poskasir.util.Utils;
 import com.zhack.poskasir.util.ZhackProvider;
 
@@ -44,7 +47,7 @@ public class MainActivity extends FragmentActivity {
 
     private DrawerLayout mDrawerLayout;
     private LinearLayout mLeftLayout;
-    private Button mAddDummyBtn, mHeartBeatBtn, mIpBtn, mLogBtn;
+    private Button mAddDummyBtn, mHeartBeatBtn, mSchedulerBtn, mIpBtn, mLogBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class MainActivity extends FragmentActivity {
         mLeftLayout = (LinearLayout) findViewById(R.id.left_drawer);
         mAddDummyBtn = (Button) findViewById(R.id.add_btn);
         mHeartBeatBtn = (Button) findViewById(R.id.heartbeat_btn);
+        mSchedulerBtn = (Button) findViewById(R.id.scheduler_btn);
         mIpBtn = (Button) findViewById(R.id.ipaddress_btn);
         mLogBtn = (Button) findViewById(R.id.log_btn);
         mHeartBeatBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +73,25 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 addDummyData();
+            }
+        });
+        mSchedulerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPref = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
+                ArrayList<Transaction> transData = getTransactionListData();
+                for (Transaction trans : transData) {
+                    Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
+                    intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
+                    intService.putExtra(Constant.NOPD, sharedPref.getLong(Constant.NOPD, 0));
+                    intService.putExtra(Constant.DATE, trans.date);
+                    intService.putExtra(Constant.TRAN_INVOICE, trans.invoice);
+                    intService.putExtra(Constant.TRAN_PRICE, trans.price);
+                    intService.putExtra(Constant.TRAN_TAX, trans.tax);
+                    startService(intService);
+                    Log.i("MainActivity", "Start service scheduler " + trans.invoice + " " + trans.date);
+                }
+                Log.i("MainActivity", "Array Transaction size : " + transData.size());
             }
         });
         mIpBtn.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +113,7 @@ public class MainActivity extends FragmentActivity {
 
     private ArrayList<Transaction> getTransactionListData() {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
-        Cursor cursor = getContentResolver().query(ZhackProvider.TRANSACTION_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
+        Cursor cursor = getContentResolver().query(ZhackProvider.TRANSACTION_CONTENT_URI, Transaction.QUERY_SHORT, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             int invoiceCol = cursor.getColumnIndexOrThrow(Transaction.TRANS_INVOICE);
             int dateCol = cursor.getColumnIndexOrThrow(Transaction.TRANS_DATE);

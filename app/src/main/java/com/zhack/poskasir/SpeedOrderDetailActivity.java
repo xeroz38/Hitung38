@@ -69,7 +69,7 @@ public class SpeedOrderDetailActivity extends Activity {
                             + Utils.convertDate(timeMillis, "ddMMyy") + "-"
                             + ("000" + counter).substring(String.valueOf(counter).length());
                     // Insert to sqlite, S means Speed Order
-                    insertReportSalesData(timeMillis);
+                    insertReportSalesData(timeMillis, invoiceId);
                     // Push data through service
                     Intent intService = new Intent(getApplicationContext(), PushInvoiceService.class);
                     intService.putExtra(Constant.IMEI, sharedPref.getString(Constant.IMEI, ""));
@@ -118,7 +118,7 @@ public class SpeedOrderDetailActivity extends Activity {
         mTotalPriceText.setText(Utils.convertRp((int) (totalPrice + (totalPrice / 10))));
     }
 
-    private void insertReportSalesData(String timeMillis) {
+    private void insertReportSalesData(String timeMillis, String invoiceId) {
         // Speed Order info
         mPOSData = new ArrayList<POSData>();
         POSData pos = new POSData();
@@ -136,9 +136,11 @@ public class SpeedOrderDetailActivity extends Activity {
 
         // Content SQLite
         ContentValues values = new ContentValues();
+        values.put(ReportSales.INVOICE, invoiceId);
         values.put(ReportSales.PRICE, totalPrice);
         values.put(ReportSales.PAY, Integer.parseInt(mPayEdit.getText().toString()));
         values.put(ReportSales.DATE, timeMillis);
+        values.put(ReportSales.STATUS, "OK");
         values.put(ReportSales.POS_DATA, jsonArr.toString());
         getContentResolver().insert(ZhackProvider.REPORTSALES_CONTENT_URI, values);
     }

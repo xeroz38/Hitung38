@@ -22,9 +22,9 @@ import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.Utils;
+import com.zhack.poskasir.util.ZhackProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,18 +111,22 @@ public class ReportSalesActivity extends Activity {
             cursor = getContentResolver().query(ZhackProvider.REPORTSALES_CONTENT_URI, ReportSales.QUERY_SHORT, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 int reportId = cursor.getColumnIndexOrThrow(ReportSales.ID);
+                int reportInvoice = cursor.getColumnIndexOrThrow(ReportSales.INVOICE);
                 int reportPrice = cursor.getColumnIndexOrThrow(ReportSales.PRICE);
                 int reportPay = cursor.getColumnIndexOrThrow(ReportSales.PAY);
                 int reportDate = cursor.getColumnIndexOrThrow(ReportSales.DATE);
+                int reportStatus = cursor.getColumnIndexOrThrow(ReportSales.STATUS);
                 int reportPOSData = cursor.getColumnIndexOrThrow(ReportSales.POS_DATA);
 
                 list = new ArrayList<ReportSales>(cursor.getCount());
                 while (cursor.moveToNext()) {
                     ReportSales report = new ReportSales();
                     report.id = cursor.getString(reportId);
+                    report.invoice = cursor.getString(reportInvoice);
                     report.price = cursor.getInt(reportPrice);
                     report.pay = cursor.getInt(reportPay);
                     report.date = cursor.getString(reportDate);
+                    report.status = cursor.getString(reportStatus);
 
                     if (cursor.getString(reportPOSData).equals(Constant.SPEEDORDER)) {
                         report.posData = new ArrayList<POSData>();
@@ -158,8 +162,10 @@ public class ReportSalesActivity extends Activity {
 
         public class ViewHolder {
             public TextView id;
+            public TextView invoice;
             public TextView price;
             public TextView date;
+            public TextView status;
         }
 
         @Override
@@ -171,15 +177,19 @@ public class ReportSalesActivity extends Activity {
                 // configure view holder
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.id = (TextView) rowView.findViewById(R.id.id_text);
+                viewHolder.invoice = (TextView) rowView.findViewById(R.id.invoice_text);
                 viewHolder.price = (TextView) rowView.findViewById(R.id.price_text);
                 viewHolder.date = (TextView) rowView.findViewById(R.id.date_text);
+                viewHolder.status = (TextView) rowView.findViewById(R.id.status_text);
                 rowView.setTag(viewHolder);
             }
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
             holder.id.setText(mReportData.get(position).id);
+            holder.invoice.setText(mReportData.get(position).invoice);
             holder.price.setText(Utils.convertRp(mReportData.get(position).price));
             holder.date.setText(Utils.convertDate(mReportData.get(position).date, "dd/MM/yyyy hh:mm:ss"));
+            holder.status.setText(mReportData.get(position).status);
 
             return rowView;
         }
@@ -225,11 +235,15 @@ public class ReportSalesActivity extends Activity {
             }
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
+            if (!mReportData.get(postReport).posData.get(position).image.equals("")) {
+                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
+                        + "/poskasir/img/" + mReportData.get(postReport).posData.get(position).image);
+                holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
+                holder.image.setImageBitmap(bitmap);
+            } else {
+                holder.image.setLayoutParams(new LinearLayout.LayoutParams(0, 75));
+            }
             holder.title.setText(mReportData.get(postReport).posData.get(position).title);
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                    + "/poskasir/img/" + mReportData.get(postReport).posData.get(position).image);
-            holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
-            holder.image.setImageBitmap(bitmap);
             holder.quantity.setText(String.valueOf(mReportData.get(postReport).posData.get(position).quantity));
             holder.price.setText(Utils.convertRp(mReportData.get(postReport).posData.get(position).price));
 
