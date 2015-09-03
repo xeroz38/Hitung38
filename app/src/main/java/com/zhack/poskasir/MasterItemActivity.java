@@ -2,6 +2,7 @@ package com.zhack.poskasir;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,12 @@ public class MasterItemActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        if (isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         setContentView(R.layout.activity_master_item);
 
         mAddItemBtn = (Button) findViewById(R.id.add_item_btn);
@@ -78,31 +85,28 @@ public class MasterItemActivity extends Activity {
     }
 
     private ArrayList<Item> getItemListData() {
-        ArrayList<Item> list = null;
-        Cursor cursor = null;
-        try	{
-            cursor = getContentResolver().query(ZhackProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
-            if (cursor != null && cursor.getCount() > 0) {
-                int itemTitle = cursor.getColumnIndexOrThrow(Item.ITEM_TITLE);
-                int itemImage = cursor.getColumnIndexOrThrow(Item.ITEM_IMAGE);
-                int itemCategory = cursor.getColumnIndexOrThrow(Item.ITEM_CATEGORY);
-                int itemPrice = cursor.getColumnIndexOrThrow(Item.ITEM_PRICE);
+        ArrayList<Item> list = new ArrayList<Item>();
+        Cursor cursor = getContentResolver().query(ZhackProvider.ITEM_CONTENT_URI, Item.QUERY_SHORT, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            int itemTitle = cursor.getColumnIndexOrThrow(Item.ITEM_TITLE);
+            int itemImage = cursor.getColumnIndexOrThrow(Item.ITEM_IMAGE);
+            int itemCategory = cursor.getColumnIndexOrThrow(Item.ITEM_CATEGORY);
+            int itemPrice = cursor.getColumnIndexOrThrow(Item.ITEM_PRICE);
 
-                list = new ArrayList<Item>(cursor.getCount());
-                while (cursor.moveToNext()) {
-                    Item item = new Item();
-                    item.title = cursor.getString(itemTitle);
-                    item.image = cursor.getString(itemImage);
-                    item.category = cursor.getString(itemCategory);
-                    item.price = cursor.getString(itemPrice);
+            list = new ArrayList<Item>(cursor.getCount());
+            while (cursor.moveToNext()) {
+                Item item = new Item();
+                item.title = cursor.getString(itemTitle);
+                item.image = cursor.getString(itemImage);
+                item.category = cursor.getString(itemCategory);
+                item.price = cursor.getString(itemPrice);
 
-                    list.add(item);
-                }
-                return list;
-            } else {
-                return list = new ArrayList<Item>();
+                list.add(item);
             }
-        } finally { }
+            return list;
+        } else {
+            return list;
+        }
     }
 
     private class ItemAdapter extends BaseAdapter {

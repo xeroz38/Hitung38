@@ -10,7 +10,7 @@
     <!-- The navigation drawer -->
     <LinearLayout
         android:id="@+id/left_drawer"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@android:color/darker_gray"
@@ -20,45 +20,45 @@
             android:id="@+id/add_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/q5"
             android:background="@drawable/main_bg_rounded"
-            android:padding="5dp"
+            android:padding="@dimen/q5"
             android:text="@string/add_item" />
 
         <Button
             android:id="@+id/heartbeat_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/q5"
             android:background="@drawable/main_bg_rounded"
-            android:padding="5dp"
+            android:padding="@dimen/q5"
             android:text="@string/heartbeat" />
 
         <Button
             android:id="@+id/scheduler_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/q5"
             android:background="@drawable/main_bg_rounded"
-            android:padding="5dp"
+            android:padding="@dimen/q5"
             android:text="@string/scheduler" />
 
         <Button
             android:id="@+id/ipaddress_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/q5"
             android:background="@drawable/main_bg_rounded"
-            android:padding="5dp"
+            android:padding="@dimen/q5"
             android:text="@string/ip" />
 
         <Button
             android:id="@+id/log_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/q5"
             android:background="@drawable/main_bg_rounded"
-            android:padding="5dp"
+            android:padding="@dimen/q5"
             android:text="@string/log" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

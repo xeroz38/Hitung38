@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivityFragment">
+    android:orientation="vertical">
 
     <include layout="@layout/view_header" />
 
@@ -11,7 +9,7 @@
         android:id="@+id/itemgroup_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/q10"
         android:background="@drawable/main_bg_rounded" />
 
 </LinearLayout>

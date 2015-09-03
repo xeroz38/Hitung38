@@ -3,6 +3,7 @@ package com.zhack.poskasir;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -46,6 +47,12 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        if (isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         setContentView(R.layout.activity_master_item_detail);
 
         mItemImg = (ImageView) findViewById(R.id.item_image);
@@ -82,22 +89,18 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
     }
 
     private ArrayList<String> getItemGroupListData() {
-        ArrayList<String> list = null;
-        Cursor cursor = null;
-        try {
-            cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
-            if (cursor != null && cursor.getCount() > 0) {
-                int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
+        ArrayList<String> list = new ArrayList<String>();
+        Cursor cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
 
-                list = new ArrayList<String>(cursor.getCount());
-                while (cursor.moveToNext()) {
-                    list.add(cursor.getString(itemTitle));
-                }
-                return list;
-            } else {
-                return list = new ArrayList<String>();
+            list = new ArrayList<String>(cursor.getCount());
+            while (cursor.moveToNext()) {
+                list.add(cursor.getString(itemTitle));
             }
-        } finally {
+            return list;
+        } else {
+            return list;
         }
     }
 

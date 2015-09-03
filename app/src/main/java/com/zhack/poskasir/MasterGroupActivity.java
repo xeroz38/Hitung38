@@ -3,6 +3,7 @@ package com.zhack.poskasir;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +34,12 @@ public class MasterGroupActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        if (isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         setContentView(R.layout.activity_master_itemgroup);
 
         mItemGroupList = (ListView) findViewById(R.id.itemgroup_list);
@@ -58,25 +65,22 @@ public class MasterGroupActivity extends Activity {
     }
 
     private ArrayList<ItemGroup> getItemGroupListData() {
-        ArrayList<ItemGroup> list = null;
-        Cursor cursor = null;
-        try	{
-            cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
-            if (cursor != null && cursor.getCount() > 0) {
-                int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
+        ArrayList<ItemGroup> list = new ArrayList<ItemGroup>();
+        Cursor cursor = getContentResolver().query(ZhackProvider.ITEMGROUP_CONTENT_URI, ItemGroup.QUERY_SHORT, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            int itemTitle = cursor.getColumnIndexOrThrow(ItemGroup.ITEMGROUP_TITLE);
 
-                list = new ArrayList<ItemGroup>(cursor.getCount());
-                while (cursor.moveToNext()) {
-                    ItemGroup itemGroup = new ItemGroup();
-                    itemGroup.title = cursor.getString(itemTitle);
+            list = new ArrayList<ItemGroup>(cursor.getCount());
+            while (cursor.moveToNext()) {
+                ItemGroup itemGroup = new ItemGroup();
+                itemGroup.title = cursor.getString(itemTitle);
 
-                    list.add(itemGroup);
-                }
-                return list;
-            } else {
-                return list = new ArrayList<ItemGroup>();
+                list.add(itemGroup);
             }
-        } finally { }
+            return list;
+        } else {
+            return list;
+        }
     }
 
     private void showDialog(final String content) {
