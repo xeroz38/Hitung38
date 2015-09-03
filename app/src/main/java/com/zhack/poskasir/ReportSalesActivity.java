@@ -1,6 +1,7 @@
 package com.zhack.poskasir;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -38,6 +39,7 @@ public class ReportSalesActivity extends Activity {
 
     private int postReport = 0;
     private ArrayList<ReportSales> mReportData;
+    private ReportAdapter mReportAdapter;
     private POSAdapter mPOSAdapter;
     private TextView mTotalPriceText, mReportPriceText, mPrintText, mVoidText;
     private ListView mReportList, mReportDetailList;
@@ -57,8 +59,9 @@ public class ReportSalesActivity extends Activity {
 
         sharedPref = getSharedPreferences(Constant.ZHACK_SP, Context.MODE_PRIVATE);
         mReportData = getReportSalesListData();
-        mReportList.setAdapter(new ReportAdapter());
+        mReportAdapter = new ReportAdapter();
         mPOSAdapter = new POSAdapter();
+        mReportList.setAdapter(mReportAdapter);
         mReportDetailList.setAdapter(mPOSAdapter);
         mReportList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,6 +70,7 @@ public class ReportSalesActivity extends Activity {
                 postReport = position;
                 mPrintText.setVisibility(View.VISIBLE);
                 mVoidText.setVisibility(View.VISIBLE);
+                mReportPriceText.setVisibility(View.VISIBLE);
                 mReportDetailList.setVisibility(View.VISIBLE);
                 mPOSAdapter.notifyDataSetChanged();
             }
@@ -84,6 +88,18 @@ public class ReportSalesActivity extends Activity {
                     invoice.posData = mReportData.get(postReport).posData;
                     new PrintJob(getApplicationContext(), invoice);
                 }
+            }
+        });
+        mVoidText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContentValues values = new ContentValues();
+                values.put(ReportSales.STATUS, "Batal");
+                getContentResolver().update(ZhackProvider.REPORTSALES_CONTENT_URI,
+                        values, ReportSales.ID + "=?", new String[]{mReportData.get(postReport).id});
+
+                mReportData = getReportSalesListData();
+                mReportAdapter.notifyDataSetChanged();
             }
         });
         calculateTotalPrice();
