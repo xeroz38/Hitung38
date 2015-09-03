@@ -5,158 +5,138 @@
 
     <include layout="@layout/view_header" />
 
+    <ListView
+        android:id="@+id/pos_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/q5"
+        android:layout_weight="1"
+        android:background="@drawable/main_bg_rounded"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:padding="@dimen/q5">
 
-        <ListView
-            android:id="@+id/pos_list"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight=".5"
-            android:background="@drawable/main_bg_rounded"
-            android:cacheColorHint="@android:color/transparent"
-            android:listSelector="@android:color/transparent" />
+            android:text="@string/subtotal"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text21" />
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/subprice_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/subtotal"
-                    android:textColor="@android:color/black"
-                    android:textSize="22dp" />
-
-                <TextView
-                    android:id="@+id/subprice_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="@string/totalprice"
-                    android:textSize="22dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tax"
-                    android:textColor="@android:color/black"
-                    android:textSize="22dp" />
-
-                <TextView
-                    android:id="@+id/taxprice_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="@string/totalprice"
-                    android:textSize="22dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/total"
-                    android:textColor="@android:color/black"
-                    android:textSize="22dp" />
-
-                <TextView
-                    android:id="@+id/totalprice_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="@string/totalprice"
-                    android:textSize="22dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/pay"
-                    android:textColor="@android:color/black"
-                    android:textSize="22dp" />
-
-                <EditText
-                    android:id="@+id/payprice_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="25"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:textSize="22dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:padding="5dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/change"
-                    android:textColor="@android:color/black"
-                    android:textSize="22dp" />
-
-                <TextView
-                    android:id="@+id/changeprice_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="@string/totalprice"
-                    android:textSize="22dp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/done_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:text="@string/done" />
-        </LinearLayout>
+            android:gravity="right"
+            android:text="@string/totalprice"
+            android:textSize="@dimen/text21" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:padding="@dimen/q5">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tax"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text21" />
+
+        <TextView
+            android:id="@+id/taxprice_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/totalprice"
+            android:textSize="@dimen/text21" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:padding="@dimen/q5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text21" />
+
+        <TextView
+            android:id="@+id/totalprice_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/totalprice"
+            android:textSize="@dimen/text21" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:padding="@dimen/q5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/pay"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text21" />
+
+        <EditText
+            android:id="@+id/payprice_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="25"
+            android:gravity="center"
+            android:inputType="number"
+            android:textSize="@dimen/text21" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:padding="@dimen/q5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text21" />
+
+        <TextView
+            android:id="@+id/changeprice_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="@string/totalprice"
+            android:textSize="@dimen/text21" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/done_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:text="@string/done" />
 </LinearLayout>

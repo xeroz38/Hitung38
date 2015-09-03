@@ -35,21 +35,15 @@
         <activity
             android:name=".PointOfSalesActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".PointOfSalesDetailActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".PointOfSalesDetailActivity" />
         <activity
             android:name=".ReportActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ReportSalesActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".SpeedOrderActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".SpeedOrderDetailActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".SpeedOrderActivity" />
+        <activity android:name=".SpeedOrderDetailActivity" />
 
         <provider
             android:name=".util.ZhackProvider"

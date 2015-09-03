@@ -11,6 +11,8 @@
     <dimen name="q10">10dp</dimen>
     <dimen name="q50">50dp</dimen>
     <dimen name="q80">80dp</dimen>
+    <dimen name="text50">50dp</dimen>
+    <dimen name="text30">30dp</dimen>
     <dimen name="text24">24dp</dimen>
     <dimen name="text21">21dp</dimen>
     <dimen name="text18">18dp</dimen>

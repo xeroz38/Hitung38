@@ -18,7 +18,7 @@ import com.zhack.poskasir.util.Constant;
 /**
  * A placeholder fragment containing a main view.
  */
-public class MainActivityFragment extends Fragment implements View.OnClickListener {
+public class MainFragment extends Fragment implements View.OnClickListener {
 
     private TextView mNoPDText, mRestaurantText;
     private Button mMasterBtn, mPosBtn, mSpeedOrderBtn, mReportBtn;
