@@ -1,2 +1,2 @@
-# POSKasir
-Laporan untuk kasir POS
+# Hitungan
+Laporan untuk hitung
