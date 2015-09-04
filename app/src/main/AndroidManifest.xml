@@ -35,9 +35,8 @@
             android:screenOrientation="landscape" />
         <activity android:name=".PointOfSalesDetailActivity" />
         <activity android:name=".ReportActivity" />
-        <activity
-            android:name=".ReportSalesActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".ReportSalesActivity" />
+        <activity android:name=".ReportSalesDetailActivity" />
         <activity android:name=".SpeedOrderActivity" />
         <activity android:name=".SpeedOrderDetailActivity" />
 
