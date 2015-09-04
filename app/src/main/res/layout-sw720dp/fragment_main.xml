@@ -27,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/q10"
-            android:background="@drawable/main_bg_rounded"
             android:orientation="vertical"
             android:padding="@dimen/q10">
 
@@ -36,6 +35,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/q10"
+                android:shadowColor="@android:color/white"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text21" />
 
@@ -43,6 +46,10 @@
                 android:id="@+id/restaurant_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:shadowColor="@android:color/white"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text21" />
         </LinearLayout>

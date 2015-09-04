@@ -25,9 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegistrationActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".RegistrationActivity" />
         <activity android:name=".MasterActivity" />
         <activity android:name=".MasterItemActivity" />
         <activity android:name=".MasterItemDetailActivity" />
@@ -36,9 +34,7 @@
             android:name=".PointOfSalesActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".PointOfSalesDetailActivity" />
-        <activity
-            android:name=".ReportActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".ReportActivity" />
         <activity
             android:name=".ReportSalesActivity"
             android:screenOrientation="landscape" />

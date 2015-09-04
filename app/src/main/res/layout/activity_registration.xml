@@ -6,11 +6,12 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q10"
         android:background="@drawable/main_bg_rounded"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/q10">
 
         <TextView
             android:layout_width="match_parent"
@@ -19,105 +20,116 @@
             android:text="@string/register"
             android:textAllCaps="true"
             android:textColor="@android:color/black"
-            android:textSize="30dp"
+            android:textSize="@dimen/text50"
             android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="@dimen/q5">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/imei"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text21" />
 
             <EditText
                 android:id="@+id/imei_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/q5"
                 android:ems="15"
                 android:enabled="false"
                 android:gravity="center"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="@dimen/text21" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="@dimen/q5">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nopd"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text21" />
 
             <EditText
                 android:id="@+id/nopd_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/q5"
                 android:ems="15"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="16"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="@dimen/text21" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="@dimen/q5">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/restaurant"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text21" />
 
             <EditText
                 android:id="@+id/restaurant_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/q5"
                 android:ems="15"
                 android:enabled="false"
                 android:gravity="center"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="@dimen/text21" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="@dimen/q5">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/address"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text21" />
 
             <EditText
                 android:id="@+id/address_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/q5"
                 android:ems="15"
                 android:enabled="false"
                 android:gravity="center"
-                android:maxLines="5" />
+                android:maxLines="5"
+                android:textSize="@dimen/text21" />
         </LinearLayout>
     </LinearLayout>
 
     <Button
         android:id="@+id/register_btn"
-        android:layout_width="350dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/q10"
         android:background="@drawable/main_bg_rounded"
         android:enabled="false"
-        android:text="@string/register" />
+        android:padding="@dimen/q10"
+        android:text="@string/register"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text21" />
 </LinearLayout>
