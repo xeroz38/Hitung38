@@ -108,7 +108,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new MainActivityFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new MainFragment()).commit();
     }
 
     private ArrayList<Transaction> getTransactionListData() {

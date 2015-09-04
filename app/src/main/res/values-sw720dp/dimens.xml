@@ -1,0 +1,5 @@
+<resources>
+    <bool name="is_tablet">true</bool>
+    <integer name="col_master_item">7</integer>
+    <dimen name="drawer_width">300dp</dimen>
+</resources>

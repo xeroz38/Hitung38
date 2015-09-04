@@ -13,16 +13,16 @@
 
         <Button
             android:id="@+id/sales_btn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
             android:background="@drawable/main_bg_rounded"
             android:text="@string/sales" />
 
         <Button
             android:id="@+id/sales_item_btn"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginLeft="@dimen/q10"
             android:background="@drawable/main_bg_rounded"
             android:text="@string/sales_item"
             android:visibility="gone" />

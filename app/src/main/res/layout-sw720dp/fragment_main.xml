@@ -10,14 +10,17 @@
     <ImageView
         android:layout_width="@dimen/logo_width"
         android:layout_height="@dimen/logo_height"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/q50"
         android:alpha=".1"
         android:src="@drawable/logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_marginLeft="@dimen/q80"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <LinearLayout
@@ -53,13 +56,13 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/master_btn"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:layout_margin="@dimen/q10"
                 android:background="@drawable/main_bg_rounded"
                 android:text="@string/master" />
 
@@ -67,20 +70,15 @@
                 android:id="@+id/pos_btn"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:layout_margin="@dimen/q10"
+                android:layout_marginLeft="@dimen/q10"
                 android:background="@drawable/main_bg_rounded"
                 android:text="@string/pos" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/speedorder_btn"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:layout_margin="@dimen/q10"
+                android:layout_marginLeft="@dimen/q10"
                 android:background="@drawable/main_bg_rounded"
                 android:text="@string/speed_order" />
 
@@ -88,9 +86,10 @@
                 android:id="@+id/report_btn"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
-                android:layout_margin="@dimen/q10"
+                android:layout_marginLeft="@dimen/q10"
                 android:background="@drawable/main_bg_rounded"
                 android:text="@string/report" />
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

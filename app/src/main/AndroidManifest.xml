@@ -19,46 +19,27 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegistrationActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".MasterActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".MasterItemActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".MasterItemDetailActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".MasterGroupActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".MasterActivity" />
+        <activity android:name=".MasterItemActivity" />
+        <activity android:name=".MasterItemDetailActivity" />
+        <activity android:name=".MasterGroupActivity" />
         <activity
             android:name=".PointOfSalesActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".PointOfSalesDetailActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".ReportActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".PointOfSalesDetailActivity" />
+        <activity android:name=".ReportActivity" />
         <activity
             android:name=".ReportSalesActivity"
             android:screenOrientation="landscape" />
-        <activity
-            android:name=".SpeedOrderActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".SpeedOrderDetailActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".SpeedOrderActivity" />
+        <activity android:name=".SpeedOrderDetailActivity" />
 
         <provider
             android:name=".util.ZhackProvider"

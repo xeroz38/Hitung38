@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,10 +19,10 @@ import com.zhack.poskasir.model.Invoice;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.model.ReportSales;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.ZhackProvider;
 import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.PushInvoiceService;
 import com.zhack.poskasir.util.Utils;
+import com.zhack.poskasir.util.ZhackProvider;
 
 import org.json.JSONArray;
 
@@ -42,6 +43,12 @@ public class SpeedOrderDetailActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+        if (isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         setContentView(R.layout.activity_speedorder_detail);
 
         mSubPriceText = (TextView) findViewById(R.id.subprice_text);
@@ -104,7 +111,7 @@ public class SpeedOrderDetailActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count > 0) {
+                if (s.length() > 0) {
                     mChangePriceText.setText(Utils.convertRp((int) (Integer.parseInt(s.toString()) - (totalPrice + (totalPrice / 10)))));
                 }
             }

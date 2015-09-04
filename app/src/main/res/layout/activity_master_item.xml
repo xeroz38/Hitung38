@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivityFragment">
+    android:orientation="vertical">
 
     <include layout="@layout/view_header" />
 
@@ -11,17 +9,17 @@
         android:id="@+id/add_item_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/q5"
         android:background="@drawable/main_bg_rounded"
-        android:padding="5dp"
+        android:padding="@dimen/q5"
         android:text="@string/add_item" />
 
     <GridView
         android:id="@+id/item_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:horizontalSpacing="5dp"
-        android:numColumns="7"
-        android:verticalSpacing="5dp" />
+        android:layout_margin="@dimen/q5"
+        android:horizontalSpacing="@dimen/q5"
+        android:numColumns="@integer/col_master_item"
+        android:verticalSpacing="@dimen/q5" />
 </LinearLayout>
