@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivityFragment">
+    android:orientation="vertical">
 
     <include layout="@layout/view_header" />
 
@@ -13,6 +11,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/itemgroup_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".7"
@@ -22,34 +21,34 @@
                 android:id="@+id/title_current_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:background="@drawable/main_bg_rounded"
                 android:gravity="center"
                 android:text="@string/item"
-                android:textSize="25dp" />
+                android:textSize="@dimen/text24" />
 
             <GridView
                 android:id="@+id/item_grid"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:layout_weight="1"
-                android:horizontalSpacing="5dp"
-                android:numColumns="5"
-                android:verticalSpacing="5dp" />
+                android:horizontalSpacing="@dimen/q5"
+                android:numColumns="@integer/col_order_item"
+                android:verticalSpacing="@dimen/q5" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="@dimen/q5">
 
                 <Button
                     android:id="@+id/item_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/main_bg_rounded"
-                    android:padding="5dp"
+                    android:padding="@dimen/q5"
                     android:text="@string/item"
                     android:textStyle="bold" />
 
@@ -57,9 +56,9 @@
                     android:id="@+id/itemgroup_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/q5"
                     android:background="@drawable/main_bg_rounded"
-                    android:padding="5dp"
+                    android:padding="@dimen/q5"
                     android:text="@string/item_group" />
             </LinearLayout>
         </LinearLayout>
@@ -74,29 +73,43 @@
                 android:id="@+id/totalprice_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:background="@drawable/main_bg_rounded"
                 android:gravity="center"
                 android:text="@string/totalprice"
-                android:textSize="25dp" />
+                android:textSize="@dimen/text24" />
 
             <ListView
                 android:id="@+id/pos_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:layout_weight="1"
                 android:background="@drawable/main_bg_rounded" />
 
-            <Button
-                android:id="@+id/done_btn"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@drawable/main_bg_rounded"
-                android:text="@string/next" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/add_item_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/q5"
+                    android:layout_weight="1"
+                    android:background="@drawable/main_bg_rounded"
+                    android:text="@string/select"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/done_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/q5"
+                    android:layout_weight="1"
+                    android:background="@drawable/main_bg_rounded"
+                    android:text="@string/next" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

@@ -18,15 +18,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.model.ItemGroup;
 import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.util.Constant;
-import com.zhack.poskasir.util.Utils;
 import com.zhack.poskasir.util.ZhackProvider;
 
 import java.util.ArrayList;
@@ -36,50 +33,30 @@ import java.util.Random;
 /**
  * Created by zunaidi.chandra on 30/07/2015.
  */
-public class PointOfSalesActivity extends Activity {
-
-    public static final int RESULT_POS_ADD_ITEM = 101;
+public class PointOfSalesItemActivity extends Activity {
 
     private boolean isItemGroup = false;
-    private boolean isTablet;
     private List<Item> mItemData;
-    private ArrayList<POSData> mPOSData;
     private List<ItemGroup> mItemGroupData;
     private ItemAdapter mItemAdapter;
-    private POSAdapter mPOSAdapter;
-    private LinearLayout mItemGroupLayout;
-    private TextView mCurrentTitleText, mTotalPriceText;
-    private Button mItemBtn, mItemGroupBtn, mAddItemBtn, mDoneBtn;
+    private TextView mCurrentTitleText;
+    private Button mItemBtn, mItemGroupBtn;
     private GridView mItemGrid;
-    private ListView mPOSList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isTablet = getResources().getBoolean(R.bool.is_tablet);
-        if (isTablet) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        setContentView(R.layout.activity_pointofsales);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.activity_pointofsales_item);
 
-        mItemGroupLayout = (LinearLayout) findViewById(R.id.itemgroup_layout);
         mItemGrid = (GridView) findViewById(R.id.item_grid);
-        mPOSList = (ListView) findViewById(R.id.pos_list);
         mCurrentTitleText = (TextView) findViewById(R.id.title_current_text);
-        mTotalPriceText = (TextView) findViewById(R.id.totalprice_text);
         mItemBtn = (Button) findViewById(R.id.item_btn);
         mItemGroupBtn = (Button) findViewById(R.id.itemgroup_btn);
-        mAddItemBtn = (Button) findViewById(R.id.add_item_btn);
-        mDoneBtn = (Button) findViewById(R.id.done_btn);
         mItemData = getItemListData();
         mItemGroupData = getItemGroupListData();
-        mPOSData = new ArrayList<POSData>();
-        mPOSAdapter = new POSAdapter();
         mItemAdapter = new ItemAdapter();
         mItemGrid.setAdapter(mItemAdapter);
-        mPOSList.setAdapter(mPOSAdapter);
         mItemGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,35 +66,17 @@ public class PointOfSalesActivity extends Activity {
                     mItemData = sortItemByGroupData(mItemGroupData.get(position).title);
                     mItemAdapter.notifyDataSetChanged();
                 } else {
-                    if (isItemExist(mItemData.get(position).title)) {
-                        for (int i = 0; i < mPOSData.size(); i++) {
-                            if (mPOSData.get(i).title.equals(mItemData.get(position).title)) {
-                                mPOSData.get(i).quantity++;
-                            }
-                        }
-                    } else {
-                        POSData pos = new POSData();
-                        pos.image = mItemData.get(position).image;
-                        pos.title = mItemData.get(position).title;
-                        pos.quantity++;
-                        pos.price = Integer.parseInt(mItemData.get(position).price);
-                        mPOSData.add(pos);
-                    }
-                    calculateTotalPrice();
-                    mPOSAdapter.notifyDataSetChanged();
+                    POSData pos = new POSData();
+                    pos.image = mItemData.get(position).image;
+                    pos.title = mItemData.get(position).title;
+                    pos.quantity++;
+                    pos.price = Integer.parseInt(mItemData.get(position).price);
+
+                    Intent intent = new Intent();
+                    intent.putExtra(Constant.ITEM_LIST, pos);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
-            }
-        });
-        mPOSList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mPOSData.get(position).quantity > 1) {
-                    mPOSData.get(position).quantity--;
-                } else {
-                    mPOSData.remove(position);
-                }
-                calculateTotalPrice();
-                mPOSAdapter.notifyDataSetChanged();
             }
         });
         mItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -141,62 +100,6 @@ public class PointOfSalesActivity extends Activity {
                 mItemAdapter.notifyDataSetChanged();
             }
         });
-        mDoneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PointOfSalesActivity.this, PointOfSalesDetailActivity.class);
-                intent.putParcelableArrayListExtra(Constant.ITEM_LIST, mPOSData);
-                startActivity(intent);
-            }
-        });
-        if (!isTablet) {
-            mAddItemBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(PointOfSalesActivity.this, PointOfSalesItemActivity.class);
-                    startActivityForResult(intent, RESULT_POS_ADD_ITEM);
-                }
-            });
-            mItemGroupLayout.setVisibility(View.GONE);
-            mAddItemBtn.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_POS_ADD_ITEM) {
-            if (resultCode == RESULT_OK) {
-                POSData pos = data.getExtras().getParcelable(Constant.ITEM_LIST);
-                if (isItemExist(pos.title)) {
-                    for (int i = 0; i < mPOSData.size(); i++) {
-                        if (mPOSData.get(i).title.equals(pos.title)) {
-                            mPOSData.get(i).quantity++;
-                        }
-                    }
-                } else {
-                    mPOSData.add(pos);
-                }
-                calculateTotalPrice();
-                mPOSAdapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-    private void calculateTotalPrice() {
-        int totalPrice = 0;
-        for (POSData pos : mPOSData) {
-            totalPrice += pos.quantity * pos.price;
-        }
-        mTotalPriceText.setText(Utils.convertRp(totalPrice));
-    }
-
-    private boolean isItemExist(String title) {
-        for (POSData pos : mPOSData) {
-            if (pos.title.equals(title)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private ArrayList<Item> sortItemByGroupData(String group) {
@@ -302,57 +205,6 @@ public class PointOfSalesActivity extends Activity {
                 return mItemGroupData.size();
             }
             return mItemData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-    }
-
-    private class POSAdapter extends BaseAdapter {
-
-        public class ViewHolder {
-            public ImageView image;
-            public TextView title;
-            public TextView quantity;
-            public TextView price;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View rowView = convertView;
-            if (rowView == null) {
-                LayoutInflater inflater = getLayoutInflater();
-                rowView = inflater.inflate(R.layout.view_pos_list, null);
-                // configure view holder
-                ViewHolder viewHolder = new ViewHolder();
-                viewHolder.image = (ImageView) rowView.findViewById(R.id.item_img);
-                viewHolder.title = (TextView) rowView.findViewById(R.id.title_text);
-                viewHolder.quantity = (TextView) rowView.findViewById(R.id.quantity_text);
-                viewHolder.price = (TextView) rowView.findViewById(R.id.price_text);
-                rowView.setTag(viewHolder);
-            }
-
-            ViewHolder holder = (ViewHolder) rowView.getTag();
-            holder.title.setText(mPOSData.get(position).title);
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                    + "/poskasir/img/" + mPOSData.get(position).image);
-            holder.image.setImageBitmap(bitmap);
-            holder.quantity.setText(String.valueOf(mPOSData.get(position).quantity));
-            holder.price.setText(Utils.convertRp(mPOSData.get(position).price));
-
-            return rowView;
-        }
-
-        @Override
-        public int getCount() {
-            return mPOSData.size();
         }
 
         @Override

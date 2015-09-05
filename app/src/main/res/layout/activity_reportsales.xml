@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/report_list_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
@@ -20,24 +21,25 @@
                 android:id="@+id/totalprice_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:background="@drawable/main_bg_rounded"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/q5"
                 android:text="@string/totalprice"
-                android:textSize="25dp" />
+                android:textSize="@dimen/text24" />
 
             <ListView
                 android:id="@+id/report_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:layout_weight="1"
                 android:background="@drawable/main_bg_rounded"
                 android:choiceMode="singleChoice" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/report_detail_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".5"
@@ -46,7 +48,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:orientation="horizontal">
 
                 <TextView
@@ -56,37 +58,37 @@
                     android:layout_weight=".3"
                     android:background="@drawable/main_bg_rounded"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="@dimen/q5"
                     android:text="@string/print"
                     android:textColor="@android:color/black"
-                    android:textSize="25dp"
+                    android:textSize="@dimen/text24"
                     android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/void_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/q5"
                     android:layout_weight=".3"
                     android:background="@drawable/main_bg_rounded"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="@dimen/q5"
                     android:text="@string/cancel"
                     android:textColor="@android:color/black"
-                    android:textSize="25dp"
+                    android:textSize="@dimen/text24"
                     android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/subtotal_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/q5"
                     android:layout_weight=".4"
                     android:background="@drawable/main_bg_rounded"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="@dimen/q5"
                     android:text="@string/totalprice"
-                    android:textSize="25dp"
+                    android:textSize="@dimen/text24"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -94,7 +96,7 @@
                 android:id="@+id/report_detail_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/q5"
                 android:layout_weight="1"
                 android:background="@drawable/main_bg_rounded"
                 android:visibility="gone" />

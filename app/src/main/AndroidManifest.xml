@@ -30,14 +30,12 @@
         <activity android:name=".MasterItemActivity" />
         <activity android:name=".MasterItemDetailActivity" />
         <activity android:name=".MasterGroupActivity" />
-        <activity
-            android:name=".PointOfSalesActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".PointOfSalesActivity" />
+        <activity android:name=".PointOfSalesItemActivity" />
         <activity android:name=".PointOfSalesDetailActivity" />
         <activity android:name=".ReportActivity" />
-        <activity
-            android:name=".ReportSalesActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".ReportSalesActivity" />
+        <activity android:name=".ReportSalesDetailActivity" />
         <activity android:name=".SpeedOrderActivity" />
         <activity android:name=".SpeedOrderDetailActivity" />
 

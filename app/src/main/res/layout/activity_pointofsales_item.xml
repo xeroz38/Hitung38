@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_header" />
+
+    <TextView
+        android:id="@+id/title_current_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/q5"
+        android:background="@drawable/main_bg_rounded"
+        android:gravity="center"
+        android:text="@string/item"
+        android:textSize="@dimen/text24" />
+
+    <GridView
+        android:id="@+id/item_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/q5"
+        android:layout_weight="1"
+        android:horizontalSpacing="@dimen/q5"
+        android:numColumns="@integer/col_order_item"
+        android:verticalSpacing="@dimen/q5" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/q5">
+
+        <Button
+            android:id="@+id/item_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_bg_rounded"
+            android:padding="@dimen/q5"
+            android:text="@string/item"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/itemgroup_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/q5"
+            android:background="@drawable/main_bg_rounded"
+            android:padding="@dimen/q5"
+            android:text="@string/item_group" />
+    </LinearLayout>
+</LinearLayout>

@@ -3,7 +3,9 @@ package com.zhack.poskasir;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,9 +40,11 @@ import java.util.ArrayList;
 public class ReportSalesActivity extends Activity {
 
     private int postReport = 0;
+    private boolean isTablet;
     private ArrayList<ReportSales> mReportData;
     private ReportAdapter mReportAdapter;
     private POSAdapter mPOSAdapter;
+    private LinearLayout mReportDetailLayout;
     private TextView mTotalPriceText, mReportPriceText, mPrintText, mVoidText;
     private ListView mReportList, mReportDetailList;
     private SharedPreferences sharedPref;
@@ -48,8 +52,15 @@ public class ReportSalesActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isTablet = getResources().getBoolean(R.bool.is_tablet);
+        if (isTablet) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         setContentView(R.layout.activity_reportsales);
 
+        mReportDetailLayout = (LinearLayout) findViewById(R.id.report_detail_layout);
         mTotalPriceText = (TextView) findViewById(R.id.totalprice_text);
         mReportPriceText = (TextView) findViewById(R.id.subtotal_text);
         mPrintText = (TextView) findViewById(R.id.print_text);
@@ -63,27 +74,15 @@ public class ReportSalesActivity extends Activity {
         mPOSAdapter = new POSAdapter();
         mReportList.setAdapter(mReportAdapter);
         mReportDetailList.setAdapter(mPOSAdapter);
-        mReportList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                calculateReportPrice(position);
-                postReport = position;
-                mPrintText.setVisibility(View.VISIBLE);
-                mVoidText.setVisibility(View.VISIBLE);
-                mReportPriceText.setVisibility(View.VISIBLE);
-                mReportDetailList.setVisibility(View.VISIBLE);
-                mPOSAdapter.notifyDataSetChanged();
-            }
-        });
         mPrintText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mReportData.size() > 0) {
                     Invoice invoice = new Invoice();
-                    invoice.id = "JK-" + String.valueOf(sharedPref.getLong(Constant.NOPD, 0)).substring(12) + "-" + String.valueOf(System.currentTimeMillis()).substring(9);
+                    invoice.id = mReportData.get(postReport).invoice;
                     invoice.restaurant = sharedPref.getString(Constant.RESTAURANT, "");
                     invoice.address = sharedPref.getString(Constant.ADDRESS, "");
-                    invoice.date = Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd/MM/yyyy hh:mm");
+                    invoice.date = mReportData.get(postReport).date;
                     invoice.pay = mReportData.get(postReport).pay;
                     invoice.posData = mReportData.get(postReport).posData;
                     new PrintJob(getApplicationContext(), invoice);
@@ -102,9 +101,42 @@ public class ReportSalesActivity extends Activity {
                 mReportAdapter.notifyDataSetChanged();
             }
         });
+        if (isTablet) {
+            mReportList.setOnItemClickListener(new TabletOnItemClickListener());
+        } else {
+            mReportList.setOnItemClickListener(new PhoneOnItemClickListener());
+            mReportDetailLayout.setVisibility(View.GONE);
+        }
+
         calculateTotalPrice();
         if (mReportData.size() > 0) {
             calculateReportPrice(0);
+        }
+    }
+
+    private class TabletOnItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            calculateReportPrice(position);
+            postReport = position;
+            mPrintText.setVisibility(View.VISIBLE);
+            mVoidText.setVisibility(View.VISIBLE);
+            mReportPriceText.setVisibility(View.VISIBLE);
+            mReportDetailList.setVisibility(View.VISIBLE);
+            mPOSAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class PhoneOnItemClickListener implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Intent intent = new Intent(getApplicationContext(), ReportSalesDetailActivity.class);
+            intent.putExtra(ReportSales.ID, mReportData.get(position).id);
+            intent.putExtra(ReportSales.INVOICE, mReportData.get(position).invoice);
+            intent.putExtra(ReportSales.PAY, mReportData.get(position).pay);
+            intent.putExtra(ReportSales.DATE, mReportData.get(position).date);
+            intent.putExtra(ReportSales.POS_DATA, mReportData.get(position).posData);
+            startActivity(intent);
         }
     }
 
