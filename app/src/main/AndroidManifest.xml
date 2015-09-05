@@ -30,9 +30,8 @@
         <activity android:name=".MasterItemActivity" />
         <activity android:name=".MasterItemDetailActivity" />
         <activity android:name=".MasterGroupActivity" />
-        <activity
-            android:name=".PointOfSalesActivity"
-            android:screenOrientation="landscape" />
+        <activity android:name=".PointOfSalesActivity" />
+        <activity android:name=".PointOfSalesItemActivity" />
         <activity android:name=".PointOfSalesDetailActivity" />
         <activity android:name=".ReportActivity" />
         <activity android:name=".ReportSalesActivity" />

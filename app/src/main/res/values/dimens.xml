@@ -1,6 +1,7 @@
 <resources>
     <bool name="is_tablet">false</bool>
     <integer name="col_master_item">3</integer>
+    <integer name="col_order_item">3</integer>
     <dimen name="drawer_width">200dp</dimen>
     <dimen name="logo_width">355dp</dimen>
     <dimen name="logo_height">400dp</dimen>
