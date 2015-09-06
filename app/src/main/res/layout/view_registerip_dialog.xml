@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="3dp">
+    android:padding="@dimen/q5">
 
     <EditText
         android:id="@+id/ip_edit"
@@ -12,9 +12,9 @@
         android:ems="15"
         android:hint="@string/ip"
         android:inputType="number|numberDecimal"
-        android:padding="20dp"
+        android:padding="@dimen/q10"
         android:textColor="@android:color/black"
-        android:textSize="23dp" />
+        android:textSize="@dimen/text24" />
 
     <Button
         android:id="@+id/ok_btn"
@@ -23,5 +23,5 @@
         android:layout_gravity="center"
         android:text="@string/save"
         android:textColor="@android:color/black"
-        android:textSize="23dp" />
+        android:textSize="@dimen/text24" />
 </LinearLayout>

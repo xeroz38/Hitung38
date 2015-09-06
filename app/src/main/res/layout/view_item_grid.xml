@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/item_img"
-        android:layout_width="140dp"
-        android:layout_height="105dp" />
+        android:layout_width="@dimen/camera_width"
+        android:layout_height="@dimen/camera_height" />
 
     <TextView
         android:id="@+id/title_text"
@@ -16,5 +16,5 @@
         android:layout_gravity="center"
         android:singleLine="true"
         android:textColor="@android:color/black"
-        android:textSize="15dp" />
+        android:textSize="@dimen/text15" />
 </LinearLayout>

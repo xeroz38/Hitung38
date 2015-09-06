@@ -7,6 +7,8 @@
     <dimen name="logo_height">400dp</dimen>
     <dimen name="camera_width">140dp</dimen>
     <dimen name="camera_height">105dp</dimen>
+    <dimen name="pos_width">40dp</dimen>
+    <dimen name="pos_height">30dp</dimen>
     <dimen name="icon_size">100dp</dimen>
     <dimen name="q5">5dp</dimen>
     <dimen name="q10">10dp</dimen>
@@ -17,4 +19,5 @@
     <dimen name="text24">24dp</dimen>
     <dimen name="text21">21dp</dimen>
     <dimen name="text18">18dp</dimen>
+    <dimen name="text15">15dp</dimen>
 </resources>
