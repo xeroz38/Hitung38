@@ -1,0 +1,4 @@
+<resources>
+    <bool name="is_tablet">false</bool>
+    <dimen name="text50">35dp</dimen>
+</resources>
