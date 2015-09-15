@@ -3,7 +3,6 @@ package com.zhack.poskasir.util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Environment;
 import android.text.format.DateFormat;
 
 import java.io.BufferedReader;
@@ -51,9 +50,9 @@ public class Utils {
         return false;
     }
 
-    public static void writeToFile(String data) {
+    public static void writeToFile(String path, String data) {
         try {
-            Writer fileWriter = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/poskasir/log", true));
+            Writer fileWriter = new BufferedWriter(new FileWriter(path, true));
             fileWriter.append(data).append("\n");
             fileWriter.close();
         } catch (IOException e) {
@@ -61,10 +60,10 @@ public class Utils {
         }
     }
 
-    public static String readFromFile() {
+    public static String readFromFile(String path) {
         String logText = "";
         try {
-            InputStream inputStream = new FileInputStream(Environment.getExternalStorageDirectory() + "/poskasir/log");
+            InputStream inputStream = new FileInputStream(path);
             if (inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

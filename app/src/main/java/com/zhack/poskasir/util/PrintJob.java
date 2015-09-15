@@ -50,7 +50,7 @@ public class PrintJob {
 
                 break;
             }
-            case "12": {
+            case "hdx039B": {
                 try {
                     HdxUtil.SwitchSerialFunction(HdxUtil.SERIAL_FUNCTION_PRINTER);
                     mSerialPrinter.OpenPrinter(new SerialParam(115200, "/dev/ttyS1", 0), new SerialDataHandler());

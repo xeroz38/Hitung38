@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.zhack.poskasir.model.POSData;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ZhackProvider;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -191,8 +191,7 @@ public class PointOfSalesItemActivity extends Activity {
                 holder.image.setImageBitmap(null);
             } else {
                 holder.text.setText(mItemData.get(position).title);
-                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                        + "/poskasir/img/" + mItemData.get(position).image);
+                Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir().getAbsolutePath() + File.separator + mItemData.get(position).image);
                 holder.image.setImageBitmap(bitmap);
             }
 

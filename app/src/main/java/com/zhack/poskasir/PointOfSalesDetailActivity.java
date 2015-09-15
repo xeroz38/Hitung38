@@ -9,7 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -35,6 +34,7 @@ import com.zhack.poskasir.util.ZhackProvider;
 
 import org.json.JSONArray;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -194,8 +194,7 @@ public class PointOfSalesDetailActivity extends Activity {
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
             holder.title.setText(mPOSData.get(position).title);
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                    + "/poskasir/img/" + mPOSData.get(position).image);
+            Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir().getAbsolutePath() + File.separator + mPOSData.get(position).image);
             holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
             holder.image.setImageBitmap(bitmap);
             holder.quantity.setText(String.valueOf(mPOSData.get(position).quantity));

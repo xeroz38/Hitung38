@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -78,7 +77,7 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
         mCategorySpin.setSelection(dataAdapter.getPosition(categoryBdl), false);
         mPriceEdit.setText(priceBdl);
         if (imageBdl != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/poskasir/img/" + imageBdl);
+            Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir().getAbsolutePath() + File.separator + imageBdl);
             mItemImg.setImageBitmap(bitmap);
         }
 
@@ -130,12 +129,12 @@ public class MasterItemDetailActivity extends Activity implements View.OnClickLi
     }
 
     private void createDirectoryAndSaveFile(Bitmap imageToSave) {
-        File direct = new File(Environment.getExternalStorageDirectory() + "/poskasir/img");
+        File direct = new File(getCacheDir().getAbsolutePath());
         if (!direct.exists()) {
-            File wallpaperDirectory = new File("/sdcard/poskasir/img/");
-            wallpaperDirectory.mkdirs();
+            File imgDir = new File(getCacheDir().getAbsolutePath());
+            imgDir.mkdirs();
         }
-        File file = new File(new File("/sdcard/poskasir/img/"), imageName);
+        File file = new File(new File(getCacheDir().getAbsolutePath()), imageName);
         if (file.exists()) {
             file.delete();
         }

@@ -10,6 +10,7 @@ import com.zhack.poskasir.model.Transaction;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.net.HttpURLConnection;
 
 /**
@@ -36,7 +37,7 @@ public class PushInvoiceService extends IntentService {
             int responseCode = con.sendPost(Constant.MAIN_URL + Constant.URL_TRANS, json.toString());
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                Utils.writeToFile(Utils.convertDate(intent.getStringExtra(Constant.DATE), "dd-MM-yyyy hh:mm:ss") +
+                Utils.writeToFile(getCacheDir().getAbsolutePath() + File.separator + "Log", Utils.convertDate(intent.getStringExtra(Constant.DATE), "dd-MM-yyyy hh:mm:ss") +
                         " " + "Transaction" +
                         " " + intent.getStringExtra(Constant.TRAN_INVOICE) +
                         " " + "SUCCESS");
@@ -46,7 +47,7 @@ public class PushInvoiceService extends IntentService {
                             Transaction.TRANS_INVOICE + "=?", new String[]{intent.getStringExtra(Constant.TRAN_INVOICE)});
                 }
             } else {
-                Utils.writeToFile(Utils.convertDate(intent.getStringExtra(Constant.DATE), "dd-MM-yyyy hh:mm:ss") +
+                Utils.writeToFile(getCacheDir().getAbsolutePath() + File.separator + "Log", Utils.convertDate(intent.getStringExtra(Constant.DATE), "dd-MM-yyyy hh:mm:ss") +
                         " " + "Transaction" +
                         " " + intent.getStringExtra(Constant.TRAN_INVOICE) +
                         " " + "FAIL");

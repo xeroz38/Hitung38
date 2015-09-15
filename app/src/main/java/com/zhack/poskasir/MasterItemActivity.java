@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.zhack.poskasir.model.Item;
 import com.zhack.poskasir.util.Constant;
 import com.zhack.poskasir.util.ZhackProvider;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,8 +131,7 @@ public class MasterItemActivity extends Activity {
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
             holder.text.setText(mItemData.get(position).title);
-            Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                    + "/poskasir/img/" + mItemData.get(position).image);
+            Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir().getAbsolutePath() + File.separator + mItemData.get(position).image);
             holder.image.setImageBitmap(bitmap);
 
             return rowView;

@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -142,7 +141,7 @@ public class MainActivity extends FragmentActivity {
 
         final TextView logContent = (TextView) dialog.findViewById(R.id.content_text);
         final Button okBtn = (Button) dialog.findViewById(R.id.ok_btn);
-        logContent.setText(Utils.readFromFile());
+        logContent.setText(Utils.readFromFile(getCacheDir().getAbsolutePath() + File.separator + "Log"));
         okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,12 +208,14 @@ public class MainActivity extends FragmentActivity {
         protected void onPostExecute(Integer responseCode) {
             super.onPostExecute(responseCode);
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                Utils.writeToFile(Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd-MM-yyyy hh:mm:ss") +
+                Utils.writeToFile(getCacheDir().getAbsolutePath() + File.separator + "Log",
+                        Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd-MM-yyyy hh:mm:ss") +
                         " " + "Alert" +
                         " " + "SUCCESS");
                 Toast.makeText(getApplicationContext(), "Sukses", Toast.LENGTH_SHORT).show();
             } else {
-                Utils.writeToFile(Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd-MM-yyyy hh:mm:ss") +
+                Utils.writeToFile(getCacheDir().getAbsolutePath() + File.separator + "Log",
+                        Utils.convertDate(String.valueOf(System.currentTimeMillis()), "dd-MM-yyyy hh:mm:ss") +
                         " " + "Alert" +
                         " " + "FAIL");
                 Toast.makeText(getApplicationContext(), "Gagal", Toast.LENGTH_SHORT).show();
@@ -317,7 +318,7 @@ public class MainActivity extends FragmentActivity {
                 R.drawable.img_7, R.drawable.img_8};
         for (int i = 1; i <= 8; i++) {
             Bitmap bm = BitmapFactory.decodeResource(getResources(), img[i - 1]);
-            File file = new File(Environment.getExternalStorageDirectory() + "/poskasir/img", "img_" + i);
+            File file = new File(getCacheDir().getAbsolutePath(), "img_" + i);
             OutputStream outStream = null;
             try {
                 outStream = new FileOutputStream(file);

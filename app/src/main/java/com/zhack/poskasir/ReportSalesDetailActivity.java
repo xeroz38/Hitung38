@@ -8,7 +8,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.zhack.poskasir.util.PrintJob;
 import com.zhack.poskasir.util.Utils;
 import com.zhack.poskasir.util.ZhackProvider;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -123,8 +123,7 @@ public class ReportSalesDetailActivity extends Activity {
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
             if (!mPOSData.get(position).image.equals("")) {
-                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                        + "/poskasir/img/" + mPOSData.get(position).image);
+                Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir().getAbsolutePath() + File.separator + mPOSData.get(position).image);
                 holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
                 holder.image.setImageBitmap(bitmap);
             } else {

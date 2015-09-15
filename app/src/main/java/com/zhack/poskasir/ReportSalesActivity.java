@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,7 @@ import com.zhack.poskasir.util.ZhackProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -288,8 +288,7 @@ public class ReportSalesActivity extends Activity {
 
             ViewHolder holder = (ViewHolder) rowView.getTag();
             if (!mReportData.get(postReport).posData.get(position).image.equals("")) {
-                Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()
-                        + "/poskasir/img/" + mReportData.get(postReport).posData.get(position).image);
+                Bitmap bitmap = BitmapFactory.decodeFile(getCacheDir().getAbsolutePath() + File.separator + mReportData.get(postReport).posData.get(position).image);
                 holder.image.setLayoutParams(new LinearLayout.LayoutParams(100, 75));
                 holder.image.setImageBitmap(bitmap);
             } else {
