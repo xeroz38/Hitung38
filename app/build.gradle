@@ -25,4 +25,5 @@ dependencies {
     compile files('libs/HdxUtil.jar')
     compile files('libs/serial.jar')
     compile files('libs/SerialPrinterLib.jar')
+    compile files('libs/SerialMini.jar')
 }
